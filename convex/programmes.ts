@@ -97,13 +97,20 @@ const courseFamilyIntents = [
 
 const vagueIntentPattern = /\b(i want|want to|study|become|nataka|kuwa|kazi ya|courses? za)\b/i
 
+function includesIntentTerm(query: string, term: string) {
+  const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  return new RegExp(`(^|[^\\p{L}\\p{N}])${escapedTerm}($|[^\\p{L}\\p{N}])`, "iu").test(
+    query,
+  )
+}
+
 function interpretProgrammeQuery(query: string, filters?: ProgrammeFilters, formFourOnly?: boolean) {
   const trimmedQuery = query.trim()
   const normalizedQuery = trimmedQuery.toLowerCase()
   const matchedIntent = courseFamilyIntents
     .map((intent) => ({
       courseFamily: intent.courseFamily,
-      term: intent.terms.find((term) => normalizedQuery.includes(term)),
+      term: intent.terms.find((term) => includesIntentTerm(normalizedQuery, term)),
     }))
     .find((intent) => intent.term)
   const inferredCourseFamily = matchedIntent?.courseFamily
@@ -436,11 +443,68 @@ function matchesProgrammeFilters(programme: Doc<"programmes">, filters: Programm
 }
 
 function rankProgrammes(results: Doc<"programmes">[], query: string) {
-  if (!isNursingIntent(query)) {
-    return results
+  const ranked = [...results].sort((left, right) => programmeScore(right, query) - programmeScore(left, query))
+  const seen = new Set<string>()
+  const deduped: Doc<"programmes">[] = []
+
+  for (const programme of ranked) {
+    const key = programmeIdentityKey(programme)
+    if (seen.has(key)) continue
+    seen.add(key)
+    deduped.push(programme)
   }
 
-  return [...results].sort((left, right) => nursingScore(right) - nursingScore(left))
+  return deduped
+}
+
+function programmeScore(programme: Doc<"programmes">, query: string) {
+  const normalizedQuery = query.toLowerCase().trim()
+  const programmeName = programme.programmeName.toLowerCase()
+  const normalizedProgrammeName = programme.normalizedProgrammeName.toLowerCase()
+  const institutionName = programme.institutionName.toLowerCase()
+  const code = programme.programmeCode?.toLowerCase()
+  let score = 0
+
+  if (code && normalizedQuery === code) score += 300
+  if (programmeName === normalizedQuery || normalizedProgrammeName === normalizedQuery) score += 220
+  if (programmeName.includes(normalizedQuery) || normalizedProgrammeName.includes(normalizedQuery)) {
+    score += 140
+  }
+  for (const token of normalizedQuery.split(/\s+/).filter((part) => part.length > 2)) {
+    if (programmeName.includes(token) || normalizedProgrammeName.includes(token)) score += 35
+  }
+  if (institutionName.includes(normalizedQuery)) score += 20
+  if (programme.programmeCode) score += 12
+  if (programme.sourceDatasets.includes("tcu_secondary_guidebook_pdf_extraction")) score += 10
+  if (programme.sourceDatasets.includes("education_pathways")) score += 5
+  if (isNursingIntent(query)) score += nursingScore(programme)
+
+  return score
+}
+
+function programmeIdentityKey(programme: Doc<"programmes">) {
+  return [
+    programmeNameFingerprint(programme.programmeName),
+    programme.normalizedInstitutionName,
+    programme.awardLevel,
+  ].join("|")
+}
+
+function programmeNameFingerprint(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(
+      /^(ordinary diploma|basic technician certificate|technician certificate|certificate|diploma|bachelor degree|bachelor|degree)\s+/,
+      "",
+    )
+    .replace(/^(of|in)\s+/, "")
+    .replace(/\s+in\s+/g, " ")
+    .replace(/\s+and\s+/g, " ")
+    .replace(/\s+with\s+/g, " ")
+    .trim()
 }
 
 function isNursingIntent(query: string) {
