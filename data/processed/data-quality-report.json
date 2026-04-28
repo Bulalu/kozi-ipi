@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-28T21:42:54.902Z",
+  "generatedAt": "2026-04-28T22:12:43.904Z",
   "canonicalDataset": "tanzania-education-pathways-dataset",
   "fallbackDataset": "tanzania-post-form-four-dataset",
   "enrichmentDatasets": [
@@ -24,16 +24,120 @@
     "extractedTcuSecondaryGuidebookCount": 855,
     "udsmProspectusSupplementCount": 27,
     "nactvetEnrichmentCount": 1771,
-    "processedCount": 4573,
-    "fromPathwaysCount": 2904,
-    "fromTcuSecondaryGuidebookExtractionCount": 855,
+    "processedCount": 4551,
+    "quarantinedTitleLeakCount": 21,
+    "quarantinedTitleLeakExamples": [
+      {
+        "programmeName": "Bachelor of Science in Environmental Sciences DM079 Two principal passes in the following",
+        "institutionName": "University of Dodoma (UDOM)",
+        "sourceDatasets": [
+          "education_pathways"
+        ],
+        "reviewReasons": [
+          "programme code not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Doctor of Medicine KC004 Three principal passes in Physics, Chemistry and Biology with a minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics. 6.0 170 5 Points 5. Bachelor of Sciences in Nursing",
+        "institutionName": "KCMC University",
+        "sourceDatasets": [
+          "education_pathways",
+          "tcu_secondary_guidebook_pdf_extraction"
+        ],
+        "reviewReasons": [
+          "missing_duration",
+          "admission points/capacity/duration not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Doctor of Medicine SF001 Three principal passes in Physics, Chemistry, and Biology with minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics.",
+        "institutionName": "St. Francis University College of Health and Allied Sciences (SFUCHAS)",
+        "sourceDatasets": [
+          "education_pathways"
+        ],
+        "reviewReasons": [
+          "missing_entry_requirements",
+          "programme code not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Bachelor Degree in Accounting TAMZ1 Two principal passes in the following",
+        "institutionName": "Tanzania Institute of Accountancy (TIA)",
+        "sourceDatasets": [
+          "education_pathways"
+        ],
+        "reviewReasons": [
+          "programme code not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Bachelor TPSD1 Two principal passes in the following",
+        "institutionName": "Tanzania Public Service College (TPSC)",
+        "sourceDatasets": [
+          "education_pathways"
+        ],
+        "reviewReasons": [
+          "missing_duration",
+          "programme code not confidently parsed",
+          "admission points/capacity/duration not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Bachelor TPSD2 Two principal passes in the following",
+        "institutionName": "Tanzania Public Service College (TPSC)",
+        "sourceDatasets": [
+          "education_pathways"
+        ],
+        "reviewReasons": [
+          "missing_duration",
+          "programme code not confidently parsed",
+          "admission points/capacity/duration not confidently parsed"
+        ]
+      },
+      {
+        "programmeName": "Bachelor CBMZ5 Two principal passes in the following",
+        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+        "sourceDatasets": [
+          "post_form_four"
+        ],
+        "reviewReasons": [
+          "programme_name_looks_incomplete"
+        ]
+      },
+      {
+        "programmeName": "Bachelor Degree CBMZ1 Two principal passes in the following subjects; Biology in Accountancy",
+        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+        "sourceDatasets": [
+          "post_form_four"
+        ],
+        "reviewReasons": []
+      },
+      {
+        "programmeName": "Bachelor Degree CBMZ2 Two principal passes in the following subjects; Biology in Business Administration",
+        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+        "sourceDatasets": [
+          "post_form_four"
+        ],
+        "reviewReasons": []
+      },
+      {
+        "programmeName": "Bachelor Degree CBMZ4 Two principal passes in the following",
+        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+        "sourceDatasets": [
+          "post_form_four"
+        ],
+        "reviewReasons": []
+      }
+    ],
+    "fromPathwaysCount": 2897,
+    "fromTcuSecondaryGuidebookExtractionCount": 854,
     "fromUdsmProspectusSupplementCount": 27,
-    "fallbackOnlyCount": 1669,
-    "degreeCount": 1530,
-    "formSixRouteCount": 1835,
+    "fallbackOnlyCount": 1654,
+    "degreeCount": 1511,
+    "formSixRouteCount": 1829,
     "certificateRouteCount": 1206,
-    "diplomaRouteCount": 834,
-    "needsReviewCount": 1655
+    "diplomaRouteCount": 835,
+    "needsReviewCount": 1646
   },
   "entryRequirements": {
     "rawPathwayCount": 4503,
@@ -42,6 +146,6 @@
     "formFourRouteCount": 1515,
     "formSixRouteCount": 2637,
     "certificateRouteCount": 1625,
-    "diplomaRouteCount": 891
+    "diplomaRouteCount": 896
   }
 }

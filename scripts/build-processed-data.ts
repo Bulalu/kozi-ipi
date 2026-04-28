@@ -177,6 +177,101 @@ function cleanProgrammeNameArtifact(value: string | undefined) {
   )
 }
 
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+}
+
+function isTcuOrdinaryDiplomaEquivalentRoute(row: Row) {
+  const sourceText = [
+    row.regulator,
+    row.source_type,
+    row.notes,
+    row.official_source_url,
+  ].join(" ")
+
+  return (
+    /TCU|tcu\.go\.tz/i.test(sourceText) &&
+    (/ordinary diploma\/equivalent/i.test(sourceText) ||
+      /ordinary diploma\/equivalent route/i.test(sourceText) ||
+      /Holders%20of%20Diploma/i.test(sourceText))
+  )
+}
+
+function embeddedTcuProgrammeCode(row: Row) {
+  if (!isTcuOrdinaryDiplomaEquivalentRoute(row)) return undefined
+
+  const match = cleanDataArtifactText(row.programme_name).match(/\b([A-Z]{2,4}\d{2,3})\b/)
+  return match?.[1]
+}
+
+function programmeCodeForRow(row: Row) {
+  return blankToUndefined(row.programme_code) ?? embeddedTcuProgrammeCode(row)
+}
+
+function cleanProgrammeNameForRow(row: Row) {
+  const programmeName = cleanProgrammeNameArtifact(row.programme_name) ?? ""
+  const code = embeddedTcuProgrammeCode(row)
+
+  if (code) {
+    const [beforeCode] = programmeName.split(new RegExp(`\\b${escapeRegExp(code)}\\b`))
+    const cleanName = blankToUndefined(beforeCode)
+    if (cleanName) return cleanName
+  }
+
+  return programmeName
+}
+
+function normalizedProgrammeNameForRow(row: Row, programmeName: string) {
+  const rawProgrammeName = cleanProgrammeNameArtifact(row.programme_name) ?? ""
+  const rawNormalizedProgrammeName = blankToUndefined(row.normalized_programme_name)
+
+  if (programmeName !== rawProgrammeName) {
+    return normalizeName(programmeName)
+  }
+
+  return rawNormalizedProgrammeName ?? normalizeName(programmeName)
+}
+
+function embeddedTcuRequirementPrefix(row: Row) {
+  const code = embeddedTcuProgrammeCode(row)
+  if (!code) return undefined
+
+  const rawProgrammeName = cleanDataArtifactText(row.programme_name)
+  const afterCode = rawProgrammeName
+    .replace(new RegExp(`^.*?\\b${escapeRegExp(code)}\\b\\s*`), "")
+    .trim()
+
+  if (/^(Diploma|Certificate|Foundation|Holder|Holders?)\b/i.test(afterCode)) {
+    return afterCode
+  }
+
+  return undefined
+}
+
+function cleanRequirementTextForRow(row: Row) {
+  const rawRequirementText = cleanDataArtifactText(row.raw_requirement_text)
+  const prefix = embeddedTcuRequirementPrefix(row)
+
+  if (prefix && rawRequirementText && !rawRequirementText.startsWith(prefix)) {
+    return cleanDataArtifactText(`${prefix} ${rawRequirementText}`)
+  }
+
+  return rawRequirementText
+}
+
+function programmeNameContainsRequirementLeak(value: string | undefined) {
+  const text = cleanDataArtifactText(value)
+
+  return (
+    /\b[A-Z]{2,4}\d{2,3}\b\s+(Diploma|Certificate|Foundation|Holder|Holders|One principal|Two principal|Three principal)/i.test(
+      text,
+    ) ||
+    /\b(applicant must|principal passes|minimum GPA|average of ["'“”]?B|minimum of ["'“”]?D["'“”]? grade)\b/i.test(
+      text,
+    )
+  )
+}
+
 function dataArtifactReviewReasons(label: string, value: string | undefined) {
   const text = value ?? ""
   const reasons: string[] = []
@@ -410,6 +505,14 @@ function normalizeSuitability(value: string | undefined): Suitability {
   return "unknown"
 }
 
+function normalizeDiplomaSuitability(row: Row): Suitability {
+  const explicitValue = normalizeSuitability(row.accepts_diploma)
+  if (explicitValue !== "unknown") return explicitValue
+  if (isTcuOrdinaryDiplomaEquivalentRoute(row)) return "yes"
+
+  return "unknown"
+}
+
 function normalizeConfidence(value: string | undefined): ConfidenceLevel {
   const normalized = value?.trim().toLowerCase()
   if (normalized === "high" || normalized === "medium" || normalized === "low") {
@@ -437,6 +540,10 @@ function firstValue(...values: Array<string | undefined>) {
 
 function uniqueValues(values: Array<string | undefined>) {
   return [...new Set(values.map(cleanDataArtifactValue).filter(Boolean) as string[])]
+}
+
+function uniqueDelimitedValues(values: Array<string | undefined>) {
+  return uniqueValues(values.flatMap((value) => value?.split(/\s*;\s*/)))
 }
 
 function mergeSuitability(left: Suitability, right: Suitability): Suitability {
@@ -601,7 +708,9 @@ function requirementRouteSummary(requirements: ProcessedEntryRequirement[]) {
     rawRequirementText: uniqueValues(requirements.map((requirement) => requirement.rawRequirementText))
       .slice(0, 5)
       .join(" || "),
-    requiredSubjects: uniqueValues(requirements.map((requirement) => requirement.requiredSubjects)).join("; "),
+    requiredSubjects: uniqueDelimitedValues(
+      requirements.map((requirement) => requirement.requiredSubjects),
+    ).join("; "),
     entryRouteTypes: routeTypes.join("; "),
   }
 }
@@ -891,10 +1000,9 @@ function findVerifiedLogo(normalizedInstitutionName: string, institutionName: st
 
 const processedEntryRequirements: ProcessedEntryRequirement[] = [
   ...pathwayEntryRequirements.map((row) => {
-  const programmeName = cleanProgrammeNameArtifact(row.programme_name) ?? ""
+  const programmeName = cleanProgrammeNameForRow(row)
   const institutionName = cleanDataArtifactText(row.institution_name)
-  const normalizedProgrammeName =
-    blankToUndefined(row.normalized_programme_name) ?? normalizeName(programmeName)
+  const normalizedProgrammeName = normalizedProgrammeNameForRow(row, programmeName)
   const normalizedInstitutionName =
     blankToUndefined(row.normalized_institution_name) ?? normalizeName(institutionName)
 
@@ -903,11 +1011,11 @@ const processedEntryRequirements: ProcessedEntryRequirement[] = [
     normalizedProgrammeName,
     institutionName,
     normalizedInstitutionName,
-    rawRequirementText: cleanDataArtifactText(row.raw_requirement_text),
+    rawRequirementText: cleanRequirementTextForRow(row),
     acceptsFormFourDirect: normalizeSuitability(row.accepts_form_four_direct),
     acceptsFormSix: normalizeSuitability(row.accepts_form_six),
     acceptsCertificate: normalizeSuitability(row.accepts_certificate),
-    acceptsDiploma: normalizeSuitability(row.accepts_diploma),
+    acceptsDiploma: normalizeDiplomaSuitability(row),
     acceptsEquivalent: normalizeSuitability(row.accepts_equivalent),
     minimumCseeDivisionIfAvailable: blankToUndefined(row.minimum_csee_division_if_available),
     minimumAcseePrincipalPassesIfAvailable: blankToUndefined(
@@ -926,7 +1034,7 @@ const processedEntryRequirements: ProcessedEntryRequirement[] = [
       normalizedProgrammeName,
       institutionName,
       normalizedInstitutionName,
-      cleanDataArtifactText(row.raw_requirement_text),
+      cleanRequirementTextForRow(row),
       cleanDataArtifactText(row.required_subjects),
       cleanDataArtifactText(row.required_prior_field_if_available),
     ]
@@ -1129,9 +1237,8 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
   const rawNormalizedInstitutionName =
     blankToUndefined(row.normalized_institution_name) ?? normalizeName(row.institution_name)
   const normalizedInstitutionName = institution?.normalizedInstitutionName ?? rawNormalizedInstitutionName
-  const programmeName = cleanProgrammeNameArtifact(row.programme_name) ?? ""
-  const normalizedProgrammeName =
-    blankToUndefined(row.normalized_programme_name) ?? normalizeName(programmeName)
+  const programmeName = cleanProgrammeNameForRow(row)
+  const normalizedProgrammeName = normalizedProgrammeNameForRow(row, programmeName)
   const fieldCategory = normalizeFieldCategory(row.field_category)
   const requirements = requirementsByProgramme.get(
     makeRequirementKey(normalizedProgrammeName, rawNormalizedInstitutionName),
@@ -1143,9 +1250,20 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
     ...detectProgrammeReviewReasons(row),
     ...(row.review_reasons ?? "").split(/[;,|]/),
   ])
+  const recoveredEmbeddedProgrammeCode =
+    !blankToUndefined(row.programme_code) && Boolean(embeddedTcuProgrammeCode(row))
   const reviewReasons = routeSummary.rawRequirementText
-    ? rawReviewReasons.filter((reason) => reason !== "missing_entry_requirements")
-    : rawReviewReasons
+    ? rawReviewReasons.filter(
+        (reason) =>
+          reason !== "missing_entry_requirements" &&
+          !(recoveredEmbeddedProgrammeCode && reason === "programme code not confidently parsed"),
+      )
+    : rawReviewReasons.filter(
+        (reason) =>
+          !(recoveredEmbeddedProgrammeCode && reason === "programme code not confidently parsed"),
+      )
+  const rowNeedsReview =
+    normalizeBoolean(row.needs_review) && !(recoveredEmbeddedProgrammeCode && reviewReasons.length === 0)
   const institutionSearchAliases = institutionAliases(
     row.institution_name,
     row.institution_registration_number,
@@ -1154,7 +1272,7 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
   return {
     programmeName,
     normalizedProgrammeName,
-    programmeCode: blankToUndefined(row.programme_code),
+    programmeCode: programmeCodeForRow(row),
     awardLevel,
     qualificationLevel: blankToUndefined(row.qualification_level),
     pathwayType: blankToUndefined(row.pathway_type),
@@ -1208,7 +1326,7 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
     confidenceLevel: normalizeConfidence(row.confidence_level),
     lastVerifiedDate: cleanDataArtifactText(row.last_verified_date),
     notes: firstValue(row.notes, nactvetEnrichment?.notes),
-    needsReview: normalizeBoolean(row.needs_review) || reviewReasons.length > 0,
+    needsReview: rowNeedsReview || reviewReasons.length > 0,
     reviewReasons,
     careerKeywords: keywordData.careerKeywords,
     swahiliKeywords: keywordData.swahiliKeywords,
@@ -1278,8 +1396,11 @@ function mergeProgramme(left: ProcessedProgramme, right: ProcessedProgramme): Pr
       right.accreditationStatusIfAvailable,
     ),
     applicationLink: firstValue(left.applicationLink, right.applicationLink),
+    officialSourceUrl: uniqueDelimitedValues([left.officialSourceUrl, right.officialSourceUrl]).join("; "),
+    sourceType: uniqueDelimitedValues([left.sourceType, right.sourceType]).join("; "),
     sourceDatasets: uniqueValues([...left.sourceDatasets, ...right.sourceDatasets]),
     confidenceLevel: left.confidenceLevel === "high" ? left.confidenceLevel : right.confidenceLevel,
+    lastVerifiedDate: firstValue(left.lastVerifiedDate, right.lastVerifiedDate) ?? "",
     notes: uniqueValues([left.notes, right.notes]).join(" || ") || undefined,
     needsReview: left.needsReview || right.needsReview,
     reviewReasons: uniqueValues([...left.reviewReasons, ...right.reviewReasons]),
@@ -1305,7 +1426,13 @@ for (const programme of [
   programmesByKey.set(key, existing ? mergeProgramme(existing, programme) : programme)
 }
 
-const processedProgrammes = [...programmesByKey.values()]
+const allProcessedProgrammes = [...programmesByKey.values()]
+const quarantinedProgrammes = allProcessedProgrammes.filter((programme) =>
+  programmeNameContainsRequirementLeak(programme.programmeName),
+)
+const processedProgrammes = allProcessedProgrammes.filter(
+  (programme) => !programmeNameContainsRequirementLeak(programme.programmeName),
+)
 
 type InstitutionSummary = {
   programmeCount: number
@@ -1421,6 +1548,13 @@ const report = {
     udsmProspectusSupplementCount: udsmProspectusSupplementRows.length,
     nactvetEnrichmentCount: nactvetProgrammes.length,
     processedCount: processedProgrammes.length,
+    quarantinedTitleLeakCount: quarantinedProgrammes.length,
+    quarantinedTitleLeakExamples: quarantinedProgrammes.slice(0, 10).map((row) => ({
+      programmeName: row.programmeName,
+      institutionName: row.institutionName,
+      sourceDatasets: row.sourceDatasets,
+      reviewReasons: row.reviewReasons,
+    })),
     fromPathwaysCount: processedProgrammes.filter((row) =>
       row.sourceDatasets.includes("education_pathways"),
     ).length,

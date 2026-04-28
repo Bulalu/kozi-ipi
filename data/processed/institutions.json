@@ -2499,10 +2499,9 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "COLLEGE OF BUSINESS EDUCATION - MWANZA business education mwanza REG/BMG/023 NACTVET Technical Institution Government Mwanza Ilemela Municipal Council Mainland COLLEGE OF BUSINESS EDUCATION - MWANZA college of business education mwanza REG/BMG/023 NACTVET ; TCU business college public Mwanza Ilemela Municipal Council Mainland",
-    "programmeCount": 20,
+    "programmeCount": 13,
     "awardLevels": [
-      "ordinary diploma",
-      "degree"
+      "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
@@ -2514,7 +2513,7 @@
       "tourism_hospitality",
       "ICT"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT tourism_hospitality degree"
+    "browseSearchText": "ordinary diploma business finance management business ICT tourism_hospitality"
   },
   {
     "institutionName": "BWIMA INSTITUTE OF HEALTH AND ALLIED SCIENCES",
@@ -4289,7 +4288,7 @@
       "missing_registration_number"
     ],
     "searchText": "UNIVERSITY OF DODOMA dodoma DM NACTVET University offering NTA programmes Government Dodoma Dodoma Municipal Council Mainland University of Dodoma (UDOM) dodoma udom UDOM TCU Higher Education Institution unknown Dodoma Mainland UDOM University of Dodoma (UDOM) university of dodoma TCU university public Dodoma Mainland",
-    "programmeCount": 150,
+    "programmeCount": 149,
     "awardLevels": [
       "degree",
       "ordinary diploma",
@@ -4307,8 +4306,8 @@
     ],
     "courseFamilies": [
       "business",
-      "other",
       "engineering",
+      "other",
       "arts",
       "arts communication",
       "ICT",
@@ -13612,7 +13611,7 @@
       "missing_registration_number"
     ],
     "searchText": "MWENGE CATHOLIC UNIVERSITY mwenge catholic U/SAT/20 AND U/BTP/20 NACTVET University offering NTA programmes Private Kilimanjaro Moshi District Council Mainland Mwenge Catholic University (MWECAU) mwenge catholic mwecau MWECAU TCU Higher Education Institution unknown Kilimanjaro Mainland MWECAU MWENGE CATHOLIC UNIVERSITY mwenge catholic university U/SAT/20 AND U/BTP/20 NACTVET ; TCU university private Kilimanjaro Moshi District Council Mainland",
-    "programmeCount": 94,
+    "programmeCount": 93,
     "awardLevels": [
       "degree",
       "ordinary diploma"
@@ -13637,7 +13636,7 @@
       "arts",
       "social work community development"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT law public administration law social sciences community development social work community development degree planning built environment land arts communication arts media communication education science other accounting arts social work health engineering community development unknown procurement religious studies"
+    "browseSearchText": "ordinary diploma business finance management business ICT law public administration law social sciences community development social work community development degree planning built environment land arts communication arts media communication education science other accounting arts health engineering community development unknown procurement religious studies"
   },
   {
     "institutionName": "MWENGE COMMUNITY COLLEGE - ZANZIBAR",
@@ -17512,10 +17511,10 @@
       "missing_registration_number"
     ],
     "searchText": "ST. FRANCIS UNIVERSITY COLLEGE OF HEALTH AND ALLIED SCIENCES (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS SF NACTVET University offering NTA programmes Private Morogoro Kilombero District Council Mainland SFUCHAS St. Francis University College of Health and Allied Sciences (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS TCU Higher Education Institution unknown Ifakara Mainland SFUCHAS",
-    "programmeCount": 4,
+    "programmeCount": 3,
     "awardLevels": [
-      "doctor of medicine",
-      "ordinary diploma"
+      "ordinary diploma",
+      "doctor of medicine"
     ],
     "fieldCategories": [
       "health allied sciences"
@@ -22289,18 +22288,18 @@
       "missing_registration_number"
     ],
     "searchText": "KCMC University kcmc TCU Higher Education Institution unknown Kilimanjaro Mainland KCMC University kcmc university TCU university private Kilimanjaro Mainland",
-    "programmeCount": 6,
+    "programmeCount": 5,
     "awardLevels": [
       "degree",
       "doctor of medicine"
     ],
     "fieldCategories": [
-      "health allied sciences",
-      "science"
+      "science",
+      "health allied sciences"
     ],
     "courseFamilies": [
-      "health",
-      "other"
+      "other",
+      "health"
     ],
     "browseSearchText": "degree science other health allied sciences health doctor of medicine"
   },
@@ -22592,7 +22591,7 @@
       "missing_registration_number"
     ],
     "searchText": "Muhimbili University of Health and Allied Sciences (MUHAS) muhimbili health allied sciences muhas MUHAS TCU Higher Education Institution unknown Dar es Salaam Mainland MUHAS Muhimbili University of Health and Allied Sciences (MUHAS) muhimbili university of health and allied sciences TCU university public Dar es Salaam Mainland",
-    "programmeCount": 38,
+    "programmeCount": 37,
     "awardLevels": [
       "degree",
       "doctor of medicine"
@@ -23371,7 +23370,7 @@
       "region_contains_dotted_filler"
     ],
     "searchText": "Tanzania Institute of Accountancy (TIA) tanzania accountancy tia TIA TCU Higher Education Institution unknown Tanga Mainland TIA TANZANIA INSTITUTE OF ACCOUNTANCY tanzania institute of accountancy TIA NACTVET business college unknown Zanzibar Central/South Kati Distric Zanzibar",
-    "programmeCount": 79,
+    "programmeCount": 72,
     "awardLevels": [
       "degree",
       "ordinary diploma",
@@ -23468,16 +23467,16 @@
       "missing_registration_number"
     ],
     "searchText": "Tanzania Public Service College (TPSC) tanzania public service tpsc TPSC TCU Higher Education Institution unknown Dar es Salaam Mainland TPSC TANZANIA PUBLIC SERVICE COLLEGE tanzania public service college TPSC NACTVET technical college unknown Tabora Tabora Municipal Council Mainland",
-    "programmeCount": 10,
+    "programmeCount": 8,
     "awardLevels": [
-      "degree",
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business",
-      "other needs classification",
       "other",
       "arts media communication",
+      "other needs classification",
       "vocational trade"
     ],
     "courseFamilies": [
@@ -23748,7 +23747,7 @@
       "missing_registration_number"
     ],
     "searchText": "Zanzibar University (ZU) zanzibar zu ZU TCU Higher Education Institution unknown Zanzibar Zanzibar ZU Zanzibar University (ZU) zanzibar university TCU university private Zanzibar Zanzibar",
-    "programmeCount": 40,
+    "programmeCount": 39,
     "awardLevels": [
       "degree"
     ],
@@ -23772,7 +23771,7 @@
       "arts communication",
       "education"
     ],
-    "browseSearchText": "degree business finance management business arts media communication arts communication planning built environment land social work community development other needs classification ICT other law public administration law engineering technology engineering social sciences community development health allied sciences health education arts community development agriculture media social work"
+    "browseSearchText": "degree business finance management business arts media communication arts communication planning built environment land social work community development other needs classification ICT other law public administration law engineering technology engineering social sciences community development health allied sciences health education arts community development agriculture social work"
   },
   {
     "institutionName": "Arusha VTC",
