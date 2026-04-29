@@ -1,0 +1,88 @@
+# Course Requirement Audit Summary
+
+Date: 2026-04-30
+
+This is the course-by-course audit requested for the full processed programme
+corpus.
+
+## Coverage
+
+The audit covers every row in `data/processed/programmes.jsonl`.
+
+| Chunk | Programme lines | Rows |
+| --- | --- | ---: |
+| 01 | 1-760 | 760 |
+| 02 | 761-1520 | 760 |
+| 03 | 1521-2280 | 760 |
+| 04 | 2281-3040 | 760 |
+| 05 | 3041-3800 | 760 |
+| 06 | 3801-4551 | 751 |
+| **Total** | **1-4551** | **4,551** |
+
+Aggregate validation:
+
+- Total audited rows: 4,551
+- Missing line numbers: 0
+- Duplicate line numbers: 0
+
+## Regulator Coverage
+
+| Regulator | Rows |
+| --- | ---: |
+| NACTVET | 2,180 |
+| TCU | 1,524 |
+| VETA | 642 |
+| Ministry | 122 |
+| ZVTA/VTA Zanzibar | 46 |
+| Zanzibar authority | 37 |
+
+## Review Status
+
+| Status | Rows | Meaning |
+| --- | ---: | --- |
+| `ok` | 883 | Current joined rule coverage is usable for this audit pass |
+| `needs_parser_work` | 1,790 | Requirement text exists, but parser/rule coverage needs improvement |
+| `needs_source_cleanup` | 876 | Source extraction or programme metadata is noisy before eligibility can be trusted |
+| `missing_requirements` | 978 | Programme-level requirements or joined rules are missing |
+| `manual_review` | 24 | Joined rules exist, but the route logic needs human review |
+
+## Rule Join Coverage
+
+| Metric | Rows |
+| --- | ---: |
+| Programmes with at least one joined requirement-rule row | 2,568 |
+| Programmes without a joined requirement-rule row | 1,983 |
+
+The largest remaining issue is not only parsing. A large number of programmes,
+especially later TCU/VETA/Ministry/Zanzibar rows, do not join cleanly to
+`requirement-rules` by the current normalized programme and institution keys.
+
+## Chunk Artifacts
+
+Each chunk has a one-row-per-course JSONL file and a summary:
+
+- [chunk-01-lines-0001-0760.jsonl](./chunk-01-lines-0001-0760.jsonl)
+- [chunk-01-summary.md](./chunk-01-summary.md)
+- [chunk-02-lines-0761-1520.jsonl](./chunk-02-lines-0761-1520.jsonl)
+- [chunk-02-summary.md](./chunk-02-summary.md)
+- [chunk-03-lines-1521-2280.jsonl](./chunk-03-lines-1521-2280.jsonl)
+- [chunk-03-summary.md](./chunk-03-summary.md)
+- [chunk-04-lines-2281-3040.jsonl](./chunk-04-lines-2281-3040.jsonl)
+- [chunk-04-summary.md](./chunk-04-summary.md)
+- [chunk-05-lines-3041-3800.jsonl](./chunk-05-lines-3041-3800.jsonl)
+- [chunk-05-summary.md](./chunk-05-summary.md)
+- [chunk-06-lines-3801-4551.jsonl](./chunk-06-lines-3801-4551.jsonl)
+- [chunk-06-summary.md](./chunk-06-summary.md)
+
+## What This Means
+
+We now have a concrete course-level audit, not only pattern-level parser notes.
+The next implementation work should focus on:
+
+1. repairing normalized joins for the 1,983 programmes without joined rule rows
+2. cleaning noisy source extraction rows marked `needs_source_cleanup`
+3. improving parser support for rows marked `needs_parser_work`
+4. manually reviewing the 24 `manual_review` cases
+
+Do not manually patch Convex rows one by one unless a source row is genuinely
+one-off and cannot be represented by parser logic.
