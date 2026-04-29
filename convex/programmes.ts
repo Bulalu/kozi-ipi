@@ -4,6 +4,15 @@ import { v } from "convex/values"
 import { query } from "./_generated/server"
 import type { Doc } from "./_generated/dataModel"
 import type { QueryCtx } from "./_generated/server"
+import {
+  evaluateRequirementRuleSet,
+  normalizeStudentProfile,
+} from "../lib/eligibility"
+import type {
+  EligibilityEvaluation,
+  RequirementRuleSet,
+  StudentEligibilityProfile,
+} from "../lib/eligibility"
 import { formatProgrammeSearchResults } from "./programmeSearch/display"
 import {
   filtersValidator,
@@ -284,16 +293,30 @@ export const eligibleSearchPaginated = query({
       cursor: args.paginationOpts.cursor,
       pageSize,
     })
-    const formattedPage = formatProgrammeSearchResults(page.results).map(
-      (programme) => ({
-        ...programme,
-        eligibility: getRouteFlagEligibility(programme, args.profile),
-      })
+    const normalizedProfile = normalizeStudentProfile(
+      args.profile as StudentEligibilityProfile
     )
+    const formattedProgrammes = formatProgrammeSearchResults(page.results)
+    const formattedPage = []
+
+    for (const programme of formattedProgrammes) {
+      const ruleSets = await getProgrammeRequirementRuleSets(ctx, programme)
+      formattedPage.push({
+        ...programme,
+        eligibility: getProgrammeEligibility(
+          programme,
+          args.profile,
+          normalizedProfile,
+          ruleSets
+        ),
+      })
+    }
 
     return {
       page: formattedPage,
-      buckets: countEligibilityBuckets(candidates, args.profile),
+      buckets: countEligibilityBuckets(
+        formattedPage.map((programme) => programme.eligibility)
+      ),
       isDone: !page.hasMore,
       continueCursor: page.nextCursor ?? page.cursor ?? "",
     }
@@ -451,7 +474,7 @@ async function queryProgrammesByRoute(
 function getRouteFlagEligibility(
   programme: Doc<"programmes">,
   profile: EligibilityProfile
-) {
+): EligibilityEvaluation {
   const routeFlag = getProgrammeRouteFlag(programme, profile.applicationRoute)
 
   if (routeFlag === "yes") {
@@ -500,6 +523,118 @@ function getRouteFlagEligibility(
   }
 }
 
+async function getProgrammeRequirementRuleSets(
+  ctx: QueryCtx,
+  programme: Pick<
+    Doc<"programmes">,
+    "normalizedProgrammeName" | "normalizedInstitutionName"
+  >
+): Promise<RequirementRuleSet[]> {
+  const ruleDocs = await ctx.db
+    .query("requirementRules")
+    .withIndex("by_normalizedProgrammeName_and_normalizedInstitutionName", (q) =>
+      q
+        .eq("normalizedProgrammeName", programme.normalizedProgrammeName)
+        .eq("normalizedInstitutionName", programme.normalizedInstitutionName)
+    )
+    .take(20)
+
+  if (ruleDocs.length > 0) {
+    return ruleDocs.map(toRequirementRuleSet)
+  }
+
+  const programmeRuleDocs = await ctx.db
+    .query("requirementRules")
+    .withIndex("by_normalizedProgrammeName", (q) =>
+      q.eq("normalizedProgrammeName", programme.normalizedProgrammeName)
+    )
+    .take(50)
+
+  return programmeRuleDocs
+    .filter((ruleDoc) =>
+      compatibleInstitutionKeys(
+        ruleDoc.normalizedInstitutionName,
+        programme.normalizedInstitutionName
+      )
+    )
+    .map(toRequirementRuleSet)
+}
+
+function toRequirementRuleSet(
+  ruleDoc: Doc<"requirementRules">
+): RequirementRuleSet {
+  return {
+    programmeKey: ruleDoc.programmeKey,
+    institutionKey: ruleDoc.institutionKey,
+    variants: ruleDoc.variants as RequirementRuleSet["variants"],
+    rawRequirementText: ruleDoc.rawRequirementText,
+    sourceUrl: ruleDoc.sourceUrl,
+    confidence: ruleDoc.confidence,
+    parseVersion: ruleDoc.parseVersion,
+  }
+}
+
+function compatibleInstitutionKeys(left: string, right: string) {
+  const normalizedLeft = normalizeLooseKey(left)
+  const normalizedRight = normalizeLooseKey(right)
+  return (
+    normalizedLeft === normalizedRight ||
+    normalizedLeft.includes(normalizedRight) ||
+    normalizedRight.includes(normalizedLeft)
+  )
+}
+
+function normalizeLooseKey(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\b(university|college|institute|institution|campus|zanzibar|tanzania)\b/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ")
+}
+
+function getProgrammeEligibility(
+  programme: Doc<"programmes">,
+  profile: EligibilityProfile,
+  normalizedProfile: ReturnType<typeof normalizeStudentProfile>,
+  ruleSets: RequirementRuleSet[]
+): EligibilityEvaluation {
+  const routeMatchingRuleSets = ruleSets.filter((ruleSet) =>
+    ruleSet.variants.some((variant) => variant.route === profile.applicationRoute)
+  )
+
+  if (routeMatchingRuleSets.length === 0) {
+    return getRouteFlagEligibility(programme, profile)
+  }
+
+  return routeMatchingRuleSets
+    .map((ruleSet) => evaluateRequirementRuleSet(ruleSet, normalizedProfile))
+    .sort(compareEligibilityEvaluations)[0]!
+}
+
+function compareEligibilityEvaluations(
+  left: EligibilityEvaluation,
+  right: EligibilityEvaluation
+) {
+  return eligibilityStatusRank(right.status) - eligibilityStatusRank(left.status)
+}
+
+function eligibilityStatusRank(status: EligibilityEvaluation["status"]) {
+  if (status === "eligible") {
+    return 5
+  }
+  if (status === "likely_eligible_but_verify") {
+    return 4
+  }
+  if (status === "cannot_determine") {
+    return 3
+  }
+  if (status === "interest_match_only") {
+    return 2
+  }
+  return 1
+}
+
 function getProgrammeRouteFlag(
   programme: Doc<"programmes">,
   route: EligibilityProfile["applicationRoute"]
@@ -519,10 +654,7 @@ function getProgrammeRouteFlag(
   return programme.acceptsEquivalent ?? "unknown"
 }
 
-function countEligibilityBuckets(
-  programmes: Doc<"programmes">[],
-  profile: EligibilityProfile
-) {
+function countEligibilityBuckets(evaluations: EligibilityEvaluation[]) {
   const buckets = {
     eligible: 0,
     likelyEligibleButVerify: 0,
@@ -531,13 +663,14 @@ function countEligibilityBuckets(
     notEligible: 0,
   }
 
-  for (const programme of programmes) {
-    const status = getRouteFlagEligibility(programme, profile).status
-    if (status === "likely_eligible_but_verify") {
+  for (const evaluation of evaluations) {
+    if (evaluation.status === "eligible") {
+      buckets.eligible += 1
+    } else if (evaluation.status === "likely_eligible_but_verify") {
       buckets.likelyEligibleButVerify += 1
-    } else if (status === "cannot_determine") {
+    } else if (evaluation.status === "cannot_determine") {
       buckets.cannotDetermine += 1
-    } else if (status === "interest_match_only") {
+    } else if (evaluation.status === "interest_match_only") {
       buckets.interestMatchOnly += 1
     } else {
       buckets.notEligible += 1

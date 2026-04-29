@@ -266,6 +266,7 @@ export default defineSchema({
     searchText: v.string(),
   })
     .index("by_normalizedInstitutionName", ["normalizedInstitutionName"])
+    .index("by_normalizedProgrammeName", ["normalizedProgrammeName"])
     .index("by_normalizedProgrammeName_and_normalizedInstitutionName", [
       "normalizedProgrammeName",
       "normalizedInstitutionName",
