@@ -5,8 +5,10 @@ import {
   countAcseePrincipalPasses,
   countAcseeSubsidiaryPasses,
   countCseePasses,
+  evaluateRequirementRuleSet,
   normalizeStudentProfile,
   normalizeSubjectName,
+  summarizeEligibilityEvaluation,
 } from "../lib/eligibility"
 import {
   diplomaHealthProfile,
@@ -138,6 +140,27 @@ assert(
   "Engineering fixture should preserve an O-Level support-subject clause."
 )
 
+const engineeringEvaluation = evaluateRequirementRuleSet(
+  engineeringRuleSet,
+  normalizedFormSixProfile
+)
+assert.equal(
+  engineeringEvaluation.status,
+  "eligible",
+  "Structured high-confidence Form Six rules should return eligible when all clauses match."
+)
+assert.equal(
+  engineeringEvaluation.matchedRoute,
+  "form_six",
+  "Evaluation should report the matched application route."
+)
+assert(
+  engineeringEvaluation.matchedClauses.some((clause) =>
+    clause.includes("ACSEE principal pass count")
+  ),
+  "Evaluation should explain matched ACSEE principal pass clauses."
+)
+
 const healthRuleSet = sampleRequirementRuleSets.find(
   (ruleSet) => ruleSet.programmeKey === "bachelor_health_progression"
 )
@@ -152,7 +175,73 @@ assert(
   "Health progression fixture should retain equivalent route branch."
 )
 
+const healthEvaluation = evaluateRequirementRuleSet(
+  healthRuleSet,
+  normalizedDiplomaProfile
+)
+assert.equal(
+  healthEvaluation.status,
+  "likely_eligible_but_verify",
+  "Partial diploma progression rules should not return eligible even when parsed clauses match."
+)
+assert(
+  healthEvaluation.warnings.some((warning) => warning.includes("partial")),
+  "Partial parse evaluations should include a verification warning."
+)
+
+const hospitalityRuleSet = sampleRequirementRuleSets.find(
+  (ruleSet) =>
+    ruleSet.programmeKey === "ordinary_diploma_hospitality_management"
+)
+assert(hospitalityRuleSet, "Expected hospitality rule-set fixture.")
+const hospitalityEvaluation = evaluateRequirementRuleSet(
+  hospitalityRuleSet,
+  normalizedFormFourProfile
+)
+assert.equal(
+  hospitalityEvaluation.status,
+  "eligible",
+  "Structured high-confidence Form Four rules should return eligible when CSEE passes match."
+)
+
+const wrongRouteEvaluation = evaluateRequirementRuleSet(
+  hospitalityRuleSet,
+  normalizedFormSixProfile
+)
+assert.equal(
+  wrongRouteEvaluation.status,
+  "interest_match_only",
+  "Rule sets with no variant for the student's route should only return an interest match."
+)
+
+const failedEngineeringProfile = normalizeStudentProfile({
+  ...formSixEngineeringProfile,
+  acsee: {
+    division: "III",
+    combination: "PCM",
+    subjects: [
+      { subject: "Advanced Mathematics", grade: "E" },
+      { subject: "Physics", grade: "S" },
+      { subject: "Chemistry", grade: "F" },
+    ],
+  },
+})
+const failedEngineeringEvaluation = evaluateRequirementRuleSet(
+  engineeringRuleSet,
+  failedEngineeringProfile
+)
+assert.equal(
+  failedEngineeringEvaluation.status,
+  "not_eligible",
+  "High-confidence structured rules should return not_eligible when required clauses fail."
+)
+assert(
+  summarizeEligibilityEvaluation(failedEngineeringEvaluation).startsWith(
+    "Does not currently meet"
+  ),
+  "Eligibility summaries should use safe public wording."
+)
+
 console.log(
   `Eligibility contract checks passed for ${sampleRequirementRuleSets.length} gold rule-set fixtures.`
 )
-
