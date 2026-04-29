@@ -39,8 +39,17 @@ const requirementClause = v.union(
     count: v.number(),
   }),
   v.object({
+    kind: v.literal("min_acsee_subsidiary_passes"),
+    count: v.number(),
+  }),
+  v.object({
     kind: v.literal("min_acsee_points"),
     points: v.number(),
+  }),
+  v.object({
+    kind: v.literal("acsee_subject_grade"),
+    subject: v.string(),
+    minGrade: v.string(),
   }),
   v.object({
     kind: v.literal("subject_group"),

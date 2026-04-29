@@ -89,7 +89,13 @@ export type RequirementClause =
   | { kind: "min_csee_division"; division: CseeDivision }
   | { kind: "min_acsee_division"; division: AcseeDivision }
   | { kind: "min_acsee_principal_passes"; count: number }
+  | { kind: "min_acsee_subsidiary_passes"; count: number }
   | { kind: "min_acsee_points"; points: number }
+  | {
+      kind: "acsee_subject_grade"
+      subject: string
+      minGrade: AcseeGrade
+    }
   | {
       kind: "subject_group"
       level: "csee" | "acsee"
@@ -129,4 +135,3 @@ export type EligibilityEvaluation = {
   sourceUrl: string
   rawRequirementText: string
 }
-

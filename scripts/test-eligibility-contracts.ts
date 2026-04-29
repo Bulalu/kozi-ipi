@@ -222,6 +222,71 @@ assert(
   "Parser should keep OR/equivalent/work-experience requirements conservative."
 )
 
+const parsedPcbRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_medicine",
+  institutionKey: "fixture_university",
+  rawRequirementText:
+    "Three principal passes in Physics, Chemistry and Biology with a minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics.",
+  sourceUrl: "https://example.test/source/medicine",
+  confidence: "high",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "yes",
+  acceptsCertificate: "no",
+  acceptsDiploma: "no",
+  acceptsEquivalent: "no",
+})
+const parsedPcbVariant = parsedPcbRuleSet.variants[0]
+assert.equal(
+  parsedPcbVariant?.parseStatus,
+  "structured",
+  "Parser should structure PCB Form Six rules directly from raw text."
+)
+assert(
+  parsedPcbVariant?.clauses.some(
+    (clause) =>
+      clause.kind === "subject_group" &&
+      clause.mode === "all_of" &&
+      clause.subjects.includes("physics") &&
+      clause.subjects.includes("chemistry") &&
+      clause.subjects.includes("biology")
+  ),
+  "Parser should extract PCB as an all-of ACSEE subject group."
+)
+assert(
+  parsedPcbVariant?.clauses.some(
+    (clause) =>
+      clause.kind === "acsee_subject_grade" &&
+      clause.subject === "chemistry" &&
+      clause.minGrade === "D"
+  ),
+  "Parser should extract per-subject ACSEE grade floors."
+)
+
+const parsedEitherRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_nursing_form_six",
+  institutionKey: "fixture_university",
+  rawRequirementText:
+    "Three principal passes in Chemistry, Biology and either Physics or Advanced Mathematics or Nutrition with a minimum of 6 points.",
+  sourceUrl: "https://example.test/source/nursing",
+  confidence: "high",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "yes",
+  acceptsCertificate: "no",
+  acceptsDiploma: "no",
+  acceptsEquivalent: "no",
+})
+assert(
+  parsedEitherRuleSet.variants[0]?.clauses.some(
+    (clause) =>
+      clause.kind === "subject_group" &&
+      clause.mode === "one_of" &&
+      clause.subjects.includes("physics") &&
+      clause.subjects.includes("advanced_mathematics") &&
+      clause.subjects.includes("nutrition")
+  ),
+  "Parser should extract required-plus-one-of Form Six subject groups."
+)
+
 const healthEvaluation = evaluateRequirementRuleSet(
   healthRuleSet,
   normalizedDiplomaProfile

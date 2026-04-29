@@ -1,13 +1,15 @@
-import { normalizeSubjectList } from "./subjects"
+import { normalizeSubjectList, normalizeSubjectName } from "./subjects"
 import type {
+  AcseeGrade,
   ApplicationRoute,
   ConfidenceLevel,
+  CseeGrade,
   RequirementClause,
   RequirementRuleSet,
   RequirementVariant,
 } from "./types"
 
-const PARSE_VERSION = "requirement-parser-v1"
+const PARSE_VERSION = "requirement-parser-v2"
 
 type RouteFlags = {
   acceptsFormFourDirect: "yes" | "no" | "unknown"
@@ -94,7 +96,7 @@ function buildFormFourClauses(source: RequirementSource): RequirementClause[] {
     clauses.push({ kind: "min_csee_passes", count: passCount })
   }
 
-  return clauses
+  return mergeClauses([...clauses, ...parseCseeSubjectClauses(source.rawRequirementText)])
 }
 
 function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
@@ -106,6 +108,14 @@ function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
     clauses.push({
       kind: "min_acsee_principal_passes",
       count: principalPasses,
+    })
+  }
+
+  const subsidiaryPasses = parseAcseeSubsidiaryPasses(source.rawRequirementText)
+  if (subsidiaryPasses) {
+    clauses.push({
+      kind: "min_acsee_subsidiary_passes",
+      count: subsidiaryPasses,
     })
   }
 
@@ -128,7 +138,11 @@ function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
     })
   }
 
-  return clauses
+  return mergeClauses([
+    ...clauses,
+    ...parseAcseeSubjectClauses(source.rawRequirementText, principalPasses),
+    ...parseOLevelSubjectClauses(source.rawRequirementText),
+  ])
 }
 
 function buildPriorAwardClauses(
@@ -162,15 +176,22 @@ function classifyParseStatus(
   }
 
   const text = rawRequirementText.toLowerCase()
-  const hasComplexBranching = /\bor\b|\/|foundation|equivalent|work experience|license/.test(text)
+  const hasComplexBranching =
+    /foundation|equivalent|work experience|license/.test(text)
   const hasConditional = /\bif\b|without|unless|must have/.test(text)
-  const hasSubjectSpecificity = /including|following subjects|from the following/.test(text)
+  const hasSubjectSpecificity =
+    /including|following subjects|from the following/.test(text)
   const hasSubjectGroupClause = clauses.some((clause) => clause.kind === "subject_group")
+  const hasSubjectGradeClause = clauses.some(
+    (clause) =>
+      clause.kind === "acsee_subject_grade" ||
+      clause.kind === "o_level_subject_grade"
+  )
 
   if (hasConditional || hasComplexBranching) {
     return "partial"
   }
-  if (hasSubjectSpecificity && !hasSubjectGroupClause) {
+  if (hasSubjectSpecificity && !hasSubjectGroupClause && !hasSubjectGradeClause) {
     return "partial"
   }
   return "structured"
@@ -187,9 +208,26 @@ function parseCseePassCount(text: string) {
 function parseAcseePrincipalPasses(text: string) {
   const normalized = text.toLowerCase()
   const match =
-    normalized.match(/\b(\d+|one|two|three)\s+principal passes/) ??
-    normalized.match(/\bat least\s+(\d+|one|two|three)\s+principal pass/)
+    normalized.match(
+      /\b(\d+|one|two|three)\s*(?:\(\d+\))?\s+principal(?:\s+level)?\s+passes/
+    ) ??
+    normalized.match(
+      /\bat least\s+(\d+|one|two|three)\s*(?:\(\d+\))?\s+principal(?:\s+level)?\s+pass/
+    )
   return parseNumber(match?.[1])
+}
+
+function parseAcseeSubsidiaryPasses(text: string) {
+  const normalized = text.toLowerCase()
+  const match =
+    normalized.match(
+      /\b(\d+|one|two|three)\s*(?:\(\d+\))?\s+subsidiary\s+passes/
+    ) ??
+    normalized.match(
+      /\bat least\s+(\d+|one|two|three)\s*(?:\(\d+\))?\s+subsidiary\s+pass/
+    ) ??
+    normalized.match(/\bsubsidiary\s+in\b/)
+  return match?.[1] ? parseNumber(match[1]) : match ? 1 : undefined
 }
 
 function parseAcseePoints(text: string) {
@@ -210,6 +248,146 @@ function parseMinimumGpa(text: string) {
 function parseMinimumAcseeGrade(text: string) {
   const match = text.match(/\b(?:minimum of |at least )?([ABCDE])\s+grade\b/i)
   return match?.[1]?.toUpperCase() as "A" | "B" | "C" | "D" | "E" | undefined
+}
+
+function parseCseeSubjectClauses(text: string): RequirementClause[] {
+  const clauses: RequirementClause[] = []
+  const specificGradeClauses = parseSubjectGradeClauses(text, "csee")
+  clauses.push(...specificGradeClauses)
+
+  const includingMatch = text.match(
+    /\bincluding\s+([^.|;]+?)(?:\.|;|\|\||$)/i
+  )
+  const subjects = parseRequirementSubjects(includingMatch?.[1])
+  if (subjects.length > 0) {
+    clauses.push({
+      kind: "subject_group",
+      level: "csee",
+      mode: "all_of",
+      subjects,
+      minGrade: "D",
+    })
+  }
+
+  return clauses
+}
+
+function parseAcseeSubjectClauses(
+  text: string,
+  principalPasses: number | undefined
+): RequirementClause[] {
+  const clauses: RequirementClause[] = [
+    ...parseSubjectGradeClauses(text, "acsee"),
+    ...parseSubsidiarySubjectGroups(text),
+  ]
+
+  const requiredPlusEitherMatch = text.match(
+    /\b(?:principal(?:\s+level)?\s+passes|passes)\s+in\s+(.+?)\s+and\s+either\s+(.+?)(?:\s+with\b|\s+at\b|\s+whereby\b|\.|;|\|\||$)/i
+  )
+  if (requiredPlusEitherMatch?.[1] && requiredPlusEitherMatch[2]) {
+    const requiredSubjects = parseRequirementSubjects(requiredPlusEitherMatch[1])
+    const oneOfSubjects = parseRequirementSubjects(requiredPlusEitherMatch[2])
+    if (requiredSubjects.length > 0) {
+      clauses.push({
+        kind: "subject_group",
+        level: "acsee",
+        mode: "all_of",
+        subjects: requiredSubjects,
+      })
+    }
+    if (oneOfSubjects.length > 0) {
+      clauses.push({
+        kind: "subject_group",
+        level: "acsee",
+        mode: "one_of",
+        subjects: oneOfSubjects,
+      })
+    }
+    return clauses
+  }
+
+  const followingSubjectsMatch = text.match(
+    /\bprincipal(?:\s+level)?\s+passes?\s+in\s+(?:any\s+of\s+)?(?:the\s+following\s+subjects:\s*)?(.+?)(?:\s+with\b|\s+at\b|\s+whereby\b|\s+in\s+addition\b|\.|;|\|\||$)/i
+  )
+  const subjects = parseRequirementSubjects(followingSubjectsMatch?.[1])
+  if (subjects.length > 0) {
+    const count =
+      principalPasses && subjects.length > principalPasses
+        ? principalPasses
+        : undefined
+    clauses.push({
+      kind: "subject_group",
+      level: "acsee",
+      mode: count ? "at_least_n_of" : "all_of",
+      count,
+      subjects,
+      minGrade: parseMinimumAcseeGrade(text),
+    })
+  }
+
+  return clauses
+}
+
+function parseSubsidiarySubjectGroups(text: string): RequirementClause[] {
+  const match = text.match(
+    /\bsubsidiary\s+in\s+(?:one\s+of\s+)?(?:the\s+following\s+subjects:\s*)?(.+?)(?:\.|;|\|\||$)/i
+  )
+  const subjects = parseRequirementSubjects(match?.[1])
+  if (subjects.length === 0) {
+    return []
+  }
+
+  return [
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: subjects.length === 1 ? "all_of" : "one_of",
+      subjects,
+      minGrade: "S",
+    },
+  ]
+}
+
+function parseOLevelSubjectClauses(text: string): RequirementClause[] {
+  return text
+    .split(/\.|;|\|\|/)
+    .filter((segment) => /o-?level|csee|ordinary level/i.test(segment))
+    .flatMap((segment) => parseSubjectGradeClauses(segment, "csee"))
+}
+
+function parseSubjectGradeClauses(
+  text: string,
+  level: "acsee" | "csee"
+): RequirementClause[] {
+  const clauses: RequirementClause[] = []
+  const gradePattern =
+    /(?:minimum\s+of\s+|minimum\s+|at\s+least\s+)?["“”']?\s*([ABCDE])\s*["“”']?\s+grade\s+in\s+(.+?)(?=,\s*(?:and\s+)?(?:at\s+least\s+)?["“”']?\s*[ABCDE]\s*["“”']?\s+grade|\s+and\s+(?:at\s+least\s+)?["“”']?\s*[ABCDE]\s*["“”']?\s+grade|\s+or\s+(?:at\s+least\s+)?["“”']?\s*[ABCDE]\s*["“”']?\s+grade|\.|;|\|\||$)/gi
+
+  for (const match of text.matchAll(gradePattern)) {
+    const grade = match[1]?.toUpperCase()
+    const subjects = parseRequirementSubjects(match[2])
+    if (!grade || subjects.length === 0) {
+      continue
+    }
+
+    for (const subject of subjects) {
+      if (level === "acsee") {
+        clauses.push({
+          kind: "acsee_subject_grade",
+          subject,
+          minGrade: grade as AcseeGrade,
+        })
+      } else {
+        clauses.push({
+          kind: "o_level_subject_grade",
+          subject,
+          minGrade: grade as CseeGrade,
+        })
+      }
+    }
+  }
+
+  return clauses
 }
 
 function parsePriorFields(source: RequirementSource) {
@@ -234,12 +412,62 @@ function parseSubjectList(value: string | undefined) {
   if (!value) {
     return []
   }
+  return parseRequirementSubjects(value)
+}
+
+function parseRequirementSubjects(value: string | undefined) {
+  if (!value) {
+    return []
+  }
+
+  const cleaned = value
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/\b(?:any\s+of\s+)?(?:the\s+)?following\s+subjects?:/gi, " ")
+    .replace(/\bwith\b.*$/i, " ")
+    .replace(/\bminimum\b.*$/i, " ")
+    .replace(/\bwhereby\b.*$/i, " ")
+    .replace(/\bin addition\b.*$/i, " ")
+
   return normalizeSubjectList(
-    value
+    cleaned
       .split(/;|,|\/|\bor\b|\band\b/i)
       .map((subject) => subject.trim())
-      .filter(Boolean)
+      .map((subject) => subject.replace(/\s+subjects?$/i, ""))
+      .filter(isParseableSubjectToken)
   )
+}
+
+function isParseableSubjectToken(value: string) {
+  const normalized = normalizeSubjectName(value)
+  if (!normalized || normalized.length < 3) {
+    return false
+  }
+
+  return ![
+    "principal",
+    "principals",
+    "principal_subject",
+    "principal_subjects",
+    "following",
+    "following_subjects",
+    "non_religious",
+    "non_religious_subjects",
+    "related_field",
+    "related_fields",
+  ].includes(normalized)
+}
+
+function mergeClauses(clauses: RequirementClause[]) {
+  const seen = new Set<string>()
+  const merged: RequirementClause[] = []
+  for (const clause of clauses) {
+    const key = JSON.stringify(clause)
+    if (!seen.has(key)) {
+      seen.add(key)
+      merged.push(clause)
+    }
+  }
+  return merged
 }
 
 function parseNumber(value: string | undefined) {
@@ -263,4 +491,3 @@ function parseNumber(value: string | undefined) {
   const number = Number.parseFloat(normalized)
   return Number.isFinite(number) ? number : undefined
 }
-

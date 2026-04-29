@@ -206,6 +206,24 @@ function evaluateClause(
       : missing(`Needs at least ${clause.points} ACSEE points; found ${points}.`)
   }
 
+  if (clause.kind === "min_acsee_subsidiary_passes") {
+    const passCount = profile.acseeSummary?.subsidiaryPassCount
+    if (passCount === undefined) {
+      return missing("ACSEE subsidiary pass count is required.")
+    }
+    return passCount >= clause.count
+      ? matched(
+          `ACSEE subsidiary pass count ${passCount} meets minimum ${clause.count}.`
+        )
+      : missing(
+          `Needs at least ${clause.count} ACSEE subsidiary pass(es); found ${passCount}.`
+        )
+  }
+
+  if (clause.kind === "acsee_subject_grade") {
+    return evaluateAcseeSubjectGradeClause(clause, profile)
+  }
+
   if (clause.kind === "subject_group") {
     return evaluateSubjectGroupClause(clause, profile)
   }
@@ -228,6 +246,21 @@ function evaluateDivisionClause(
   return DIVISION_RANK[actual] <= DIVISION_RANK[required]
     ? matched(`${label} division ${actual} meets minimum division ${required}.`)
     : missing(`${label} division ${actual} is below minimum division ${required}.`)
+}
+
+function evaluateAcseeSubjectGradeClause(
+  clause: Extract<RequirementClause, { kind: "acsee_subject_grade" }>,
+  profile: NormalizedStudentProfile
+): ClauseEvaluation {
+  const subject = normalizeSubjectName(clause.subject)
+  const grade = profile.acseeSummary?.subjectGrades[subject]
+  if (!grade) {
+    return missing(`ACSEE ${subject} grade is required.`)
+  }
+
+  return gradeMeetsMinimum(grade, clause.minGrade, "acsee")
+    ? matched(`ACSEE ${subject} grade ${grade} meets minimum ${clause.minGrade}.`)
+    : missing(`ACSEE ${subject} grade ${grade} is below ${clause.minGrade}.`)
 }
 
 function evaluateSubjectGroupClause(
@@ -420,4 +453,3 @@ function lowerConfidence(confidence: ConfidenceLevel): ConfidenceLevel {
   }
   return "low"
 }
-
