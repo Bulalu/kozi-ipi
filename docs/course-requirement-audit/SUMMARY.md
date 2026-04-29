@@ -46,16 +46,33 @@ Aggregate validation:
 | `missing_requirements` | 978 | Programme-level requirements or joined rules are missing |
 | `manual_review` | 24 | Joined rules exist, but the route logic needs human review |
 
-## Rule Join Coverage
+## Initial Rule Join Coverage
 
 | Metric | Rows |
 | --- | ---: |
 | Programmes with at least one joined requirement-rule row | 2,568 |
 | Programmes without a joined requirement-rule row | 1,983 |
 
-The largest remaining issue is not only parsing. A large number of programmes,
-especially later TCU/VETA/Ministry/Zanzibar rows, do not join cleanly to
-`requirement-rules` by the current normalized programme and institution keys.
+The initial audit showed that the largest issue was not only parser quality.
+Many programmes had usable programme-level requirement text, but no exact
+`requirement-rules` row joined by normalized programme and institution keys.
+
+## Current Rule Coverage After Repair
+
+`scripts/build-processed-data.ts` now creates fallback parsed rules from
+programme-level `minimumEntryRequirements` when no exact entry-requirement rule
+already exists.
+
+| Metric | Rows |
+| --- | ---: |
+| Requirement rules created from programme-level fallback text | 1,637 |
+| Programmes with exact requirement-rule coverage | 4,142 |
+| Programmes without exact requirement-rule coverage | 409 |
+| Programmes with requirement text but no exact rule | 0 |
+
+The remaining 409 rows do not have programme-level requirement text in the
+processed source data. Those need source collection or upstream dataset cleanup,
+not parser work.
 
 ## Chunk Artifacts
 
@@ -77,9 +94,10 @@ Each chunk has a one-row-per-course JSONL file and a summary:
 ## What This Means
 
 We now have a concrete course-level audit, not only pattern-level parser notes.
-The next implementation work should focus on:
+The fallback repair has handled the join gap for all programmes that already
+carry requirement text. The next implementation work should focus on:
 
-1. repairing normalized joins for the 1,983 programmes without joined rule rows
+1. collecting missing requirement text for the remaining 409 source-missing rows
 2. cleaning noisy source extraction rows marked `needs_source_cleanup`
 3. improving parser support for rows marked `needs_parser_work`
 4. manually reviewing the 24 `manual_review` cases

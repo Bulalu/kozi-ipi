@@ -1060,49 +1060,157 @@ const processedEntryRequirements: ProcessedEntryRequirement[] = [
 ]
 
 const processedRequirementRules: ProcessedRequirementRule[] = processedEntryRequirements.map(
-  (requirement) => {
-    const ruleSet = parseRequirementRuleSet({
-      programmeKey: requirement.normalizedProgrammeName,
-      institutionKey: requirement.normalizedInstitutionName,
-      rawRequirementText: requirement.rawRequirementText,
-      sourceUrl: requirement.officialSourceUrl,
-      confidence: requirement.eligibilityConfidence,
-      requiredSubjects: requirement.requiredSubjects,
-      requiredSubjectGradesIfAvailable: requirement.requiredSubjectGradesIfAvailable,
-      requiredPriorFieldIfAvailable: requirement.requiredPriorFieldIfAvailable,
-      minimumCseeDivisionIfAvailable: requirement.minimumCseeDivisionIfAvailable,
-      minimumAcseePrincipalPassesIfAvailable:
-        requirement.minimumAcseePrincipalPassesIfAvailable,
-      minimumPointsIfAvailable: requirement.minimumPointsIfAvailable,
-      acceptsFormFourDirect: requirement.acceptsFormFourDirect,
-      acceptsFormSix: requirement.acceptsFormSix,
-      acceptsCertificate: requirement.acceptsCertificate,
-      acceptsDiploma: requirement.acceptsDiploma,
-      acceptsEquivalent: requirement.acceptsEquivalent,
-    })
-
-    return {
-      ...ruleSet,
-      programmeName: requirement.programmeName,
-      normalizedProgrammeName: requirement.normalizedProgrammeName,
-      institutionName: requirement.institutionName,
-      normalizedInstitutionName: requirement.normalizedInstitutionName,
-      searchText: [
-        requirement.programmeName,
-        requirement.normalizedProgrammeName,
-        requirement.institutionName,
-        requirement.normalizedInstitutionName,
-        requirement.rawRequirementText,
-        requirement.requiredSubjects,
-        requirement.requiredPriorFieldIfAvailable,
-        ruleSet.variants.map((variant) => variant.route).join(" "),
-        ruleSet.variants.map((variant) => variant.parseStatus).join(" "),
-      ]
-        .filter(Boolean)
-        .join(" "),
-    }
-  },
+  (requirement) => buildRequirementRuleFromEntryRequirement(requirement),
 )
+
+function requirementRuleKey(
+  normalizedProgrammeName: string | undefined,
+  normalizedInstitutionName: string | undefined,
+) {
+  return [normalizeName(normalizedProgrammeName), normalizeName(normalizedInstitutionName)].join(
+    "||",
+  )
+}
+
+function buildRequirementRuleFromEntryRequirement(
+  requirement: ProcessedEntryRequirement,
+): ProcessedRequirementRule {
+  return buildRequirementRule({
+    programmeName: requirement.programmeName,
+    normalizedProgrammeName: requirement.normalizedProgrammeName,
+    institutionName: requirement.institutionName,
+    normalizedInstitutionName: requirement.normalizedInstitutionName,
+    rawRequirementText: requirement.rawRequirementText,
+    sourceUrl: requirement.officialSourceUrl,
+    confidence: requirement.eligibilityConfidence,
+    requiredSubjects: requirement.requiredSubjects,
+    requiredSubjectGradesIfAvailable: requirement.requiredSubjectGradesIfAvailable,
+    requiredPriorFieldIfAvailable: requirement.requiredPriorFieldIfAvailable,
+    minimumCseeDivisionIfAvailable: requirement.minimumCseeDivisionIfAvailable,
+    minimumAcseePrincipalPassesIfAvailable:
+      requirement.minimumAcseePrincipalPassesIfAvailable,
+    minimumPointsIfAvailable: requirement.minimumPointsIfAvailable,
+    acceptsFormFourDirect: requirement.acceptsFormFourDirect,
+    acceptsFormSix: requirement.acceptsFormSix,
+    acceptsCertificate: requirement.acceptsCertificate,
+    acceptsDiploma: requirement.acceptsDiploma,
+    acceptsEquivalent: requirement.acceptsEquivalent,
+  })
+}
+
+function buildRequirementRuleFromProgramme(programme: ProcessedProgramme): ProcessedRequirementRule {
+  const routeFlags = inferProgrammeRequirementRouteFlags(programme)
+
+  return buildRequirementRule({
+    programmeName: programme.programmeName,
+    normalizedProgrammeName: programme.normalizedProgrammeName,
+    institutionName: programme.institutionName,
+    normalizedInstitutionName: programme.normalizedInstitutionName,
+    rawRequirementText: programme.minimumEntryRequirements ?? "",
+    sourceUrl: programme.officialSourceUrl,
+    confidence: programme.confidenceLevel,
+    requiredSubjects: programme.requiredSubjects,
+    acceptsFormFourDirect: routeFlags.acceptsFormFourDirect,
+    acceptsFormSix: routeFlags.acceptsFormSix,
+    acceptsCertificate: routeFlags.acceptsCertificate,
+    acceptsDiploma: routeFlags.acceptsDiploma,
+    acceptsEquivalent: routeFlags.acceptsEquivalent,
+  })
+}
+
+function buildRequirementRule(
+  input: {
+    programmeName: string
+    normalizedProgrammeName: string
+    institutionName: string
+    normalizedInstitutionName: string
+    rawRequirementText: string
+    sourceUrl: string
+    confidence: ConfidenceLevel
+    requiredSubjects?: string
+    requiredSubjectGradesIfAvailable?: string
+    requiredPriorFieldIfAvailable?: string
+    minimumCseeDivisionIfAvailable?: string
+    minimumAcseePrincipalPassesIfAvailable?: string
+    minimumPointsIfAvailable?: string
+    acceptsFormFourDirect: Suitability
+    acceptsFormSix: Suitability
+    acceptsCertificate: Suitability
+    acceptsDiploma: Suitability
+    acceptsEquivalent: Suitability
+  },
+): ProcessedRequirementRule {
+  const ruleSet = parseRequirementRuleSet({
+    programmeKey: input.normalizedProgrammeName,
+    institutionKey: input.normalizedInstitutionName,
+    rawRequirementText: input.rawRequirementText,
+    sourceUrl: input.sourceUrl,
+    confidence: input.confidence,
+    requiredSubjects: input.requiredSubjects,
+    requiredSubjectGradesIfAvailable: input.requiredSubjectGradesIfAvailable,
+    requiredPriorFieldIfAvailable: input.requiredPriorFieldIfAvailable,
+    minimumCseeDivisionIfAvailable: input.minimumCseeDivisionIfAvailable,
+    minimumAcseePrincipalPassesIfAvailable:
+      input.minimumAcseePrincipalPassesIfAvailable,
+    minimumPointsIfAvailable: input.minimumPointsIfAvailable,
+    acceptsFormFourDirect: input.acceptsFormFourDirect,
+    acceptsFormSix: input.acceptsFormSix,
+    acceptsCertificate: input.acceptsCertificate,
+    acceptsDiploma: input.acceptsDiploma,
+    acceptsEquivalent: input.acceptsEquivalent,
+  })
+
+  return {
+    ...ruleSet,
+    programmeName: input.programmeName,
+    normalizedProgrammeName: input.normalizedProgrammeName,
+    institutionName: input.institutionName,
+    normalizedInstitutionName: input.normalizedInstitutionName,
+    searchText: [
+      input.programmeName,
+      input.normalizedProgrammeName,
+      input.institutionName,
+      input.normalizedInstitutionName,
+      input.rawRequirementText,
+      input.requiredSubjects,
+      input.requiredPriorFieldIfAvailable,
+      ruleSet.variants.map((variant) => variant.route).join(" "),
+      ruleSet.variants.map((variant) => variant.parseStatus).join(" "),
+    ]
+      .filter(Boolean)
+      .join(" "),
+  }
+}
+
+function inferProgrammeRequirementRouteFlags(programme: ProcessedProgramme) {
+  const requirementText = normalizeName(programme.minimumEntryRequirements)
+  const entryRouteTypes = normalizeName(programme.entryRouteTypes)
+  const combined = `${requirementText} ${entryRouteTypes}`
+  const inferFromText = (current: Suitability, pattern: RegExp): Suitability => {
+    if (current !== "unknown") return current
+    return pattern.test(combined) ? "yes" : "unknown"
+  }
+
+  return {
+    acceptsFormFourDirect: inferFromText(
+      programme.acceptsFormFourDirect,
+      /\b(csee|certificate of secondary education|form four|ordinary level|o level)\b.*\b(at least|minimum|passes?)\b|\b(at least|minimum)\b.*\b(csee|certificate of secondary education|form four|ordinary level|o level)\b/,
+    ),
+    acceptsFormSix: inferFromText(
+      programme.acceptsFormSix,
+      /\b(acsee|advanced certificate|form six|principal passes?)\b/,
+    ),
+    acceptsCertificate: inferFromText(
+      programme.acceptsCertificate,
+      /\b(basic technician certificate|technician certificate|certificate nta level|holders? of certificate)\b/,
+    ),
+    acceptsDiploma: inferFromText(programme.acceptsDiploma, /\b(diploma|nta level 6)\b/),
+    acceptsEquivalent: inferFromText(
+      programme.acceptsEquivalent,
+      /\b(equivalent|foundation certificate|full technician certificate|ftc)\b/,
+    ),
+  }
+}
 
 const requirementsByProgramme = new Map<string, ProcessedEntryRequirement[]>()
 for (const requirement of processedEntryRequirements) {
@@ -1514,6 +1622,37 @@ const quarantinedProgrammes = allProcessedProgrammes.filter((programme) =>
 const processedProgrammes = allProcessedProgrammes.filter(
   (programme) => !programmeNameContainsRequirementLeak(programme.programmeName),
 )
+const requirementRuleKeys = new Set(
+  processedRequirementRules.map((rule) =>
+    requirementRuleKey(rule.normalizedProgrammeName, rule.normalizedInstitutionName),
+  ),
+)
+const programmeFallbackRequirementRules: ProcessedRequirementRule[] = []
+
+for (const programme of processedProgrammes) {
+  if (!blankToUndefined(programme.minimumEntryRequirements)) continue
+
+  const key = requirementRuleKey(
+    programme.normalizedProgrammeName,
+    programme.normalizedInstitutionName,
+  )
+  if (requirementRuleKeys.has(key)) continue
+
+  const fallbackRule = buildRequirementRuleFromProgramme(programme)
+  processedRequirementRules.push(fallbackRule)
+  programmeFallbackRequirementRules.push(fallbackRule)
+  requirementRuleKeys.add(key)
+}
+const programmesWithoutExactRequirementRule = processedProgrammes.filter(
+  (programme) =>
+    !requirementRuleKeys.has(
+      requirementRuleKey(programme.normalizedProgrammeName, programme.normalizedInstitutionName),
+    ),
+)
+const programmesWithoutExactRequirementRuleButHasRequirements =
+  programmesWithoutExactRequirementRule.filter((programme) =>
+    blankToUndefined(programme.minimumEntryRequirements),
+  )
 
 type InstitutionSummary = {
   programmeCount: number
@@ -1669,6 +1808,10 @@ const report = {
   },
   requirementRules: {
     processedCount: processedRequirementRules.length,
+    fromProgrammeFallbackCount: programmeFallbackRequirementRules.length,
+    programmesWithoutExactRuleCount: programmesWithoutExactRequirementRule.length,
+    programmesWithoutExactRuleButHasRequirementsCount:
+      programmesWithoutExactRequirementRuleButHasRequirements.length,
     structuredVariantCount: processedRequirementRules.flatMap((row) => row.variants).filter(
       (variant) => variant.parseStatus === "structured",
     ).length,
