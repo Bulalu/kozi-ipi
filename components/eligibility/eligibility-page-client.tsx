@@ -10,7 +10,6 @@ import {
   ArrowRightIcon,
   ClockIcon,
   PinIcon,
-  SearchIcon,
   XIcon,
 } from "@/components/search/search-icons"
 import { Button } from "@/components/ui/button"
@@ -32,6 +31,13 @@ type Route = "form_six" | "diploma"
 type SubjectGrade = {
   subject: string
   grade: AcseeGrade
+}
+
+type AcseeCombination = {
+  code: string
+  label: string
+  searchQuery: string
+  subjects: string[]
 }
 
 type SubmittedProfile =
@@ -85,11 +91,88 @@ type EligibilityResult = {
 const acseeGrades: AcseeGrade[] = ["A", "B", "C", "D", "E", "S", "F"]
 const acseeDivisions = ["I", "II", "III", "IV", "0"] as const
 
-const defaultSubjects: SubjectGrade[] = [
-  { subject: "Biology", grade: "C" },
-  { subject: "Chemistry", grade: "D" },
-  { subject: "Physics", grade: "D" },
+const acseeCombinations: AcseeCombination[] = [
+  {
+    code: "PCB",
+    label: "Physics, Chemistry, Biology",
+    searchQuery: "medicine nursing clinical medicine health biology chemistry physics",
+    subjects: ["Physics", "Chemistry", "Biology"],
+  },
+  {
+    code: "PCM",
+    label: "Physics, Chemistry, Advanced Mathematics",
+    searchQuery: "engineering computer science technology physics mathematics",
+    subjects: ["Physics", "Chemistry", "Advanced Mathematics"],
+  },
+  {
+    code: "PGM",
+    label: "Physics, Geography, Advanced Mathematics",
+    searchQuery: "engineering architecture land surveying geography physics mathematics",
+    subjects: ["Physics", "Geography", "Advanced Mathematics"],
+  },
+  {
+    code: "CBG",
+    label: "Chemistry, Biology, Geography",
+    searchQuery: "health agriculture environmental science biology chemistry geography",
+    subjects: ["Chemistry", "Biology", "Geography"],
+  },
+  {
+    code: "CBN",
+    label: "Chemistry, Biology, Nutrition",
+    searchQuery: "nutrition health food science biology chemistry",
+    subjects: ["Chemistry", "Biology", "Nutrition"],
+  },
+  {
+    code: "EGM",
+    label: "Economics, Geography, Advanced Mathematics",
+    searchQuery: "business economics accounting finance statistics geography",
+    subjects: ["Economics", "Geography", "Advanced Mathematics"],
+  },
+  {
+    code: "ECA",
+    label: "Economics, Commerce, Accountancy",
+    searchQuery: "business economics accounting finance management",
+    subjects: ["Economics", "Commerce", "Accountancy"],
+  },
+  {
+    code: "HGE",
+    label: "History, Geography, Economics",
+    searchQuery: "education law economics development geography",
+    subjects: ["History", "Geography", "Economics"],
+  },
+  {
+    code: "HGL",
+    label: "History, Geography, English Language",
+    searchQuery: "education law social work community development geography",
+    subjects: ["History", "Geography", "English Language"],
+  },
+  {
+    code: "HGK",
+    label: "History, Geography, Kiswahili",
+    searchQuery: "education law social work community development geography",
+    subjects: ["History", "Geography", "Kiswahili"],
+  },
+  {
+    code: "HKL",
+    label: "History, Kiswahili, English Language",
+    searchQuery: "education law social work language communication",
+    subjects: ["History", "Kiswahili", "English Language"],
+  },
+  {
+    code: "KLF",
+    label: "Kiswahili, English Language, French",
+    searchQuery: "education language communication translation",
+    subjects: ["Kiswahili", "English Language", "French"],
+  },
+  {
+    code: "CBA",
+    label: "Chemistry, Biology, Agriculture",
+    searchQuery: "agriculture veterinary medicine health biology chemistry",
+    subjects: ["Chemistry", "Biology", "Agriculture"],
+  },
 ]
+
+const defaultSubjects: SubjectGrade[] = buildSubjectsForCombination("PCB")
 
 const statusOrder: EligibilityStatus[] = [
   "eligible",
@@ -140,7 +223,6 @@ const statusSummaries: Record<
 
 export function EligibilityPageClient() {
   const [route, setRoute] = useState<Route>("form_six")
-  const [query, setQuery] = useState("")
   const [awardLevel, setAwardLevel] = useState("degree")
   const [region, setRegion] = useState("")
   const [combination, setCombination] = useState("PCB")
@@ -160,6 +242,7 @@ export function EligibilityPageClient() {
     awardLevel?: string
     region?: string
   } | null>(null)
+  const [submittedBasis, setSubmittedBasis] = useState("")
   const [error, setError] = useState("")
   const acseeSummary = useMemo(() => {
     const grades = subjects
@@ -226,7 +309,15 @@ export function EligibilityPageClient() {
         combination,
         diplomaAwardName,
         diplomaField,
-        query,
+        route,
+        subjects,
+      })
+    )
+    setSubmittedBasis(
+      resolveEligibilityBasis({
+        combination,
+        diplomaAwardName,
+        diplomaField,
         route,
         subjects,
       })
@@ -240,6 +331,10 @@ export function EligibilityPageClient() {
 
   function validateForm() {
     if (route === "form_six") {
+      if (!findCombination(combination)) {
+        return "Choose one of the listed ACSEE combinations."
+      }
+
       const completeSubjects = subjects.filter(
         (subject) => subject.subject.trim() && subject.grade
       )
@@ -360,10 +455,8 @@ export function EligibilityPageClient() {
 
               <Preferences
                 awardLevel={awardLevel}
-                query={query}
                 region={region}
                 setAwardLevel={setAwardLevel}
-                setQuery={setQuery}
                 setRegion={setRegion}
               />
 
@@ -389,7 +482,7 @@ export function EligibilityPageClient() {
             hasSubmitted={Boolean(submittedProfile)}
             isLoading={Boolean(isFirstLoad)}
             resultCount={results.length}
-            searchBasis={submittedQuery}
+            searchBasis={submittedBasis}
           />
 
           {!submittedProfile ? (
@@ -526,6 +619,30 @@ function FormSixFields({
     principalPasses: number
   }
 }) {
+  function handleCombinationChange(value: string) {
+    const nextValue = value.toUpperCase()
+    setCombination(nextValue)
+
+    const selectedCombination = findCombination(nextValue)
+    if (!selectedCombination) {
+      return
+    }
+
+    setSubjects(
+      selectedCombination.subjects.map((subjectName) => {
+        const existingSubject = subjects.find(
+          (subject) =>
+            subject.subject.trim().toLowerCase() ===
+            subjectName.trim().toLowerCase()
+        )
+        return {
+          subject: subjectName,
+          grade: existingSubject?.grade ?? "D",
+        }
+      })
+    )
+  }
+
   function updateSubject(index: number, update: Partial<SubjectGrade>) {
     setSubjects(
       subjects.map((subject, subjectIndex) =>
@@ -557,12 +674,26 @@ function FormSixFields({
         <Field label="Combination">
           <Input
             className="h-10 rounded-lg text-[13px]"
-            onChange={(event) => setCombination(event.target.value)}
+            list="acsee-combinations"
+            onChange={(event) => handleCombinationChange(event.target.value)}
             placeholder="PCB"
             value={combination}
           />
+          <datalist id="acsee-combinations">
+            {acseeCombinations.map((option) => (
+              <option
+                key={option.code}
+                label={`${option.label} (${option.code})`}
+                value={option.code}
+              />
+            ))}
+          </datalist>
         </Field>
       </div>
+      <p className="-mt-2 text-[11.5px] leading-5 text-brand-ink/50">
+        Type a subject letter, for example P, to see Physics combinations like
+        PCB, PCM, and PGM.
+      </p>
 
       <div>
         <LabelText>ACSEE subjects</LabelText>
@@ -700,36 +831,17 @@ function DiplomaFields({
 
 function Preferences({
   awardLevel,
-  query,
   region,
   setAwardLevel,
-  setQuery,
   setRegion,
 }: {
   awardLevel: string
-  query: string
   region: string
   setAwardLevel: (value: string) => void
-  setQuery: (value: string) => void
   setRegion: (value: string) => void
 }) {
   return (
     <div className="space-y-3 border-t border-brand-ink/8 pt-5">
-      <Field label="Course interest">
-        <label className="flex h-10 items-center gap-2 rounded-lg border border-brand-ink/10 px-3">
-          <SearchIcon className="size-4 text-brand-ink/40" />
-          <input
-            className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-brand-ink/35"
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Nursing, tourism, ICT..."
-            value={query}
-          />
-        </label>
-        <p className="mt-1.5 text-[11.5px] leading-5 text-brand-ink/45">
-          Leave blank to infer from your combination or prior award.
-        </p>
-      </Field>
-
       <div className="grid grid-cols-2 gap-3">
         <Field label="Award">
           <select
@@ -789,7 +901,7 @@ function ResultsToolbar({
         </h2>
         {hasSubmitted && searchBasis ? (
           <p className="mt-1 text-[12.5px] text-brand-ink/55">
-            Search basis:{" "}
+            Based on:{" "}
             <span className="font-medium text-brand-ink">{searchBasis}</span>
           </p>
         ) : null}
@@ -1092,26 +1204,35 @@ function groupResults(results: EligibilityResult[]) {
   )
 }
 
+function buildSubjectsForCombination(code: string): SubjectGrade[] {
+  const selectedCombination = findCombination(code) ?? acseeCombinations[0]
+
+  return selectedCombination.subjects.map((subject) => ({
+    subject,
+    grade: "D",
+  }))
+}
+
+function findCombination(code: string) {
+  const normalizedCode = code.trim().toUpperCase()
+  return acseeCombinations.find(
+    (combination) => combination.code === normalizedCode
+  )
+}
+
 function resolveEligibilityQuery({
   combination,
   diplomaAwardName,
   diplomaField,
-  query,
   route,
   subjects,
 }: {
   combination: string
   diplomaAwardName: string
   diplomaField: string
-  query: string
   route: Route
   subjects: SubjectGrade[]
 }) {
-  const explicitQuery = query.trim()
-  if (explicitQuery) {
-    return explicitQuery
-  }
-
   if (route === "diploma") {
     return [diplomaAwardName, diplomaField]
       .map((value) => value.trim())
@@ -1122,11 +1243,47 @@ function resolveEligibilityQuery({
   return inferFormSixQuery(combination, subjects)
 }
 
+function resolveEligibilityBasis({
+  combination,
+  diplomaAwardName,
+  diplomaField,
+  route,
+  subjects,
+}: {
+  combination: string
+  diplomaAwardName: string
+  diplomaField: string
+  route: Route
+  subjects: SubjectGrade[]
+}) {
+  if (route === "diploma") {
+    return [diplomaAwardName, diplomaField]
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .join(" · ")
+  }
+
+  const selectedCombination = findCombination(combination)
+  if (selectedCombination) {
+    return `${selectedCombination.code} · ${selectedCombination.label}`
+  }
+
+  return subjects
+    .map((subject) => subject.subject.trim())
+    .filter(Boolean)
+    .join(", ")
+}
+
 function inferFormSixQuery(
   combination: string,
   subjects: SubjectGrade[]
 ): string {
   const normalizedCombination = combination.trim().toUpperCase()
+  const selectedCombination = findCombination(normalizedCombination)
+  if (selectedCombination) {
+    return selectedCombination.searchQuery
+  }
+
   const subjectWords = subjects
     .map((subject) => subject.subject.trim().toLowerCase())
     .filter(Boolean)
