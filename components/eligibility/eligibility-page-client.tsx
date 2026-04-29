@@ -109,6 +109,35 @@ const statusTone: Record<EligibilityStatus, string> = {
   not_eligible: "border-red-500/25 bg-red-50 text-red-900",
 }
 
+const statusSummaries: Record<
+  EligibilityStatus,
+  {
+    description: string
+    title: string
+  }
+> = {
+  eligible: {
+    description: "Your grades match parsed published rules.",
+    title: "Confirmed match",
+  },
+  likely_eligible_but_verify: {
+    description: "Looks possible, but some rule detail still needs checking.",
+    title: "Needs review",
+  },
+  cannot_determine: {
+    description: "We found the course, but the rule is not structured enough.",
+    title: "Not enough data",
+  },
+  interest_match_only: {
+    description: "Matches your interest, not yet checked against your grades.",
+    title: "Interest only",
+  },
+  not_eligible: {
+    description: "A parsed rule clearly misses one or more requirements.",
+    title: "Does not match",
+  },
+}
+
 export function EligibilityPageClient() {
   const [route, setRoute] = useState<Route>("form_six")
   const [query, setQuery] = useState("")
@@ -816,18 +845,27 @@ function NoResultsState() {
 function BucketSummary({ results }: { results: EligibilityResult[] }) {
   const grouped = groupResults(results)
   return (
-    <div className="grid gap-2 sm:grid-cols-5">
-      {statusOrder.map((status) => (
-        <div
-          className={`rounded-lg border px-3 py-2 ${statusTone[status]}`}
-          key={status}
-        >
-          <p className="text-[20px] font-bold">{grouped[status].length}</p>
-          <p className="mt-0.5 text-[11px] leading-4 font-semibold">
-            {eligibilityStatusLabels[status]}
-          </p>
-        </div>
-      ))}
+    <div>
+      <p className="mb-2 text-[12.5px] leading-5 text-brand-ink/55">
+        These cards group the shown programmes by how confidently we can check
+        your results against the published entry requirements.
+      </p>
+      <div className="grid gap-2 sm:grid-cols-5">
+        {statusOrder.map((status) => (
+          <div
+            className={`rounded-lg border px-3 py-2 ${statusTone[status]}`}
+            key={status}
+          >
+            <p className="text-[20px] font-bold">{grouped[status].length}</p>
+            <p className="mt-0.5 text-[11px] leading-4 font-semibold">
+              {statusSummaries[status].title}
+            </p>
+            <p className="mt-1.5 text-[10.5px] leading-4 opacity-75">
+              {statusSummaries[status].description}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
