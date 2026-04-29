@@ -120,9 +120,11 @@ export default defineSchema({
     .index("by_region", ["region"])
     .index("by_fieldCategory", ["fieldCategory"])
     .index("by_suitableForFormFourLeaver", ["suitableForFormFourLeaver"])
+    .index("by_acceptsFormFourDirect", ["acceptsFormFourDirect"])
     .index("by_acceptsFormSix", ["acceptsFormSix"])
     .index("by_acceptsCertificate", ["acceptsCertificate"])
     .index("by_acceptsDiploma", ["acceptsDiploma"])
+    .index("by_acceptsEquivalent", ["acceptsEquivalent"])
     .searchIndex("search_searchText", {
       searchField: "searchText",
       filterFields: [
@@ -134,6 +136,11 @@ export default defineSchema({
         "institutionType",
         "ownershipType",
         "suitableForFormFourLeaver",
+        "acceptsFormFourDirect",
+        "acceptsFormSix",
+        "acceptsCertificate",
+        "acceptsDiploma",
+        "acceptsEquivalent",
         "confidenceLevel",
       ],
     }),
