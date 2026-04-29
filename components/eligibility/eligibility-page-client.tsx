@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { api } from "@/convex/_generated/api"
 import {
+  calculateAcseePoints,
+  countAcseePrincipalPasses,
   eligibilityStatusLabels,
   type AcseeGrade,
   type EligibilityStatus,
@@ -109,7 +111,7 @@ const statusTone: Record<EligibilityStatus, string> = {
 
 export function EligibilityPageClient() {
   const [route, setRoute] = useState<Route>("form_six")
-  const [query, setQuery] = useState("Tourism Management")
+  const [query, setQuery] = useState("")
   const [awardLevel, setAwardLevel] = useState("degree")
   const [region, setRegion] = useState("")
   const [combination, setCombination] = useState("PCB")
@@ -130,6 +132,16 @@ export function EligibilityPageClient() {
     region?: string
   } | null>(null)
   const [error, setError] = useState("")
+  const acseeSummary = useMemo(() => {
+    const grades = subjects
+      .filter((subject) => subject.subject.trim())
+      .map((subject) => subject.grade)
+
+    return {
+      points: calculateAcseePoints(grades),
+      principalPasses: countAcseePrincipalPasses(grades),
+    }
+  }, [subjects])
 
   const queryArgs = useMemo(() => {
     if (!submittedProfile) {
@@ -180,7 +192,16 @@ export function EligibilityPageClient() {
     }
 
     setError("")
-    setSubmittedQuery(query.trim())
+    setSubmittedQuery(
+      resolveEligibilityQuery({
+        combination,
+        diplomaAwardName,
+        diplomaField,
+        query,
+        route,
+        subjects,
+      })
+    )
     setSubmittedFilters({
       ...(awardLevel !== "all" ? { awardLevel } : {}),
       ...(region ? { region } : {}),
@@ -293,6 +314,7 @@ export function EligibilityPageClient() {
                   setCombination={setCombination}
                   setSubjects={setSubjects}
                   subjects={subjects}
+                  summary={acseeSummary}
                 />
               ) : (
                 <DiplomaFields
@@ -338,6 +360,7 @@ export function EligibilityPageClient() {
             hasSubmitted={Boolean(submittedProfile)}
             isLoading={Boolean(isFirstLoad)}
             resultCount={results.length}
+            searchBasis={submittedQuery}
           />
 
           {!submittedProfile ? (
@@ -461,6 +484,7 @@ function FormSixFields({
   setCombination,
   setSubjects,
   subjects,
+  summary,
 }: {
   acseeDivision: (typeof acseeDivisions)[number]
   combination: string
@@ -468,6 +492,10 @@ function FormSixFields({
   setCombination: (combination: string) => void
   setSubjects: (subjects: SubjectGrade[]) => void
   subjects: SubjectGrade[]
+  summary: {
+    points: number
+    principalPasses: number
+  }
 }) {
   function updateSubject(index: number, update: Partial<SubjectGrade>) {
     setSubjects(
@@ -559,6 +587,27 @@ function FormSixFields({
         >
           Add subject
         </button>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <div className="rounded-lg bg-brand-ink/[0.035] px-3 py-2">
+            <p className="text-[10.5px] font-semibold tracking-[0.13em] text-brand-ink/40 uppercase">
+              Principal passes
+            </p>
+            <p className="mt-0.5 text-[14px] font-semibold">
+              {summary.principalPasses}
+            </p>
+          </div>
+          <div className="rounded-lg bg-brand-ink/[0.035] px-3 py-2">
+            <p className="text-[10.5px] font-semibold tracking-[0.13em] text-brand-ink/40 uppercase">
+              Derived points
+            </p>
+            <p className="mt-0.5 text-[14px] font-semibold">
+              {formatPoints(summary.points)}
+            </p>
+          </div>
+        </div>
+        <p className="mt-2 text-[11.5px] leading-5 text-brand-ink/50">
+          Points are derived from the subject grades you enter here.
+        </p>
       </div>
     </div>
   )
@@ -647,6 +696,9 @@ function Preferences({
             value={query}
           />
         </label>
+        <p className="mt-1.5 text-[11.5px] leading-5 text-brand-ink/45">
+          Leave blank to infer from your combination or prior award.
+        </p>
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
@@ -686,10 +738,12 @@ function ResultsToolbar({
   hasSubmitted,
   isLoading,
   resultCount,
+  searchBasis,
 }: {
   hasSubmitted: boolean
   isLoading: boolean
   resultCount: number
+  searchBasis: string
 }) {
   return (
     <div className="mb-5 flex items-end justify-between gap-4 border-b border-brand-ink/8 pb-4">
@@ -704,6 +758,12 @@ function ResultsToolbar({
               : `${resultCount} shown`
             : "Ready when you are"}
         </h2>
+        {hasSubmitted && searchBasis ? (
+          <p className="mt-1 text-[12.5px] text-brand-ink/55">
+            Search basis:{" "}
+            <span className="font-medium text-brand-ink">{searchBasis}</span>
+          </p>
+        ) : null}
       </div>
       <p className="max-w-[18rem] text-right text-[12.5px] leading-5 text-brand-ink/50">
         Eligibility is based on published rules where parsed. Partial rules stay
@@ -992,6 +1052,97 @@ function groupResults(results: EligibilityResult[]) {
       not_eligible: [],
     }
   )
+}
+
+function resolveEligibilityQuery({
+  combination,
+  diplomaAwardName,
+  diplomaField,
+  query,
+  route,
+  subjects,
+}: {
+  combination: string
+  diplomaAwardName: string
+  diplomaField: string
+  query: string
+  route: Route
+  subjects: SubjectGrade[]
+}) {
+  const explicitQuery = query.trim()
+  if (explicitQuery) {
+    return explicitQuery
+  }
+
+  if (route === "diploma") {
+    return [diplomaAwardName, diplomaField]
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .join(" ")
+  }
+
+  return inferFormSixQuery(combination, subjects)
+}
+
+function inferFormSixQuery(
+  combination: string,
+  subjects: SubjectGrade[]
+): string {
+  const normalizedCombination = combination.trim().toUpperCase()
+  const subjectWords = subjects
+    .map((subject) => subject.subject.trim().toLowerCase())
+    .filter(Boolean)
+  const subjectText = subjectWords.join(" ")
+  const source = `${normalizedCombination} ${subjectText}`
+
+  if (
+    normalizedCombination.includes("PCB") ||
+    (source.includes("biology") &&
+      source.includes("chemistry") &&
+      source.includes("physics"))
+  ) {
+    return "medicine nursing clinical medicine health biology chemistry physics"
+  }
+
+  if (
+    normalizedCombination.includes("PCM") ||
+    (source.includes("physics") && source.includes("mathematics"))
+  ) {
+    return "engineering computer science technology physics mathematics"
+  }
+
+  if (
+    normalizedCombination.includes("CBG") ||
+    (source.includes("chemistry") && source.includes("geography"))
+  ) {
+    return "health agriculture environmental science biology chemistry geography"
+  }
+
+  if (
+    normalizedCombination.includes("EGM") ||
+    normalizedCombination.includes("ECA") ||
+    source.includes("economics") ||
+    source.includes("commerce") ||
+    source.includes("account")
+  ) {
+    return "business economics accounting finance management"
+  }
+
+  if (
+    normalizedCombination.includes("HGL") ||
+    normalizedCombination.includes("HKL") ||
+    source.includes("history") ||
+    source.includes("kiswahili") ||
+    source.includes("language")
+  ) {
+    return "education law social work community development"
+  }
+
+  return subjectWords.length > 0 ? subjectWords.join(" ") : normalizedCombination
+}
+
+function formatPoints(points: number) {
+  return Number.isInteger(points) ? String(points) : points.toFixed(1)
 }
 
 function normalizeExternalHref(value?: string) {
