@@ -421,7 +421,7 @@ Equivalent: description with conservative verify messaging
 
 ## Privacy
 
-Grades are sensitive. First implementation should avoid storing full profiles unless the user explicitly chooses to save them.
+Grades are sensitive. The product should not store full grade profiles in the first eligibility release.
 
 Acceptable early approach:
 
@@ -432,6 +432,17 @@ Analytics logs only route, coarse bucket counts, and non-sensitive query metadat
 ```
 
 Do not log raw subject-grade profiles in `searchEvents`.
+
+Do not persist full grade profiles in:
+
+```text
+server database
+localStorage
+sessionStorage
+cookies
+```
+
+The first release should keep grades in in-memory UI state only. Refreshing or closing the tab should clear the entered grades.
 
 ## Test Strategy
 
