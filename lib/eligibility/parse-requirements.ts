@@ -127,6 +127,10 @@ function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
   }
 
   const subjects = parseSubjectList(source.requiredSubjects)
+  const hasPerSubjectAcseeGrades = parseSubjectGradeClauses(
+    source.rawRequirementText,
+    "acsee"
+  ).length > 0
   if (subjects.length > 0 && principalPasses) {
     clauses.push({
       kind: "subject_group",
@@ -134,7 +138,9 @@ function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
       mode: subjects.length > principalPasses ? "at_least_n_of" : "all_of",
       count: subjects.length > principalPasses ? principalPasses : undefined,
       subjects,
-      minGrade: parseMinimumAcseeGrade(source.rawRequirementText),
+      minGrade: hasPerSubjectAcseeGrades
+        ? undefined
+        : parseMinimumAcseeGrade(source.rawRequirementText),
     })
   }
 
