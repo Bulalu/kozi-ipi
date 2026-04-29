@@ -12565,8 +12565,12 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -12583,8 +12587,12 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -13730,13 +13738,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_subsidiary_grade_in_basic_applied_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "a_subsidiary_grade_in_basic_applied_mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -13756,13 +13764,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_subsidiary_grade_in_basic_applied_mathematics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "a_subsidiary_grade_in_basic_applied_mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -14746,8 +14754,12 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -14859,8 +14871,12 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -14882,8 +14898,12 @@
             "minGrade": "D"
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -15022,8 +15042,12 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -17098,43 +17122,19 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four_of_the_following_subjects_physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "first_language_english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "second_language_english",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four_of_the_following_subjects_physics",
+              "engineering_science",
+              "mathematics",
+              "chemistry",
+              "geography",
+              "english",
+              "first_language_english",
+              "second_language_english"
+            ],
             "minGrade": "D"
           }
         ],
@@ -17169,63 +17169,23 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four_of_physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_pre_technology_certificate_who_have_completed_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "possess_national_vocational_awards_level_iii",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "grade_test_i",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_a_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "possess_basic_technician_certificate_in_lapidary",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "jewelry_technology",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four_of_physics",
+              "engineering_science",
+              "mathematics",
+              "chemistry",
+              "geography",
+              "english",
+              "holders_of_pre_technology_certificate_who_have_completed_certificate_of_secondary_education_examination",
+              "possess_national_vocational_awards_level_iii",
+              "grade_test_i",
+              "holders_of_a_certificate_of_secondary_education_examination",
+              "possess_basic_technician_certificate_in_lapidary",
+              "jewelry_technology"
+            ],
             "minGrade": "D"
           }
         ],
@@ -17297,28 +17257,16 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "any_four_subjects_excluding_religious",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "needle_work",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holder_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "national_vocational_awards_level_iii_awarded_by_veta",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "any_four_subjects_excluding_religious",
+              "nutrition",
+              "needle_work",
+              "holder_of_certificate_of_secondary_education_examination",
+              "national_vocational_awards_level_iii_awarded_by_veta"
+            ],
             "minGrade": "D"
           }
         ],
@@ -39633,18 +39581,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -39673,18 +39617,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -52007,43 +51947,19 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "history",
+              "french",
+              "geography",
+              "english",
+              "arabic",
+              "fine_arts",
+              "economics",
+              "kiswahili"
+            ],
             "minGrade": "D"
           }
         ],
@@ -55720,88 +55636,28 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "history",
+              "geography",
+              "kiswahili",
+              "english",
+              "french",
+              "arabic",
+              "fine_arts",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "biology",
+              "advanced_mathematics",
+              "agriculture",
+              "computer_science",
+              "nutrition"
+            ],
             "minGrade": "D"
           }
         ],
@@ -56170,23 +56026,15 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics_an_in_advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics_an_in_advanced_mathematics",
+              "chemistry",
+              "biology",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -56364,33 +56212,17 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_nutrition",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "biology",
+              "in_nutrition",
+              "agriculture",
+              "chemistry",
+              "physics",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -56552,38 +56384,18 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_history",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "kiswahili",
+              "in_one_of_history",
+              "english",
+              "geography",
+              "arabic",
+              "french",
+              "fine_arts"
+            ],
             "minGrade": "C"
           },
           {
@@ -56771,23 +56583,15 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "nutrition",
+              "agriculture",
+              "biology"
+            ],
             "minGrade": "C"
           },
           {
@@ -57423,33 +57227,17 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "one_from_advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "one_from_advanced_mathematics",
+              "chemistry",
+              "biology",
+              "computer_science",
+              "geography_at_a_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -58083,43 +57871,19 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "in_one_of_geography",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "computer_science"
+            ],
             "minGrade": "D"
           }
         ],
@@ -58418,13 +58182,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_chemistry",
+              "geography_at_a_level"
+            ],
             "minGrade": "E"
           }
         ],
@@ -58624,13 +58388,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics"
+            ],
             "minGrade": "E"
           },
           {
@@ -58833,13 +58597,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_chemistry",
+              "geography_at_a_level"
+            ],
             "minGrade": "E"
           },
           {
@@ -59038,43 +58802,19 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "in_one_of_geography",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "computer_science"
+            ],
             "minGrade": "D"
           }
         ],
@@ -59260,28 +59000,16 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "biology",
+              "chemistry",
+              "advanced_mathematics",
+              "physics",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -64810,13 +64538,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           },
           {
@@ -64847,13 +64575,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           }
         ],
@@ -72519,18 +72247,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -72554,18 +72278,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -73030,13 +72750,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "foundation_programme_of_the_out",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english_at_o_level",
+              "foundation_programme_of_the_out"
+            ],
             "minGrade": "D"
           },
           {
@@ -73065,13 +72785,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "foundation_programme_of_the_out",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english_at_o_level",
+              "foundation_programme_of_the_out"
+            ],
             "minGrade": "D"
           }
         ],
@@ -73264,18 +72984,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -73304,18 +73020,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -73523,18 +73235,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -73563,18 +73271,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -74032,18 +73736,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -74067,18 +73767,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -74634,18 +74330,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "a_pass_in_basic_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level_is_required",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "a_pass_in_basic_mathematics",
+              "commerce",
+              "book_keeping_at_o_level_is_required"
+            ],
             "minGrade": "D"
           },
           {
@@ -75683,13 +75375,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -75718,13 +75410,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -78271,18 +77963,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -82939,23 +82627,15 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "any_two",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "national_vocational_award_level_3_in_automotive_engineering_trades_from_recognized_technical",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "vocational_education_training_institution",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holder_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "any_two",
+              "national_vocational_award_level_3_in_automotive_engineering_trades_from_recognized_technical",
+              "vocational_education_training_institution",
+              "holder_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -83045,43 +82725,19 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -83091,83 +82747,35 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -83482,43 +83090,19 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -83528,83 +83112,35 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -83950,53 +83486,21 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_subjects_from_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "national_vocational_award_level_iii_in_mechanical_engineering_trades_from_recognized_technical",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "vocational_education_training_institution",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_subjects_from_secondary_schools",
+              "national_vocational_award_level_iii_in_mechanical_engineering_trades_from_recognized_technical",
+              "vocational_education_training_institution",
+              "certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -84472,23 +83976,15 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_physics",
+              "mathematics",
+              "geography",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -84674,13 +84170,13 @@
             "minGrade": "C"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics"
+            ],
             "minGrade": "E"
           }
         ],
@@ -84800,18 +84296,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -98753,23 +98245,15 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "physics",
+              "chemistry",
+              "geography"
+            ],
             "minGrade": "D"
           },
           {
@@ -103666,38 +103150,18 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -103707,73 +103171,33 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -103808,53 +103232,29 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "any_two",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "vocational_education",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "training_institution",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "any_two",
+              "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
+              "vocational_education",
+              "training_institution"
+            ],
             "minGrade": "D"
           }
         ],
@@ -103864,103 +103264,55 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "any_two",
+              "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
+              "vocational_education",
+              "training_institution"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "any_two",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "vocational_education",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "training_institution",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "any_two",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "vocational_education",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "training_institution",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "any_two",
+              "national_vocational_award_in_civil_engineering_trades_from_recognized_technical",
+              "vocational_education",
+              "training_institution"
+            ],
             "minGrade": "D"
           }
         ],
@@ -103995,43 +103347,19 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -104041,83 +103369,35 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -104228,38 +103508,18 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_subjects_from_technical_schools",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry",
+              "english",
+              "technical_subjects_from_technical_schools"
+            ],
             "minGrade": "D"
           },
           {
@@ -104331,38 +103591,18 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -104372,73 +103612,33 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -104473,38 +103673,18 @@
         "route": "form_four",
         "clauses": [
           {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -104514,73 +103694,33 @@
         "route": "form_six",
         "clauses": [
           {
-            "kind": "acsee_subject_grade",
-            "subject": "four",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "four",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "two_of_which_must_either_be_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "engineering_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry_of_english_language",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "technical_related_subjects_from_technical_secondary_schools",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "holders_of_certificate_of_secondary_education_examination",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "four",
+              "two_of_which_must_either_be_mathematics",
+              "physics",
+              "engineering_science",
+              "chemistry_of_english_language",
+              "technical_related_subjects_from_technical_secondary_schools",
+              "holders_of_certificate_of_secondary_education_examination"
+            ],
             "minGrade": "D"
           }
         ],
@@ -108471,28 +107611,16 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture"
+            ],
             "minGrade": "E"
           },
           {
@@ -109910,58 +109038,22 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "kiswahili",
+              "history",
+              "geography",
+              "english",
+              "economics",
+              "french",
+              "arabic",
+              "fine_arts",
+              "commerce",
+              "accountancy",
+              "advanced_mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -110145,23 +109237,23 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "literature_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "literature_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "literature_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "literature_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -119780,18 +118872,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -121016,13 +120104,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -121044,13 +120132,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -121367,13 +120455,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -121403,13 +120491,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -137891,13 +136979,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics"
+            ],
             "minGrade": "E"
           },
           {
@@ -147828,23 +146916,15 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "one_of_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -147874,23 +146954,15 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "one_of_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "agriculture_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -147967,13 +147039,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "basic_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_biology",
+              "basic_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -147991,13 +147063,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "either_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "basic_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "either_biology",
+              "basic_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -152134,18 +151206,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "a_pass_in_basic_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level_is_required",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "a_pass_in_basic_mathematics",
+              "commerce",
+              "book_keeping_at_o_level_is_required"
+            ],
             "minGrade": "D"
           },
           {
@@ -155687,18 +154755,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -160677,18 +159741,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -160712,18 +159772,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -160831,18 +159887,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -160870,18 +159922,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -160997,18 +160045,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -161681,18 +160725,14 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -161719,18 +160759,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -162384,28 +161420,16 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture"
+            ],
             "minGrade": "E"
           },
           {
@@ -162505,28 +161529,16 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "d_grade_in_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "at_least_e_grade_in_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "d_grade_in_biology",
+              "at_least_e_grade_in_physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "C"
           },
           {
@@ -163792,13 +162804,13 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -163810,13 +162822,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -189448,18 +188460,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -189571,33 +188579,17 @@
             ]
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture",
+              "commerce"
+            ],
             "minGrade": "E"
           },
           {
@@ -190649,13 +189641,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_subsidiary_grade_in_basic_applied_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "a_subsidiary_grade_in_basic_applied_mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -190675,13 +189667,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_subsidiary_grade_in_basic_applied_mathematics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "a_subsidiary_grade_in_basic_applied_mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -190888,8 +189880,12 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -190911,8 +189907,12 @@
             "minGrade": "D"
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -190945,8 +189945,12 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -190997,8 +190001,12 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics_at_a_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -191165,8 +190173,12 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -191188,8 +190200,12 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -191912,18 +190928,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -195735,18 +194747,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -195775,18 +194783,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -196246,13 +195250,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics_at_c",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "physics_at_c"
+            ],
             "minGrade": "C"
           },
           {
@@ -196449,13 +195453,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "physics_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -198955,13 +197959,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           },
           {
@@ -198992,13 +197996,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           }
         ],
@@ -199477,13 +198481,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           },
           {
@@ -199514,13 +198518,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics_at_o_level_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics_at_o_level_mathematics",
+              "commerce"
+            ],
             "minGrade": "C"
           }
         ],
@@ -201834,13 +200838,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -201869,13 +200873,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -201972,18 +200976,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "a_pass_in_basic_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level_is_required",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "a_pass_in_basic_mathematics",
+              "commerce",
+              "book_keeping_at_o_level_is_required"
+            ],
             "minGrade": "D"
           },
           {
@@ -202871,18 +201871,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -203255,13 +202251,13 @@
             "minGrade": "C"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics"
+            ],
             "minGrade": "E"
           }
         ],
@@ -203359,18 +202355,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -203432,23 +202424,15 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_physics",
+              "mathematics",
+              "geography",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -203820,33 +202804,27 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "physics",
+              "chemistry",
+              "geography"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "physics",
+              "chemistry",
+              "geography_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -204387,23 +203365,15 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "physics",
+              "chemistry",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -204652,43 +203622,27 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "one_of_physics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "one_of_physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "agriculture_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -204899,38 +203853,18 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "physics",
+              "chemistry",
+              "biology",
+              "geography",
+              "economics",
+              "computer_science"
+            ],
             "minGrade": "D"
           }
         ],
@@ -205049,23 +203983,15 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "at_least_an_e_grade_in_chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "physics",
+              "at_least_an_e_grade_in_chemistry",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -205193,23 +204119,23 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "geography_at_a_level_must_have_a_credit_at_o_level"
+            ],
             "minGrade": "E"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level_must_have_a_credit_at_o_level",
-            "minGrade": "E"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography_at_a_level_must_have_a_credit_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "geography_at_a_level_must_have_a_credit_at_o_level"
+            ],
             "minGrade": "E"
           }
         ],
@@ -205242,13 +204168,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "geography"
+            ],
             "minGrade": "E"
           }
         ],
@@ -205281,13 +204207,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "geography"
+            ],
             "minGrade": "E"
           }
         ],
@@ -206460,28 +205386,16 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture"
+            ],
             "minGrade": "E"
           },
           {
@@ -207186,23 +206100,23 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "literature_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "literature_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "literature_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "literature_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -207459,58 +206373,22 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "kiswahili",
+              "history",
+              "geography",
+              "english",
+              "economics",
+              "french",
+              "arabic",
+              "fine_arts",
+              "commerce",
+              "accountancy",
+              "advanced_mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -209653,8 +208531,12 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           },
           {
@@ -209675,8 +208557,12 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics"
+            ],
             "minGrade": "D"
           }
         ],
@@ -210082,18 +208968,14 @@
             "points": 4.5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -210892,13 +209774,13 @@
             "points": 4.5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -210928,13 +209810,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -211022,13 +209904,13 @@
             "points": 4.5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -211050,13 +209932,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "a_d_grade_in_additional_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "a_d_grade_in_additional_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -211680,18 +210562,14 @@
             "points": 4.5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -211721,18 +210599,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -214198,13 +213072,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics"
+            ],
             "minGrade": "E"
           },
           {
@@ -214513,23 +213387,15 @@
             "points": 4.5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "one_of_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -214559,23 +213425,15 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "one_of_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "agriculture_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "one_of_physics",
+              "geography",
+              "nutrition",
+              "agriculture_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -214651,13 +213509,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "basic_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_biology",
+              "basic_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           },
           {
@@ -214675,13 +213533,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "either_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "basic_mathematics_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "either_biology",
+              "basic_mathematics_at_o_level"
+            ],
             "minGrade": "C"
           }
         ],
@@ -216655,18 +215513,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "a_pass_in_basic_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level_is_required",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "a_pass_in_basic_mathematics",
+              "commerce",
+              "book_keeping_at_o_level_is_required"
+            ],
             "minGrade": "D"
           },
           {
@@ -216935,18 +215789,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -217730,28 +216580,16 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture"
+            ],
             "minGrade": "E"
           },
           {
@@ -217901,18 +216739,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -217939,18 +216773,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -217983,18 +216813,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -218021,18 +216847,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -218065,18 +216887,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -218132,18 +216950,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -218171,18 +216985,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -218371,28 +217181,16 @@
             "points": 6
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "d_grade_in_biology",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "at_least_e_grade_in_physics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "d_grade_in_biology",
+              "at_least_e_grade_in_physics",
+              "advanced_mathematics",
+              "nutrition"
+            ],
             "minGrade": "C"
           },
           {
@@ -218807,13 +217605,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -218825,13 +217623,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "history_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english",
+              "history_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -222614,28 +221412,16 @@
             "points": 3
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "subjects_english_language",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chinese",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "subjects_english_language",
+              "kiswahili",
+              "french",
+              "chinese",
+              "arabic"
+            ],
             "minGrade": "C"
           }
         ],
@@ -226574,13 +225360,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics"
+            ],
             "minGrade": "E"
           },
           {
@@ -226892,23 +225678,15 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics_an_in_advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics_an_in_advanced_mathematics",
+              "chemistry",
+              "biology",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -226989,33 +225767,17 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_nutrition",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "biology",
+              "in_nutrition",
+              "agriculture",
+              "chemistry",
+              "physics",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -227048,43 +225810,19 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "in_one_of_geography",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "computer_science"
+            ],
             "minGrade": "D"
           }
         ],
@@ -227117,43 +225855,19 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "advanced_mathematics",
+              "in_one_of_geography",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "computer_science"
+            ],
             "minGrade": "D"
           }
         ],
@@ -227258,13 +225972,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_chemistry",
+              "geography_at_a_level"
+            ],
             "minGrade": "E"
           }
         ],
@@ -228569,88 +227283,28 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "accountancy",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "history",
+              "geography",
+              "kiswahili",
+              "english",
+              "french",
+              "arabic",
+              "fine_arts",
+              "economics",
+              "commerce",
+              "accountancy",
+              "physics",
+              "chemistry",
+              "biology",
+              "advanced_mathematics",
+              "agriculture",
+              "computer_science",
+              "nutrition"
+            ],
             "minGrade": "D"
           }
         ],
@@ -228830,28 +227484,16 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "biology",
+              "chemistry",
+              "advanced_mathematics",
+              "physics",
+              "geography"
+            ],
             "minGrade": "D"
           }
         ],
@@ -229402,33 +228044,17 @@
             "points": 5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "one_from_advanced_mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "computer_science",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "one_from_advanced_mathematics",
+              "chemistry",
+              "biology",
+              "computer_science",
+              "geography_at_a_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -229496,13 +228122,13 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "either_chemistry",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography_at_a_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "either_chemistry",
+              "geography_at_a_level"
+            ],
             "minGrade": "E"
           },
           {
@@ -229588,23 +228214,15 @@
             "points": 6
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "chemistry",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "biology",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "chemistry",
+              "nutrition",
+              "agriculture",
+              "biology"
+            ],
             "minGrade": "C"
           },
           {
@@ -229814,43 +228432,19 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "history",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "economics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "history",
+              "french",
+              "geography",
+              "english",
+              "arabic",
+              "fine_arts",
+              "economics",
+              "kiswahili"
+            ],
             "minGrade": "D"
           }
         ],
@@ -230014,38 +228608,18 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "kiswahili",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "in_one_of_history",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "english",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "arabic",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "french",
-            "minGrade": "C"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "fine_arts",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "kiswahili",
+              "in_one_of_history",
+              "english",
+              "geography",
+              "arabic",
+              "french",
+              "fine_arts"
+            ],
             "minGrade": "C"
           }
         ],
@@ -230132,13 +228706,13 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "english_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "foundation_programme_of_the_out",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "english_at_o_level",
+              "foundation_programme_of_the_out"
+            ],
             "minGrade": "D"
           },
           {
@@ -230167,13 +228741,13 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "english_at_o_level",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "foundation_programme_of_the_out",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "english_at_o_level",
+              "foundation_programme_of_the_out"
+            ],
             "minGrade": "D"
           }
         ],
@@ -230431,18 +229005,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -230471,18 +229041,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -230570,18 +229136,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -230605,18 +229167,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -230649,18 +229207,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -230684,18 +229238,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -230889,18 +229439,14 @@
             "points": 4
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           },
           {
@@ -230929,18 +229475,14 @@
             ]
           },
           {
-            "kind": "o_level_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "commerce",
-            "minGrade": "D"
-          },
-          {
-            "kind": "o_level_subject_grade",
-            "subject": "book_keeping_at_o_level",
+            "kind": "subject_group",
+            "level": "csee",
+            "mode": "one_of",
+            "subjects": [
+              "mathematics",
+              "commerce",
+              "book_keeping_at_o_level"
+            ],
             "minGrade": "D"
           }
         ],
@@ -232172,18 +230714,14 @@
             "minGrade": "D"
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "mathematics",
+              "nutrition"
+            ],
             "minGrade": "E"
           },
           {
@@ -232278,33 +230816,17 @@
             "points": 5
           },
           {
-            "kind": "acsee_subject_grade",
-            "subject": "physics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "advanced_mathematics",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "nutrition",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "geography",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "agriculture",
-            "minGrade": "E"
-          },
-          {
-            "kind": "acsee_subject_grade",
-            "subject": "commerce",
+            "kind": "subject_group",
+            "level": "acsee",
+            "mode": "one_of",
+            "subjects": [
+              "physics",
+              "advanced_mathematics",
+              "nutrition",
+              "geography",
+              "agriculture",
+              "commerce"
+            ],
             "minGrade": "E"
           },
           {

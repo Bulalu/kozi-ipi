@@ -371,8 +371,20 @@ function parseSubjectGradeClauses(
 
   for (const match of text.matchAll(gradePattern)) {
     const grade = match[1]?.toUpperCase()
-    const subjects = parseRequirementSubjects(match[2])
+    const subjectText = match[2] ?? ""
+    const subjects = parseRequirementSubjects(subjectText)
     if (!grade || subjects.length === 0) {
+      continue
+    }
+
+    if (/\bor\b|\//i.test(subjectText)) {
+      clauses.push({
+        kind: "subject_group",
+        level,
+        mode: "one_of",
+        subjects,
+        minGrade: grade as AcseeGrade | CseeGrade,
+      })
       continue
     }
 
