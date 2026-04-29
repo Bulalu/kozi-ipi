@@ -3,10 +3,65 @@ import { v } from "convex/values"
 
 const confidenceLevel = v.union(v.literal("high"), v.literal("medium"), v.literal("low"))
 const suitability = v.union(v.literal("yes"), v.literal("no"), v.literal("unknown"))
+const applicationRoute = v.union(
+  v.literal("form_four"),
+  v.literal("form_six"),
+  v.literal("certificate"),
+  v.literal("diploma"),
+  v.literal("equivalent"),
+)
+const parseStatus = v.union(
+  v.literal("structured"),
+  v.literal("partial"),
+  v.literal("unparsed"),
+)
 const logoStatus = v.union(
   v.literal("verified"),
   v.literal("missing"),
   v.literal("needs_review"),
+)
+
+const requirementClause = v.union(
+  v.object({
+    kind: v.literal("min_csee_passes"),
+    count: v.number(),
+  }),
+  v.object({
+    kind: v.literal("min_csee_division"),
+    division: v.string(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_division"),
+    division: v.string(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_principal_passes"),
+    count: v.number(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_points"),
+    points: v.number(),
+  }),
+  v.object({
+    kind: v.literal("subject_group"),
+    level: v.union(v.literal("csee"), v.literal("acsee")),
+    mode: v.union(v.literal("all_of"), v.literal("one_of"), v.literal("at_least_n_of")),
+    count: v.optional(v.number()),
+    subjects: v.array(v.string()),
+    minGrade: v.optional(v.string()),
+  }),
+  v.object({
+    kind: v.literal("prior_award"),
+    acceptedAwardLevels: v.optional(v.array(v.string())),
+    acceptedFields: v.optional(v.array(v.string())),
+    relatedFieldRequired: v.optional(v.boolean()),
+    minGpa: v.optional(v.number()),
+  }),
+  v.object({
+    kind: v.literal("o_level_subject_grade"),
+    subject: v.string(),
+    minGrade: v.string(),
+  }),
 )
 
 export default defineSchema({
@@ -188,6 +243,36 @@ export default defineSchema({
         "acceptsEquivalent",
         "eligibilityConfidence",
       ],
+    }),
+
+  requirementRules: defineTable({
+    programmeName: v.string(),
+    normalizedProgrammeName: v.string(),
+    institutionName: v.string(),
+    normalizedInstitutionName: v.string(),
+    programmeKey: v.string(),
+    institutionKey: v.string(),
+    variants: v.array(
+      v.object({
+        route: applicationRoute,
+        clauses: v.array(requirementClause),
+        parseStatus,
+      }),
+    ),
+    rawRequirementText: v.string(),
+    sourceUrl: v.string(),
+    confidence: confidenceLevel,
+    parseVersion: v.string(),
+    searchText: v.string(),
+  })
+    .index("by_normalizedInstitutionName", ["normalizedInstitutionName"])
+    .index("by_normalizedProgrammeName_and_normalizedInstitutionName", [
+      "normalizedProgrammeName",
+      "normalizedInstitutionName",
+    ])
+    .searchIndex("search_searchText", {
+      searchField: "searchText",
+      filterFields: ["normalizedInstitutionName", "confidence"],
     }),
 
   correctionSubmissions: defineTable({

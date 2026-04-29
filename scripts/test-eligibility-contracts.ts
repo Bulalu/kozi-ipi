@@ -8,6 +8,7 @@ import {
   evaluateRequirementRuleSet,
   normalizeStudentProfile,
   normalizeSubjectName,
+  parseRequirementRuleSet,
   summarizeEligibilityEvaluation,
 } from "../lib/eligibility"
 import {
@@ -173,6 +174,52 @@ assert.equal(
 assert(
   healthRuleSet.variants.some((variant) => variant.route === "equivalent"),
   "Health progression fixture should retain equivalent route branch."
+)
+
+const parsedFormSixRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_engineering",
+  institutionKey: "fixture_university",
+  rawRequirementText:
+    "Two principal passes in Advanced Mathematics and Physics with a minimum of 4.0 points.",
+  sourceUrl: "https://example.test/source/form-six",
+  confidence: "high",
+  requiredSubjects: "Advanced Mathematics; Physics",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "yes",
+  acceptsCertificate: "no",
+  acceptsDiploma: "no",
+  acceptsEquivalent: "no",
+})
+assert.equal(
+  parsedFormSixRuleSet.variants[0]?.parseStatus,
+  "structured",
+  "Parser should mark simple Form Six principal-pass requirements as structured."
+)
+assert(
+  parsedFormSixRuleSet.variants[0]?.clauses.some(
+    (clause) => clause.kind === "min_acsee_points" && clause.points === 4
+  ),
+  "Parser should extract minimum ACSEE points."
+)
+
+const parsedComplexRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_nursing",
+  institutionKey: "fixture_college",
+  rawRequirementText:
+    "Diploma in Nursing or equivalent with minimum GPA of 3.0 and work experience.",
+  sourceUrl: "https://example.test/source/diploma",
+  confidence: "high",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "no",
+  acceptsCertificate: "no",
+  acceptsDiploma: "yes",
+  acceptsEquivalent: "yes",
+})
+assert(
+  parsedComplexRuleSet.variants.every(
+    (variant) => variant.parseStatus !== "structured"
+  ),
+  "Parser should keep OR/equivalent/work-experience requirements conservative."
 )
 
 const healthEvaluation = evaluateRequirementRuleSet(

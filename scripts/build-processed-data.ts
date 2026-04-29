@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url"
 
 import { parse } from "csv-parse/sync"
 
+import { parseRequirementRuleSet } from "../lib/eligibility/parse-requirements"
+import type { RequirementRuleSet } from "../lib/eligibility/types"
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
 
@@ -141,6 +144,14 @@ type ProcessedEntryRequirement = {
   eligibilityConfidence: ConfidenceLevel
   officialSourceUrl: string
   notes?: string
+  searchText: string
+}
+
+type ProcessedRequirementRule = RequirementRuleSet & {
+  programmeName: string
+  normalizedProgrammeName: string
+  institutionName: string
+  normalizedInstitutionName: string
   searchText: string
 }
 
@@ -1048,6 +1059,51 @@ const processedEntryRequirements: ProcessedEntryRequirement[] = [
   ...cleanTcuSecondaryExtractedProgrammes.map(buildTcuExtractedEntryRequirement),
 ]
 
+const processedRequirementRules: ProcessedRequirementRule[] = processedEntryRequirements.map(
+  (requirement) => {
+    const ruleSet = parseRequirementRuleSet({
+      programmeKey: requirement.normalizedProgrammeName,
+      institutionKey: requirement.normalizedInstitutionName,
+      rawRequirementText: requirement.rawRequirementText,
+      sourceUrl: requirement.officialSourceUrl,
+      confidence: requirement.eligibilityConfidence,
+      requiredSubjects: requirement.requiredSubjects,
+      requiredSubjectGradesIfAvailable: requirement.requiredSubjectGradesIfAvailable,
+      requiredPriorFieldIfAvailable: requirement.requiredPriorFieldIfAvailable,
+      minimumCseeDivisionIfAvailable: requirement.minimumCseeDivisionIfAvailable,
+      minimumAcseePrincipalPassesIfAvailable:
+        requirement.minimumAcseePrincipalPassesIfAvailable,
+      minimumPointsIfAvailable: requirement.minimumPointsIfAvailable,
+      acceptsFormFourDirect: requirement.acceptsFormFourDirect,
+      acceptsFormSix: requirement.acceptsFormSix,
+      acceptsCertificate: requirement.acceptsCertificate,
+      acceptsDiploma: requirement.acceptsDiploma,
+      acceptsEquivalent: requirement.acceptsEquivalent,
+    })
+
+    return {
+      ...ruleSet,
+      programmeName: requirement.programmeName,
+      normalizedProgrammeName: requirement.normalizedProgrammeName,
+      institutionName: requirement.institutionName,
+      normalizedInstitutionName: requirement.normalizedInstitutionName,
+      searchText: [
+        requirement.programmeName,
+        requirement.normalizedProgrammeName,
+        requirement.institutionName,
+        requirement.normalizedInstitutionName,
+        requirement.rawRequirementText,
+        requirement.requiredSubjects,
+        requirement.requiredPriorFieldIfAvailable,
+        ruleSet.variants.map((variant) => variant.route).join(" "),
+        ruleSet.variants.map((variant) => variant.parseStatus).join(" "),
+      ]
+        .filter(Boolean)
+        .join(" "),
+    }
+  },
+)
+
 const requirementsByProgramme = new Map<string, ProcessedEntryRequirement[]>()
 for (const requirement of processedEntryRequirements) {
   const key = makeRequirementKey(
@@ -1611,6 +1667,18 @@ const report = {
     ).length,
     diplomaRouteCount: processedEntryRequirements.filter((row) => row.acceptsDiploma === "yes").length,
   },
+  requirementRules: {
+    processedCount: processedRequirementRules.length,
+    structuredVariantCount: processedRequirementRules.flatMap((row) => row.variants).filter(
+      (variant) => variant.parseStatus === "structured",
+    ).length,
+    partialVariantCount: processedRequirementRules.flatMap((row) => row.variants).filter(
+      (variant) => variant.parseStatus === "partial",
+    ).length,
+    unparsedVariantCount: processedRequirementRules.flatMap((row) => row.variants).filter(
+      (variant) => variant.parseStatus === "unparsed",
+    ).length,
+  },
 }
 
 writeFileSync(join(outputDir, "institutions.json"), JSON.stringify(processedInstitutions, null, 2))
@@ -1619,9 +1687,14 @@ writeFileSync(
   join(outputDir, "entry-requirements.json"),
   JSON.stringify(processedEntryRequirements, null, 2),
 )
+writeFileSync(
+  join(outputDir, "requirement-rules.json"),
+  JSON.stringify(processedRequirementRules, null, 2),
+)
 writeJsonl(join(outputDir, "institutions.jsonl"), processedInstitutions)
 writeJsonl(join(outputDir, "programmes.jsonl"), processedProgrammes)
 writeJsonl(join(outputDir, "entry-requirements.jsonl"), processedEntryRequirements)
+writeJsonl(join(outputDir, "requirement-rules.jsonl"), processedRequirementRules)
 writeFileSync(join(outputDir, "data-quality-report.json"), JSON.stringify(report, null, 2))
 
 console.log(JSON.stringify(report, null, 2))

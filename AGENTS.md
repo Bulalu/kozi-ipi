@@ -46,6 +46,7 @@ Processed import files:
 data/processed/institutions.jsonl
 data/processed/programmes.jsonl
 data/processed/entry-requirements.jsonl
+data/processed/requirement-rules.jsonl
 ```
 
 Import processed data into Convex with:

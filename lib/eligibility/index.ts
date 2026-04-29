@@ -1,6 +1,7 @@
 export * from "./evaluate"
 export * from "./explanations"
 export * from "./grades"
+export * from "./parse-requirements"
 export * from "./points"
 export * from "./profile"
 export * from "./subjects"

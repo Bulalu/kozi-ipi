@@ -19,8 +19,8 @@
     "tcu:extract": "bun scripts/extract-tcu-secondary-guidebook.ts",
     "udsm:compare": "bun scripts/compare-udsm-prospectus.ts",
     "data:build": "bun scripts/build-processed-data.ts",
-    "data:import": "convex import --replace --yes --table institutions data/processed/institutions.jsonl && convex import --replace --yes --table programmes data/processed/programmes.jsonl && convex import --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl",
-    "data:import:prod": "convex import --prod --replace --yes --table institutions data/processed/institutions.jsonl && convex import --prod --replace --yes --table programmes data/processed/programmes.jsonl && convex import --prod --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl"
+    "data:import": "convex import --replace --yes --table institutions data/processed/institutions.jsonl && convex import --replace --yes --table programmes data/processed/programmes.jsonl && convex import --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl && convex import --replace --yes --table requirementRules data/processed/requirement-rules.jsonl",
+    "data:import:prod": "convex import --prod --replace --yes --table institutions data/processed/institutions.jsonl && convex import --prod --replace --yes --table programmes data/processed/programmes.jsonl && convex import --prod --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl && convex import --prod --replace --yes --table requirementRules data/processed/requirement-rules.jsonl"
   },
   "dependencies": {
     "@convex-dev/rate-limiter": "^0.3.2",
