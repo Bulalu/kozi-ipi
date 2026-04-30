@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from kozi_analysis.aliases import AliasPairSummary, AliasReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
 from kozi_analysis.profiling import InventoryReport
 
@@ -229,5 +230,83 @@ def write_source_overlap_report(
         render_source_overlap_markdown(report), encoding="utf-8"
     )
     (output_dir / "source-overlap.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def _render_alias_pair(pair: AliasPairSummary) -> list[str]:
+    lines = [
+        f"## `{pair.left_source}` vs `{pair.right_source}`",
+        "",
+        f"- Left records inspected: {pair.left_count}",
+        f"- Right records inspected: {pair.right_count}",
+        f"- Candidate examples shown: {pair.candidate_count}",
+        f"- High-confidence examples shown: {pair.high_confidence_count}",
+        "",
+        "| Score | Reason | Left | Right | Context |",
+        "| ---: | --- | --- | --- | --- |",
+    ]
+
+    for candidate in pair.examples:
+        context = " / ".join(
+            item for item in [candidate.left_context, candidate.right_context] if item
+        )
+        lines.append(
+            f"| {candidate.score:.4f} | {candidate.reason} | "
+            f"{candidate.left_name} | {candidate.right_name} | {context} |"
+        )
+
+    return lines
+
+
+def render_alias_markdown(report: AliasReport) -> str:
+    lines = [
+        "# Identity Aliases",
+        "",
+        "## Question This Answers",
+        "",
+        "Which institution and programme names look like they may refer to the "
+        "same thing even when exact matching fails?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as a review queue for alias and fuzzy-matching rules. These are "
+        "candidate matches only; they are not production merge decisions.",
+        "",
+        "## Institution Alias Candidates",
+        "",
+    ]
+
+    for pair in report.institution_pairs:
+        lines.extend(_render_alias_pair(pair))
+        lines.append("")
+
+    lines.extend(["## Programme Alias Candidates", ""])
+    for pair in report.programme_pairs:
+        lines.extend(_render_alias_pair(pair))
+        lines.append("")
+
+    lines.extend(
+        [
+            "## Next Inspection Prompts",
+            "",
+            "- Which candidate rules are safe enough to encode as deterministic "
+            "normalization?",
+            "- Which matches need a manual alias table instead of fuzzy matching?",
+            "- Which programme candidates are title leaks rather than aliases?",
+            "- Which candidate groups should block production export replacement?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_alias_reports(report: AliasReport, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "identity-aliases.md").write_text(
+        render_alias_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "identity-aliases.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

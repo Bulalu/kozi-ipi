@@ -21,21 +21,21 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Can we trust the identity fields that connect institutions and programmes across
-the raw, enrichment, extracted, and processed datasets?
+Which identity aliases look safe enough to inspect before production cleaning?
 
-Short answer so far: not fully.
+Short answer so far: we have review queues, not merge rules.
 
-Exact matching works well for some canonical-to-processed paths, but it fails
-badly for source names that include campus names, abbreviations, suffixes, or
-different institution naming styles. That means identity/alias analysis must
-happen before deeper production cleaning.
+Exact matching works well for some canonical-to-processed paths, but source
+names drift through campus names, abbreviations, suffixes, and punctuation. The
+new alias notebook surfaces candidate matches for review.
 
 ## What Exists Now
 
 - `notebooks/01_inventory.py` answers: what files, rows, and columns do we have?
 - `notebooks/02_source_overlap.py` answers: which sources share institution and
   programme identities under exact normalized matching?
+- `notebooks/03_identity_aliases.py` answers: which names are candidate aliases
+  when exact matching fails?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -55,6 +55,8 @@ happen before deeper production cleaning.
   campus/location/abbreviation text.
 - Logo enrichment also does not exact-match the pathway institution names, which
   suggests the production pipeline needs explicit alias handling.
+- Programme alias matching must include institution context. Programme title
+  alone creates too many false matches.
 
 ## Why This Matters
 
@@ -69,18 +71,17 @@ So the next correct move is identity analysis, not export replacement.
 
 ## Next Question
 
-What institution and programme alias rules are safe enough to propose for the
-production pipeline?
+Which fields are missing or weak for search, eligibility, location, contact, and
+application workflows?
 
 The next notebook should be:
 
 ```text
-notebooks/03_identity_aliases.py
+notebooks/04_feature_readiness.py
 ```
 
-It should inspect abbreviation handling, campus suffixes, location suffixes,
-programme-code clues, and candidate fuzzy matches. It should not mutate
-processed data yet.
+It should inspect field coverage against the product features we care about. It
+should not mutate processed data yet.
 
 ## How To Read The Files
 
@@ -95,6 +96,7 @@ Then read generated reports:
 ```text
 analysis/reports/latest/inventory.md
 analysis/reports/latest/source-overlap.md
+analysis/reports/latest/identity-aliases.md
 ```
 
 For implementation progress and decisions:
@@ -117,6 +119,7 @@ Run from `analysis/`:
 ```sh
 uv run notebooks/01_inventory.py --write-report true
 uv run notebooks/02_source_overlap.py --write-report true
+uv run notebooks/03_identity_aliases.py --write-report true
 ```
 
 Run verification:

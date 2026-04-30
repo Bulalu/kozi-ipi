@@ -55,6 +55,12 @@ The goal is to understand the current raw, enrichment, and processed data before
   very low overlap for TCU extracted institution/programme names and logo
   enrichment, which indicates the next analysis should focus on identity alias
   and fuzzy matching needs.
+- 2026-04-30: `uv run notebooks/03_identity_aliases.py --write-report true`
+  generated `analysis/reports/latest/identity-aliases.md` and
+  `analysis/reports/latest/identity-aliases.json`.
+- 2026-04-30: Identity alias analysis now produces candidate review queues for
+  3 institution source pairs and 3 programme source pairs. Programme candidates
+  require institution-context overlap because title-only matching is too noisy.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -76,11 +82,21 @@ Use this file for execution details, checklist status, and decision history.
 - [x] Add reusable dashboard snapshot helpers under `analysis/src/kozi_analysis`.
 - [x] Update README, AGENTS, and STATUS to point to the dashboard first.
 
-## Completed Task
+## Completed Tasks
+
+- [x] Create `analysis/notebooks/03_identity_aliases.py` to inspect institution
+  and programme identity drift, alias patterns, abbreviation handling, campus
+  suffixes, and candidate fuzzy-matching rules before production cleaning
+  changes.
+- [x] Add reusable identity-alias helpers under `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/identity-aliases.md`.
+- [x] Generate machine-readable identity-alias output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for alias logic.
 
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
-programme identity overlap across canonical raw, fallback raw, enrichment,
-extracted, and processed sources.
+  programme identity overlap across canonical raw, fallback raw, enrichment,
+  extracted, and processed sources.
 - [x] Add reusable source-overlap helpers under `analysis/src/kozi_analysis`.
 - [x] Generate `analysis/reports/latest/source-overlap.md`.
 - [x] Generate machine-readable source-overlap output under
@@ -89,9 +105,9 @@ extracted, and processed sources.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/03_identity_aliases.py` to inspect institution and
-programme identity drift, alias patterns, abbreviation handling, campus suffixes,
-and candidate fuzzy-matching rules before production cleaning changes.
+Create `analysis/notebooks/04_feature_readiness.py` to inspect field coverage
+for search, eligibility, location, contact, application, and institution-card
+workflows before production export replacement.
 
 ## Decision Log
 

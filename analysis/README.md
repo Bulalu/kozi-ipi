@@ -40,6 +40,12 @@ Open the source-overlap notebook with:
 uv run marimo edit notebooks/02_source_overlap.py
 ```
 
+Open the identity-alias notebook with:
+
+```sh
+uv run marimo edit notebooks/03_identity_aliases.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -52,6 +58,12 @@ Regenerate the source-overlap report with:
 
 ```sh
 uv run notebooks/02_source_overlap.py --write-report true
+```
+
+Regenerate the identity-alias report with:
+
+```sh
+uv run notebooks/03_identity_aliases.py --write-report true
 ```
 
 Generated reports are written to:

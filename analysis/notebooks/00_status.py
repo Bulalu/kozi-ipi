@@ -66,6 +66,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.alias_counts:
+        mo.ui.table(snapshot.alias_counts, label="Alias review queues")
+    else:
+        mo.md("Alias review queues: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

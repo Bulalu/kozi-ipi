@@ -15,6 +15,7 @@ class StatusSnapshot:
     next_notebook: str
     data_counts: list[dict[str, int | str]]
     source_counts: list[dict[str, int | str]]
+    alias_counts: list[dict[str, int | str]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -30,6 +31,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     inventory = _read_json(report_dir / "inventory.json")
     overlap = _read_json(report_dir / "source-overlap.json")
+    aliases = _read_json(report_dir / "identity-aliases.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -50,33 +52,70 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         },
     ]
 
+    alias_counts = [
+        {
+            "source_pair": f"{pair['left_source']} -> {pair['right_source']}",
+            "type": pair["record_type"],
+            "examples": int(pair["candidate_count"]),
+            "high_confidence": int(pair["high_confidence_count"]),
+        }
+        for pair in aliases.get("institution_pairs", [])
+        + aliases.get("programme_pairs", [])
+    ]
+
+    completed_notebooks = [
+        {
+            "notebook": "01_inventory.py",
+            "question": "What data files, rows, and columns do we have?",
+            "report": "reports/latest/inventory.md",
+        },
+        {
+            "notebook": "02_source_overlap.py",
+            "question": "Which sources share institution/programme identities?",
+            "report": "reports/latest/source-overlap.md",
+        },
+    ]
+    if aliases:
+        completed_notebooks.append(
+            {
+                "notebook": "03_identity_aliases.py",
+                "question": (
+                    "Which names are candidate aliases when exact matching fails?"
+                ),
+                "report": "reports/latest/identity-aliases.md",
+            }
+        )
+
     return StatusSnapshot(
         current_goal=(
             "Build a production Marimo/Python analysis workbench before replacing "
             "the current data export pipeline."
         ),
         current_question=(
-            "Can we trust the identity fields that connect institutions and "
-            "programmes across sources?"
+            "Which identity aliases look safe enough to inspect before production "
+            "cleaning?"
         ),
         short_answer=(
-            "Not fully. Exact matching works in some canonical paths, but source "
-            "names drift through campus names, abbreviations, suffixes, and "
-            "different naming styles."
+            "We now have review queues for institution and programme alias "
+            "candidates. These are evidence for humans, not automatic merge rules."
         ),
         next_question=(
-            "Which institution and programme alias rules are safe enough to "
-            "propose for production cleaning?"
+            "Which fields are missing or weak for search, eligibility, location, "
+            "contact, and application workflows?"
         ),
-        next_notebook="notebooks/03_identity_aliases.py",
+        next_notebook="notebooks/04_feature_readiness.py",
         data_counts=data_counts,
         source_counts=source_counts,
+        alias_counts=alias_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
             "Canonical pathway data connects to processed data better than the "
             "TCU extraction and logo enrichment sources do.",
-            "Identity/alias analysis is the next blocker before deeper cleaning.",
+            "Alias candidates show campus suffixes, location suffixes, "
+            "abbreviations, and title punctuation need explicit handling.",
+            "Programme alias candidates must include institution context; programme "
+            "title alone is too noisy.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",
@@ -84,18 +123,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "to the wrong institution.",
             "Coverage numbers can look misleading until source overlap is clear.",
         ],
-        completed_notebooks=[
-            {
-                "notebook": "01_inventory.py",
-                "question": "What data files, rows, and columns do we have?",
-                "report": "reports/latest/inventory.md",
-            },
-            {
-                "notebook": "02_source_overlap.py",
-                "question": "Which sources share institution/programme identities?",
-                "report": "reports/latest/source-overlap.md",
-            },
-        ],
+        completed_notebooks=completed_notebooks,
     )
 
 
