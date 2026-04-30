@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T09:42:41.383Z",
+  "generatedAt": "2026-04-30T09:49:10.006Z",
   "canonicalDataset": "tanzania-education-pathways-dataset",
   "fallbackDataset": "tanzania-post-form-four-dataset",
   "enrichmentDatasets": [
@@ -24,7 +24,7 @@
     "extractedTcuSecondaryGuidebookCount": 855,
     "udsmProspectusSupplementCount": 27,
     "nactvetEnrichmentCount": 1771,
-    "processedCount": 4551,
+    "processedCount": 4440,
     "quarantinedTitleLeakCount": 21,
     "quarantinedTitleLeakExamples": [
       {
@@ -129,15 +129,15 @@
         "reviewReasons": []
       }
     ],
-    "fromPathwaysCount": 2897,
-    "fromTcuSecondaryGuidebookExtractionCount": 854,
+    "fromPathwaysCount": 2838,
+    "fromTcuSecondaryGuidebookExtractionCount": 797,
     "fromUdsmProspectusSupplementCount": 27,
-    "fallbackOnlyCount": 1654,
-    "degreeCount": 1511,
-    "formSixRouteCount": 1829,
-    "certificateRouteCount": 1206,
-    "diplomaRouteCount": 835,
-    "needsReviewCount": 1646
+    "fallbackOnlyCount": 1602,
+    "degreeCount": 1410,
+    "formSixRouteCount": 1763,
+    "certificateRouteCount": 1205,
+    "diplomaRouteCount": 773,
+    "needsReviewCount": 1600
   },
   "entryRequirements": {
     "rawPathwayCount": 4503,
@@ -149,12 +149,12 @@
     "diplomaRouteCount": 896
   },
   "requirementRules": {
-    "processedCount": 6995,
-    "fromProgrammeFallbackCount": 1637,
+    "processedCount": 6946,
+    "fromProgrammeFallbackCount": 1588,
     "programmesWithoutExactRuleCount": 409,
     "programmesWithoutExactRuleButHasRequirementsCount": 0,
-    "structuredVariantCount": 6124,
-    "partialVariantCount": 1708,
-    "unparsedVariantCount": 2736
+    "structuredVariantCount": 6078,
+    "partialVariantCount": 1695,
+    "unparsedVariantCount": 2731
   }
 }

@@ -313,7 +313,11 @@ function normalizeAwardLevel(value: string | undefined) {
   if (normalized.includes("diploma")) return "ordinary diploma"
   if (normalized.includes("vocational")) return "vocational certificate"
   if (normalized.includes("certificate")) return "certificate"
-  if (normalized.includes("degree") || normalized.includes("bachelor")) return "degree"
+  if (
+    normalized.includes("degree") ||
+    normalized.includes("bachelor") ||
+    normalized === "doctor of medicine"
+  ) return "degree"
   return normalized
 }
 
@@ -506,6 +510,7 @@ function programmeFingerprint(value: string | undefined) {
     )
     .replace(/^in\s+/, "")
     .replace(/\s+in\s+/g, " ")
+    .replace(/\s+of\s+/g, " ")
     .replace(/\s+and\s+/g, " ")
     .replace(/\s+with\s+/g, " ")
     .trim()
@@ -1615,7 +1620,18 @@ for (const programme of [
   programmesByKey.set(key, existing ? mergeProgramme(existing, programme) : programme)
 }
 
-const allProcessedProgrammes = [...programmesByKey.values()]
+const programmesByNaturalKey = new Map<string, ProcessedProgramme>()
+for (const programme of programmesByKey.values()) {
+  const key = makeProgrammeKey(
+    programme.normalizedProgrammeName,
+    programme.normalizedInstitutionName,
+    programme.awardLevel,
+  )
+  const existing = programmesByNaturalKey.get(key)
+  programmesByNaturalKey.set(key, existing ? mergeProgramme(existing, programme) : programme)
+}
+
+const allProcessedProgrammes = [...programmesByNaturalKey.values()]
 const quarantinedProgrammes = allProcessedProgrammes.filter((programme) =>
   programmeNameContainsRequirementLeak(programme.programmeName),
 )
