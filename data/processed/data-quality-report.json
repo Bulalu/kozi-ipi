@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-29T22:27:56.260Z",
+  "generatedAt": "2026-04-30T09:17:05.423Z",
   "canonicalDataset": "tanzania-education-pathways-dataset",
   "fallbackDataset": "tanzania-post-form-four-dataset",
   "enrichmentDatasets": [
@@ -154,7 +154,7 @@
     "programmesWithoutExactRuleCount": 409,
     "programmesWithoutExactRuleButHasRequirementsCount": 0,
     "structuredVariantCount": 5595,
-    "partialVariantCount": 2239,
-    "unparsedVariantCount": 2734
+    "partialVariantCount": 2237,
+    "unparsedVariantCount": 2736
   }
 }

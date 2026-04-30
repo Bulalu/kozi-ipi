@@ -287,6 +287,41 @@ assert(
   "Parser should extract required-plus-one-of Form Six subject groups."
 )
 
+const parsedOLevelSupportRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_o_level_support",
+  institutionKey: "fixture_university",
+  rawRequirementText:
+    "Two principal passes in Economics, Accountancy, Commerce, Physics, Chemistry, Biology, Geography or Advanced Mathematics. If one of the principal passes is not in Advanced Mathematics an applicant must have at least a subsidiary pass or a minimum of D grade in Mathematics at O-Level.",
+  sourceUrl: "https://example.test/source/o-level-support",
+  confidence: "high",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "yes",
+  acceptsCertificate: "no",
+  acceptsDiploma: "no",
+  acceptsEquivalent: "no",
+})
+const parsedOLevelSupportClauses =
+  parsedOLevelSupportRuleSet.variants[0]?.clauses ?? []
+assert(
+  parsedOLevelSupportClauses.some(
+    (clause) =>
+      clause.kind === "o_level_subject_grade" &&
+      clause.subject === "mathematics" &&
+      clause.minGrade === "D"
+  ),
+  "Parser should normalize O-Level support subject grade clauses to the base CSEE subject."
+)
+assert(
+  parsedOLevelSupportClauses.every(
+    (clause) =>
+      !(
+        clause.kind === "acsee_subject_grade" &&
+        clause.subject.includes("o_level")
+      )
+  ),
+  "Parser should not turn O-Level support text into fake ACSEE subjects."
+)
+
 const healthEvaluation = evaluateRequirementRuleSet(
   healthRuleSet,
   normalizedDiplomaProfile

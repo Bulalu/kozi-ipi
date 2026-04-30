@@ -17,9 +17,11 @@ import { Input } from "@/components/ui/input"
 import { api } from "@/convex/_generated/api"
 import {
   calculateAcseePoints,
+  countCseePasses,
   countAcseePrincipalPasses,
   eligibilityStatusLabels,
   type AcseeGrade,
+  type CseeGrade,
   type EligibilityStatus,
 } from "@/lib/eligibility"
 
@@ -31,6 +33,11 @@ type Route = "form_six" | "diploma"
 type SubjectGrade = {
   subject: string
   grade: AcseeGrade
+}
+
+type CseeSubjectGrade = {
+  subject: string
+  grade: CseeGrade
 }
 
 type AcseeCombination = {
@@ -47,6 +54,9 @@ type SubmittedProfile =
         division?: "I" | "II" | "III" | "IV" | "0"
         combination?: string
         subjects: SubjectGrade[]
+      }
+      csee?: {
+        subjects: CseeSubjectGrade[]
       }
     }
   | {
@@ -89,7 +99,21 @@ type EligibilityResult = {
 }
 
 const acseeGrades: AcseeGrade[] = ["A", "B", "C", "D", "E", "S", "F"]
+const cseeGrades: CseeGrade[] = ["A", "B", "C", "D", "E", "F"]
 const acseeDivisions = ["I", "II", "III", "IV", "0"] as const
+const cseeSupportSubjects = [
+  "Basic Mathematics",
+  "English Language",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "Geography",
+  "Commerce",
+  "Book Keeping",
+  "Accountancy",
+  "Computer Studies",
+  "Agriculture",
+]
 
 const acseeCombinations: AcseeCombination[] = [
   {
@@ -229,6 +253,8 @@ export function EligibilityPageClient() {
   const [acseeDivision, setAcseeDivision] =
     useState<(typeof acseeDivisions)[number]>("II")
   const [subjects, setSubjects] = useState<SubjectGrade[]>(defaultSubjects)
+  const [cseeSubjects, setCseeSubjects] = useState<CseeSubjectGrade[]>([])
+  const [showOLevelSupport, setShowOLevelSupport] = useState(false)
   const [diplomaAwardName, setDiplomaAwardName] = useState(
     "Diploma in Clinical Medicine"
   )
@@ -254,6 +280,15 @@ export function EligibilityPageClient() {
       principalPasses: countAcseePrincipalPasses(grades),
     }
   }, [subjects])
+  const cseeSummary = useMemo(() => {
+    const grades = cseeSubjects
+      .filter((subject) => subject.subject.trim())
+      .map((subject) => subject.grade)
+
+    return {
+      passCount: countCseePasses(grades),
+    }
+  }, [cseeSubjects])
 
   const queryArgs = useMemo(() => {
     if (!submittedProfile) {
@@ -295,6 +330,10 @@ export function EligibilityPageClient() {
     submittedProfile && paginatedResults.status === "LoadingFirstPage"
   const canLoadMore = paginatedResults.status === "CanLoadMore"
   const groupedResults = groupResults(results)
+  const oLevelBlockedCount =
+    submittedProfile?.applicationRoute === "form_six"
+      ? countOLevelBlockedResults(results)
+      : 0
 
   function submitEligibility() {
     const nextError = validateForm()
@@ -369,6 +408,18 @@ export function EligibilityPageClient() {
               grade: subject.grade,
             })),
         },
+        ...(cseeSubjects.some((subject) => subject.subject.trim())
+          ? {
+              csee: {
+                subjects: cseeSubjects
+                  .filter((subject) => subject.subject.trim())
+                  .map((subject) => ({
+                    subject: subject.subject.trim(),
+                    grade: subject.grade,
+                  })),
+              },
+            }
+          : {}),
       }
     }
 
@@ -436,8 +487,13 @@ export function EligibilityPageClient() {
                   combination={combination}
                   setAcseeDivision={setAcseeDivision}
                   setCombination={setCombination}
+                  setCseeSubjects={setCseeSubjects}
                   setSubjects={setSubjects}
                   subjects={subjects}
+                  cseeSubjects={cseeSubjects}
+                  cseeSummary={cseeSummary}
+                  showOLevelSupport={showOLevelSupport}
+                  setShowOLevelSupport={setShowOLevelSupport}
                   summary={acseeSummary}
                 />
               ) : (
@@ -493,6 +549,13 @@ export function EligibilityPageClient() {
             <NoResultsState />
           ) : (
             <div className="space-y-8">
+              {oLevelBlockedCount > 0 ? (
+                <OLevelSupportPrompt
+                  count={oLevelBlockedCount}
+                  isExpanded={showOLevelSupport}
+                  onOpen={() => setShowOLevelSupport(true)}
+                />
+              ) : null}
               <BucketSummary results={results} />
               {statusOrder.map((status) =>
                 groupedResults[status].length > 0 ? (
@@ -601,18 +664,30 @@ function RouteSelector({
 
 function FormSixFields({
   acseeDivision,
+  cseeSubjects,
+  cseeSummary,
   combination,
   setAcseeDivision,
   setCombination,
+  setCseeSubjects,
+  setShowOLevelSupport,
   setSubjects,
+  showOLevelSupport,
   subjects,
   summary,
 }: {
   acseeDivision: (typeof acseeDivisions)[number]
+  cseeSubjects: CseeSubjectGrade[]
+  cseeSummary: {
+    passCount: number
+  }
   combination: string
   setAcseeDivision: (division: (typeof acseeDivisions)[number]) => void
   setCombination: (combination: string) => void
+  setCseeSubjects: (subjects: CseeSubjectGrade[]) => void
+  setShowOLevelSupport: (visible: boolean) => void
   setSubjects: (subjects: SubjectGrade[]) => void
+  showOLevelSupport: boolean
   subjects: SubjectGrade[]
   summary: {
     points: number
@@ -769,6 +844,159 @@ function FormSixFields({
           Points are derived from the subject grades you enter here.
         </p>
       </div>
+      <OLevelSupportFields
+        cseeSubjects={cseeSubjects}
+        isOpen={showOLevelSupport}
+        setCseeSubjects={setCseeSubjects}
+        setIsOpen={setShowOLevelSupport}
+        summary={cseeSummary}
+      />
+    </div>
+  )
+}
+
+function OLevelSupportFields({
+  cseeSubjects,
+  isOpen,
+  setCseeSubjects,
+  setIsOpen,
+  summary,
+}: {
+  cseeSubjects: CseeSubjectGrade[]
+  isOpen: boolean
+  setCseeSubjects: (subjects: CseeSubjectGrade[]) => void
+  setIsOpen: (visible: boolean) => void
+  summary: {
+    passCount: number
+  }
+}) {
+  function updateSubject(index: number, update: Partial<CseeSubjectGrade>) {
+    setCseeSubjects(
+      cseeSubjects.map((subject, subjectIndex) =>
+        subjectIndex === index ? { ...subject, ...update } : subject
+      )
+    )
+  }
+
+  function addSubject(subjectName = "") {
+    const exists = cseeSubjects.some(
+      (subject) =>
+        subject.subject.trim().toLowerCase() ===
+        subjectName.trim().toLowerCase()
+    )
+    if (subjectName && exists) return
+
+    setCseeSubjects([...cseeSubjects, { subject: subjectName, grade: "D" }])
+  }
+
+  return (
+    <div className="border-t border-brand-ink/8 pt-4">
+      <button
+        className="flex w-full items-start justify-between gap-3 text-left"
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+      >
+        <span>
+          <LabelText>O-Level support subjects</LabelText>
+          <span className="mt-1 block text-[11.5px] leading-5 text-brand-ink/50">
+            Add CSEE grades only when a programme asks for O-Level Math,
+            English, or science support.
+          </span>
+        </span>
+        <span className="rounded-full border border-brand-ink/10 px-2 py-1 text-[11px] font-semibold text-brand-ink/55">
+          {isOpen ? "Hide" : "Add"}
+        </span>
+      </button>
+
+      {isOpen ? (
+        <div className="mt-3 space-y-3">
+          <div className="flex flex-wrap gap-1.5">
+            {cseeSupportSubjects.slice(0, 7).map((subject) => (
+              <button
+                className="rounded-full border border-brand-ink/10 px-2.5 py-1 text-[11.5px] font-medium text-brand-ink/65 transition hover:border-brand-blue/35 hover:text-brand-blue"
+                key={subject}
+                onClick={() => addSubject(subject)}
+                type="button"
+              >
+                {subject}
+              </button>
+            ))}
+          </div>
+
+          <div className="space-y-2">
+            {cseeSubjects.map((subject, index) => (
+              <div
+                className="grid grid-cols-[1fr_4.5rem_2rem] gap-2"
+                key={index}
+              >
+                <Input
+                  className="h-10 rounded-lg text-[13px]"
+                  list="csee-support-subjects"
+                  onChange={(event) =>
+                    updateSubject(index, { subject: event.target.value })
+                  }
+                  placeholder="Basic Mathematics"
+                  value={subject.subject}
+                />
+                <select
+                  className="h-10 rounded-lg border border-brand-ink/10 bg-white px-2 text-[13px]"
+                  onChange={(event) =>
+                    updateSubject(index, {
+                      grade: event.target.value as CseeGrade,
+                    })
+                  }
+                  value={subject.grade}
+                >
+                  {cseeGrades.map((grade) => (
+                    <option key={grade} value={grade}>
+                      {grade}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  aria-label="Remove O-Level subject"
+                  className="grid size-10 place-items-center rounded-lg text-brand-ink/45 transition hover:bg-brand-ink/5 hover:text-brand-ink"
+                  onClick={() =>
+                    setCseeSubjects(
+                      cseeSubjects.filter(
+                        (_, subjectIndex) => subjectIndex !== index
+                      )
+                    )
+                  }
+                  type="button"
+                >
+                  <XIcon className="size-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <datalist id="csee-support-subjects">
+            {cseeSupportSubjects.map((subject) => (
+              <option key={subject} value={subject} />
+            ))}
+          </datalist>
+          <button
+            className="text-[12.5px] font-semibold text-brand-blue"
+            onClick={() => addSubject()}
+            type="button"
+          >
+            Add another O-Level subject
+          </button>
+
+          <div className="rounded-lg bg-brand-ink/[0.035] px-3 py-2">
+            <p className="text-[10.5px] font-semibold tracking-[0.13em] text-brand-ink/40 uppercase">
+              O-Level passes entered
+            </p>
+            <p className="mt-0.5 text-[14px] font-semibold">
+              {summary.passCount}
+            </p>
+          </div>
+          <p className="text-[11.5px] leading-5 text-brand-ink/50">
+            These grades are used only to resolve programmes that explicitly ask
+            for O-Level support subjects.
+          </p>
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -977,6 +1205,41 @@ function BucketSummary({ results }: { results: EligibilityResult[] }) {
             </p>
           </div>
         ))}
+      </div>
+    </div>
+  )
+}
+
+function OLevelSupportPrompt({
+  count,
+  isExpanded,
+  onOpen,
+}: {
+  count: number
+  isExpanded: boolean
+  onOpen: () => void
+}) {
+  return (
+    <div className="rounded-lg border border-amber-500/25 bg-amber-50 px-4 py-3 text-amber-950">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-[13px] font-semibold">
+            {count} result{count === 1 ? "" : "s"} need O-Level grades to verify.
+          </p>
+          <p className="mt-1 text-[12.5px] leading-5 text-amber-950/70">
+            Some Form Six degree rules still require CSEE support subjects like
+            Basic Mathematics or English.
+          </p>
+        </div>
+        <Button
+          className="h-9 shrink-0 rounded-full border-amber-500/30 bg-white px-4 text-[12.5px] font-semibold text-amber-950 hover:bg-amber-100"
+          disabled={isExpanded}
+          onClick={onOpen}
+          type="button"
+          variant="outline"
+        >
+          {isExpanded ? "O-Level section opened" : "Add O-Level grades"}
+        </Button>
       </div>
     </div>
   )
@@ -1202,6 +1465,18 @@ function groupResults(results: EligibilityResult[]) {
       not_eligible: [],
     }
   )
+}
+
+function countOLevelBlockedResults(results: EligibilityResult[]) {
+  return results.filter(
+    (result) =>
+      result.eligibility.status === "cannot_determine" &&
+      result.eligibility.missingClauses.some(isOLevelMissingClause)
+  ).length
+}
+
+function isOLevelMissingClause(clause: string) {
+  return /\b(O-Level|CSEE)\b/i.test(clause)
 }
 
 function buildSubjectsForCombination(code: string): SubjectGrade[] {

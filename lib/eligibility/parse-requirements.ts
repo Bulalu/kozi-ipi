@@ -371,7 +371,10 @@ function parseSubjectGradeClauses(
 
   for (const match of text.matchAll(gradePattern)) {
     const grade = match[1]?.toUpperCase()
-    const subjectText = match[2] ?? ""
+    const subjectText = cleanGradeSubjectText(match[2] ?? "")
+    if (level === "acsee" && referencesOLevel(match[2] ?? "")) {
+      continue
+    }
     const subjects = parseRequirementSubjects(subjectText)
     if (!grade || subjects.length === 0) {
       continue
@@ -406,6 +409,22 @@ function parseSubjectGradeClauses(
   }
 
   return clauses
+}
+
+function cleanGradeSubjectText(value: string) {
+  return value
+    .replace(/\b(?:at|a)\s+o-?\s*level\b/gi, " ")
+    .replace(/\bo-?\s*level\b/gi, " ")
+    .replace(/\bordinary\s+level\b/gi, " ")
+    .replace(/\bcsee\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+function referencesOLevel(value: string) {
+  return /\b(?:at|a)\s+o-?\s*level\b|\bo-?\s*level\b|\bordinary\s+level\b|\bcsee\b/i.test(
+    value
+  )
 }
 
 function parsePriorFields(source: RequirementSource) {
