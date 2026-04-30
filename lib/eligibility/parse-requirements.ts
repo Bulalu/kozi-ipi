@@ -184,7 +184,7 @@ function classifyParseStatus(
   const text = rawRequirementText.toLowerCase()
   const hasComplexBranching =
     /foundation|equivalent|work experience|license/.test(text)
-  const hasConditional = /\bif\b|without|unless|must have/.test(text)
+  const hasConditional = /\bif\b|without|unless/.test(text)
   const hasSubjectSpecificity =
     /including|following subjects|from the following/.test(text)
   const hasSubjectGroupClause = clauses.some((clause) => clause.kind === "subject_group")
@@ -282,8 +282,9 @@ function parseAcseeSubjectClauses(
   text: string,
   principalPasses: number | undefined
 ): RequirementClause[] {
+  const subjectGradeClauses = parseSubjectGradeClauses(text, "acsee")
   const clauses: RequirementClause[] = [
-    ...parseSubjectGradeClauses(text, "acsee"),
+    ...subjectGradeClauses,
     ...parseSubsidiarySubjectGroups(text),
   ]
 
@@ -327,7 +328,10 @@ function parseAcseeSubjectClauses(
       mode: count ? "at_least_n_of" : "all_of",
       count,
       subjects,
-      minGrade: parseMinimumAcseeGrade(text),
+      minGrade:
+        subjectGradeClauses.length > 0
+          ? undefined
+          : parseMinimumAcseeGrade(text),
     })
   }
 

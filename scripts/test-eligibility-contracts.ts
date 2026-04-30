@@ -262,6 +262,46 @@ assert(
   "Parser should extract per-subject ACSEE grade floors."
 )
 
+const parsedPcbSpecificGradeRuleSet = parseRequirementRuleSet({
+  programmeKey: "fixture_nursing_specific_grades",
+  institutionKey: "fixture_university",
+  rawRequirementText:
+    "Three principal passes in Physics, Chemistry and Biology with a minimum of 8 points: Whereby one must have at least C grade in Chemistry and Biology and at least D grade in Physics.",
+  sourceUrl: "https://example.test/source/nursing-specific-grades",
+  confidence: "high",
+  acceptsFormFourDirect: "no",
+  acceptsFormSix: "yes",
+  acceptsCertificate: "no",
+  acceptsDiploma: "no",
+  acceptsEquivalent: "no",
+})
+const parsedPcbSpecificGradeVariant = parsedPcbSpecificGradeRuleSet.variants[0]
+assert.equal(
+  parsedPcbSpecificGradeVariant?.parseStatus,
+  "structured",
+  "Parser should treat explicit must-have subject grade floors as structured."
+)
+assert(
+  parsedPcbSpecificGradeVariant?.clauses.some(
+    (clause) =>
+      clause.kind === "acsee_subject_grade" &&
+      clause.subject === "physics" &&
+      clause.minGrade === "D"
+  ),
+  "Parser should preserve the lower Physics grade floor when Chemistry/Biology require C."
+)
+assert(
+  parsedPcbSpecificGradeVariant?.clauses.every(
+    (clause) =>
+      !(
+        clause.kind === "subject_group" &&
+        clause.minGrade === "C" &&
+        clause.subjects.includes("physics")
+      )
+  ),
+  "Parser should not apply the Chemistry/Biology C floor to the whole PCB subject group."
+)
+
 const parsedEitherRuleSet = parseRequirementRuleSet({
   programmeKey: "fixture_nursing_form_six",
   institutionKey: "fixture_university",
