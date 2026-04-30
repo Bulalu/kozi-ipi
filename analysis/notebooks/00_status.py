@@ -75,6 +75,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.feature_counts:
+        mo.ui.table(snapshot.feature_counts, label="Feature readiness")
+    else:
+        mo.md("Feature readiness: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

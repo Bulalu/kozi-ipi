@@ -61,6 +61,12 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-04-30: Identity alias analysis now produces candidate review queues for
   3 institution source pairs and 3 programme source pairs. Programme candidates
   require institution-context overlap because title-only matching is too noisy.
+- 2026-04-30: `uv run notebooks/04_feature_readiness.py --write-report true`
+  generated `analysis/reports/latest/feature-readiness.md` and
+  `analysis/reports/latest/feature-readiness.json`.
+- 2026-04-30: Feature readiness showed search coverage is strongest, location
+  is mostly usable, eligibility is partial, and contact/application/logo fields
+  are the biggest weak areas.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -94,6 +100,15 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for alias logic.
 
+- [x] Create `analysis/notebooks/04_feature_readiness.py` to inspect field
+  coverage for search, eligibility, location, contact, application, and
+  institution-card workflows before production export replacement.
+- [x] Add reusable feature-readiness helpers under `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/feature-readiness.md`.
+- [x] Generate machine-readable feature-readiness output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for feature-readiness logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -105,9 +120,8 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/04_feature_readiness.py` to inspect field coverage
-for search, eligibility, location, contact, application, and institution-card
-workflows before production export replacement.
+Create `analysis/notebooks/05_cleanup_plan.py` to turn the current evidence into
+a prioritized cleanup and enrichment plan before production export replacement.
 
 ## Decision Log
 

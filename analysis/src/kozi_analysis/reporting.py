@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from kozi_analysis.aliases import AliasPairSummary, AliasReport
+from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
 from kozi_analysis.profiling import InventoryReport
 
@@ -308,5 +309,99 @@ def write_alias_reports(report: AliasReport, output_dir: Path) -> None:
         render_alias_markdown(report), encoding="utf-8"
     )
     (output_dir / "identity-aliases.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_feature_readiness_markdown(report: FeatureReadinessReport) -> str:
+    lines = [
+        "# Feature Readiness",
+        "",
+        "## Question This Answers",
+        "",
+        "Which processed fields are strong, partial, or weak for the product "
+        "features Kozi Ipi needs?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this to choose data cleanup priorities. Weak coverage does not always "
+        "block a feature, but it shows where the UI or data pipeline needs "
+        "fallbacks, enrichment, or clearer expectations.",
+        "",
+        "## Area Summary",
+        "",
+        "| Area | Fields Checked | Average Coverage | Weak Fields |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+
+    for summary in report.area_summaries:
+        lines.append(
+            f"| `{summary.area}` | {summary.field_count} | "
+            f"{summary.average_coverage_percent:.2f}% | {summary.weak_field_count} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Field Coverage",
+            "",
+            "| Area | Dataset | Field | Coverage | Status | Required For |",
+            "| --- | --- | --- | ---: | --- | --- |",
+        ]
+    )
+
+    for coverage in sorted(
+        report.field_coverages,
+        key=lambda item: (item.area, item.coverage_percent, item.dataset, item.field),
+    ):
+        lines.append(
+            f"| `{coverage.area}` | `{coverage.dataset}` | `{coverage.field}` | "
+            f"{coverage.coverage_percent:.2f}% | {coverage.status} | "
+            f"{coverage.required_for} |"
+        )
+
+    weak_fields = [
+        coverage for coverage in report.field_coverages if coverage.status == "weak"
+    ]
+    lines.extend(["", "## Weak Field Examples", ""])
+    for coverage in weak_fields:
+        lines.extend(
+            [
+                f"### `{coverage.dataset}.{coverage.field}`",
+                "",
+                f"- Coverage: {coverage.coverage_percent:.2f}%",
+                f"- Required for: {coverage.required_for}",
+                "- Missing examples:",
+                *[f"  - {example}" for example in coverage.missing_examples],
+                "",
+            ]
+        )
+
+    lines.extend(
+        [
+            "## Next Inspection Prompts",
+            "",
+            "- Which weak fields are acceptable for MVP with UI fallbacks?",
+            "- Which weak fields need deterministic enrichment before export "
+            "replacement?",
+            "- Which feature promises should be delayed until source coverage is "
+            "stronger?",
+            "- Which processed fields are present but semantically unreliable?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_feature_readiness_reports(
+    report: FeatureReadinessReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "feature-readiness.md").write_text(
+        render_feature_readiness_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "feature-readiness.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

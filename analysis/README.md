@@ -46,6 +46,12 @@ Open the identity-alias notebook with:
 uv run marimo edit notebooks/03_identity_aliases.py
 ```
 
+Open the feature-readiness notebook with:
+
+```sh
+uv run marimo edit notebooks/04_feature_readiness.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -64,6 +70,12 @@ Regenerate the identity-alias report with:
 
 ```sh
 uv run notebooks/03_identity_aliases.py --write-report true
+```
+
+Regenerate the feature-readiness report with:
+
+```sh
+uv run notebooks/04_feature_readiness.py --write-report true
 ```
 
 Generated reports are written to:

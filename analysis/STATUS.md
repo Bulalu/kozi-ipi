@@ -21,13 +21,15 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Which identity aliases look safe enough to inspect before production cleaning?
+Which processed fields are ready for product features, and which need fallbacks
+or enrichment?
 
-Short answer so far: we have review queues, not merge rules.
+Short answer so far: search is strongest; contact/application/logo coverage is
+weak.
 
-Exact matching works well for some canonical-to-processed paths, but source
-names drift through campus names, abbreviations, suffixes, and punctuation. The
-new alias notebook surfaces candidate matches for review.
+The feature-readiness notebook shows that lexical search fields are mostly ready,
+location fields are usable with some gaps, eligibility is partial, and contact
+or application actions need fallbacks/enrichment.
 
 ## What Exists Now
 
@@ -36,6 +38,8 @@ new alias notebook surfaces candidate matches for review.
   programme identities under exact normalized matching?
 - `notebooks/03_identity_aliases.py` answers: which names are candidate aliases
   when exact matching fails?
+- `notebooks/04_feature_readiness.py` answers: which product fields are strong,
+  partial, or weak?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -57,6 +61,12 @@ new alias notebook surfaces candidate matches for review.
   suggests the production pipeline needs explicit alias handling.
 - Programme alias matching must include institution context. Programme title
   alone creates too many false matches.
+- Feature readiness shows:
+  - search average coverage: 88.92%
+  - location average coverage: 77.92%
+  - eligibility average coverage: 69.83%
+  - contact/application average coverage: 18.89%
+  - institution card average coverage: 78.54%
 
 ## Why This Matters
 
@@ -71,17 +81,17 @@ So the next correct move is identity analysis, not export replacement.
 
 ## Next Question
 
-Which fields are missing or weak for search, eligibility, location, contact, and
-application workflows?
+Which cleanup and enrichment tasks should be required before the Python/Marimo
+pipeline replaces the current TypeScript data builder?
 
 The next notebook should be:
 
 ```text
-notebooks/04_feature_readiness.py
+notebooks/05_cleanup_plan.py
 ```
 
-It should inspect field coverage against the product features we care about. It
-should not mutate processed data yet.
+It should turn the findings into a prioritized cleanup plan. It should not
+mutate processed data yet.
 
 ## How To Read The Files
 
@@ -97,6 +107,7 @@ Then read generated reports:
 analysis/reports/latest/inventory.md
 analysis/reports/latest/source-overlap.md
 analysis/reports/latest/identity-aliases.md
+analysis/reports/latest/feature-readiness.md
 ```
 
 For implementation progress and decisions:
@@ -120,6 +131,7 @@ Run from `analysis/`:
 uv run notebooks/01_inventory.py --write-report true
 uv run notebooks/02_source_overlap.py --write-report true
 uv run notebooks/03_identity_aliases.py --write-report true
+uv run notebooks/04_feature_readiness.py --write-report true
 ```
 
 Run verification:
