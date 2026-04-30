@@ -52,6 +52,12 @@ Open the feature-readiness notebook with:
 uv run marimo edit notebooks/04_feature_readiness.py
 ```
 
+Open the cleanup-plan notebook with:
+
+```sh
+uv run marimo edit notebooks/05_cleanup_plan.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -76,6 +82,12 @@ Regenerate the feature-readiness report with:
 
 ```sh
 uv run notebooks/04_feature_readiness.py --write-report true
+```
+
+Regenerate the cleanup-plan report with:
+
+```sh
+uv run notebooks/05_cleanup_plan.py --write-report true
 ```
 
 Generated reports are written to:

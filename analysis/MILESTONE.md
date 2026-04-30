@@ -67,6 +67,11 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-04-30: Feature readiness showed search coverage is strongest, location
   is mostly usable, eligibility is partial, and contact/application/logo fields
   are the biggest weak areas.
+- 2026-04-30: `uv run notebooks/05_cleanup_plan.py --write-report true`
+  generated `analysis/reports/latest/cleanup-plan.md` and
+  `analysis/reports/latest/cleanup-plan.json`.
+- 2026-04-30: Cleanup planning identified P0 blockers for institution identity
+  aliases and equivalent-route coverage before production export replacement.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -109,6 +114,15 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for feature-readiness logic.
 
+- [x] Create `analysis/notebooks/05_cleanup_plan.py` to turn the current
+  evidence into a prioritized cleanup and enrichment plan before production
+  export replacement.
+- [x] Add reusable cleanup-plan helpers under `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/cleanup-plan.md`.
+- [x] Generate machine-readable cleanup-plan output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for cleanup-plan logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -120,8 +134,9 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/05_cleanup_plan.py` to turn the current evidence into
-a prioritized cleanup and enrichment plan before production export replacement.
+Create `analysis/notebooks/06_p0_cleanup_design.py` to design deterministic
+code, manual review files, and tests for the P0 cleanup blockers without
+mutating processed data yet.
 
 ## Decision Log
 

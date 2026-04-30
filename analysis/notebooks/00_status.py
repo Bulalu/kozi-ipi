@@ -84,6 +84,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.cleanup_counts:
+        mo.ui.table(snapshot.cleanup_counts, label="Cleanup plan")
+    else:
+        mo.md("Cleanup plan: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

@@ -21,15 +21,14 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Which processed fields are ready for product features, and which need fallbacks
-or enrichment?
+Which cleanup tasks should happen before replacing the current data builder?
 
-Short answer so far: search is strongest; contact/application/logo coverage is
-weak.
+Short answer so far: institution identity rules and equivalent-route coverage
+are P0 blockers.
 
-The feature-readiness notebook shows that lexical search fields are mostly ready,
-location fields are usable with some gaps, eligibility is partial, and contact
-or application actions need fallbacks/enrichment.
+The cleanup-plan notebook turns the current evidence into a prioritized queue.
+Contact/application gaps need fallbacks or enrichment, while logo coverage can
+sit behind higher-risk identity and eligibility work.
 
 ## What Exists Now
 
@@ -40,6 +39,8 @@ or application actions need fallbacks/enrichment.
   when exact matching fails?
 - `notebooks/04_feature_readiness.py` answers: which product fields are strong,
   partial, or weak?
+- `notebooks/05_cleanup_plan.py` answers: what should be cleaned or enriched
+  before pipeline replacement?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -67,6 +68,10 @@ or application actions need fallbacks/enrichment.
   - eligibility average coverage: 69.83%
   - contact/application average coverage: 18.89%
   - institution card average coverage: 78.54%
+- Cleanup planning produced:
+  - P0: identity aliases and equivalent-route coverage
+  - P1: contact/application gaps, programme context matching, source overlap
+  - P2: institution logos
 
 ## Why This Matters
 
@@ -81,16 +86,16 @@ So the next correct move is identity analysis, not export replacement.
 
 ## Next Question
 
-Which cleanup and enrichment tasks should be required before the Python/Marimo
-pipeline replaces the current TypeScript data builder?
+Which P0 cleanup tasks should become deterministic code, manual review files,
+and tests?
 
 The next notebook should be:
 
 ```text
-notebooks/05_cleanup_plan.py
+notebooks/06_p0_cleanup_design.py
 ```
 
-It should turn the findings into a prioritized cleanup plan. It should not
+It should design the implementation boundary for the P0 blockers. It should not
 mutate processed data yet.
 
 ## How To Read The Files
@@ -108,6 +113,7 @@ analysis/reports/latest/inventory.md
 analysis/reports/latest/source-overlap.md
 analysis/reports/latest/identity-aliases.md
 analysis/reports/latest/feature-readiness.md
+analysis/reports/latest/cleanup-plan.md
 ```
 
 For implementation progress and decisions:
@@ -132,6 +138,7 @@ uv run notebooks/01_inventory.py --write-report true
 uv run notebooks/02_source_overlap.py --write-report true
 uv run notebooks/03_identity_aliases.py --write-report true
 uv run notebooks/04_feature_readiness.py --write-report true
+uv run notebooks/05_cleanup_plan.py --write-report true
 ```
 
 Run verification:

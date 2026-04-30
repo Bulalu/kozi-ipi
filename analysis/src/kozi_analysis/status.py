@@ -17,6 +17,7 @@ class StatusSnapshot:
     source_counts: list[dict[str, int | str]]
     alias_counts: list[dict[str, int | str]]
     feature_counts: list[dict[str, int | float | str]]
+    cleanup_counts: list[dict[str, int | str]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -34,6 +35,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     overlap = _read_json(report_dir / "source-overlap.json")
     aliases = _read_json(report_dir / "identity-aliases.json")
     features = _read_json(report_dir / "feature-readiness.json")
+    cleanup = _read_json(report_dir / "cleanup-plan.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -75,6 +77,21 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         for summary in features.get("area_summaries", [])
     ]
 
+    cleanup_counts = []
+    for priority in ["P0", "P1", "P2"]:
+        tasks = [
+            task
+            for task in cleanup.get("tasks", [])
+            if task.get("priority") == priority
+        ]
+        cleanup_counts.append(
+            {
+                "priority": priority,
+                "tasks": len(tasks),
+                "areas": ", ".join(sorted({task["area"] for task in tasks})),
+            }
+        )
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -105,6 +122,14 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/feature-readiness.md",
             }
         )
+    if cleanup:
+        completed_notebooks.append(
+            {
+                "notebook": "05_cleanup_plan.py",
+                "question": "Which cleanup tasks should happen before replacement?",
+                "report": "reports/latest/cleanup-plan.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
@@ -112,23 +137,24 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "the current data export pipeline."
         ),
         current_question=(
-            "Which processed fields are ready for product features, and which "
-            "need fallbacks or enrichment?"
+            "Which cleanup tasks should happen before replacing the current data "
+            "builder?"
         ),
         short_answer=(
-            "Search fields are strongest. Location is mostly usable. Contact, "
-            "application, logo, and equivalent-route coverage are the biggest "
-            "gaps."
+            "The current blockers are institution identity rules and equivalent "
+            "route coverage. Contact/application gaps need product fallbacks or "
+            "enrichment."
         ),
         next_question=(
-            "Which cleanup and enrichment tasks should be required before the "
-            "Python/Marimo pipeline replaces the current TypeScript data builder?"
+            "Which P0 cleanup tasks should become deterministic code, manual "
+            "review files, and tests?"
         ),
-        next_notebook="notebooks/05_cleanup_plan.py",
+        next_notebook="notebooks/06_p0_cleanup_design.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
         feature_counts=feature_counts,
+        cleanup_counts=cleanup_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
@@ -140,6 +166,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "title alone is too noisy.",
             "Feature readiness shows search coverage is strongest while contact, "
             "application, and logo coverage are weak.",
+            "Cleanup planning now separates P0 blockers from enrichment backlog.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from kozi_analysis.aliases import AliasPairSummary, AliasReport
+from kozi_analysis.cleanup import CleanupPlanReport
 from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
 from kozi_analysis.profiling import InventoryReport
@@ -403,5 +404,60 @@ def write_feature_readiness_reports(
         render_feature_readiness_markdown(report), encoding="utf-8"
     )
     (output_dir / "feature-readiness.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_cleanup_plan_markdown(report: CleanupPlanReport) -> str:
+    lines = [
+        "# Cleanup Plan",
+        "",
+        "## Question This Answers",
+        "",
+        "What cleanup and enrichment tasks should happen before the Marimo/Python "
+        "pipeline replaces the current TypeScript data builder?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as the planning queue. It turns current evidence into tasks, but "
+        "does not mutate source or processed data.",
+        "",
+        "## Prioritized Tasks",
+        "",
+        "| Priority | Area | Task | Evidence | Next Action |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+
+    for task in report.tasks:
+        lines.append(
+            f"| {task.priority} | `{task.area}` | {task.title} | "
+            f"{task.evidence} | {task.next_action} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Next Inspection Prompts",
+            "",
+            "- Which P0 tasks block production export replacement?",
+            "- Which P1/P2 tasks can become enrichment backlog instead of blockers?",
+            "- Which tasks need a manual review file or deterministic code change?",
+            "- Which tasks should become tests before replacing `data:build`?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_cleanup_plan_reports(
+    report: CleanupPlanReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "cleanup-plan.md").write_text(
+        render_cleanup_plan_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "cleanup-plan.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )
