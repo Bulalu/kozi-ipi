@@ -37,11 +37,23 @@ A location-specific branch or site of an **Institution Identity** that may have
 its own programmes, location, or application details.
 _Avoid_: location suffix, branch text
 
+**Programme Offering**:
+A programme as offered by a specific **Institution Identity** or **Campus**.
+_Avoid_: programme title, course name
+
+**Programme Name**:
+A label for a programme as written by a specific source.
+_Avoid_: programme offering
+
+**Programme Alias**:
+An alternate programme label that refers to the same **Programme Offering**.
+_Avoid_: title-only match
+
 ## Relationships
 
 - An **Applicant Pathway** is one of Form Four, Form Six, certificate, diploma,
   or equivalent.
-- A **Programme** may support one or more **Applicant Pathways**.
+- A **Programme Offering** may support one or more **Applicant Pathways**.
 - Eligibility is evaluated for a student through a specific **Applicant
   Pathway**.
 - An **Institution Identity** may have one or more **Institution Names**.
@@ -50,8 +62,11 @@ _Avoid_: location suffix, branch text
 - A **Manual Alias Review** may approve or reject candidate **Institution
   Aliases**.
 - An **Institution Identity** may have one or more **Campuses**.
-- A **Campus** may host one or more **Programmes**.
+- A **Campus** may host one or more **Programme Offerings**.
 - A **Campus** may have distinct location, contact, or application details.
+- A **Programme Offering** belongs to exactly one **Institution Identity** or
+  **Campus** for search and selection purposes.
+- A **Programme Alias** links a **Programme Name** to a **Programme Offering**.
 
 ## Example dialogue
 
@@ -69,6 +84,11 @@ _Avoid_: location suffix, branch text
 > **Domain expert:** "Not automatically. If programme availability or location
 > differs, model them as **Campuses** under the same **Institution Identity**."
 
+> **Dev:** "Can we dedupe `Bachelor Degree in Accounting` by title?"
+> **Domain expert:** "No. That title at two different institutions represents
+> different **Programme Offerings**. Match by title only after institution or
+> campus identity agrees."
+
 ## Flagged ambiguities
 
 - "route" has been used to mean **Applicant Pathway**, route flags such as
@@ -83,3 +103,6 @@ _Avoid_: location suffix, branch text
   either descriptive location text or a real **Campus**. Resolved: treat
   **Campus** as first-class when the distinction affects programmes, location,
   contact, or application details.
+- "programme", "course", and "title" have been used loosely. Resolved:
+  **Programme Offering** is what students choose; **Programme Name** is source
+  text; **Programme Alias** is an approved alternate label for the same offering.
