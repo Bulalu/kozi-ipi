@@ -165,12 +165,11 @@ export const browse = query({
   },
   handler: async (ctx, args) => {
     const limit = Math.min(Math.max(args.limit ?? 80, 1), 240)
-    // Fetch institutions for both results and facets
     const allInstitutions = await ctx.db
       .query("institutions")
       .withIndex("by_programmeCount")
       .order("desc")
-      .take(5000)
+      .take(1000)
 
     const browseInstitutions = allInstitutions.map(toBrowseInstitution)
     const filtered = applyBrowseFilters(browseInstitutions, args.filters)

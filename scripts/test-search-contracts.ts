@@ -41,6 +41,18 @@ assert(
   'Expected "nataka kuwa nurse" to infer the health course family.'
 )
 
+const interpretedIT = interpretProgrammeQuery("information technology")
+assert(
+  interpretedIT.inferredCourseFamily === "ICT",
+  'Expected "information technology" to infer the ICT course family.'
+)
+
+const interpretedTourism = interpretProgrammeQuery("hotel management")
+assert(
+  interpretedTourism.inferredCourseFamily === "tourism_hospitality",
+  'Expected "hotel management" to infer the tourism_hospitality course family.'
+)
+
 const interpretedEngineering = interpretProgrammeQuery("civil engineering")
 assert(
   interpretedEngineering.inferredCourseFamily === "engineering",
