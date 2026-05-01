@@ -10,6 +10,11 @@ student-facing guidance.
 The prior education route through which a student may apply to a programme.
 _Avoid_: application route, qualification route, applicant route, route
 
+**Equivalent Applicant Pathway**:
+A regulator-accepted non-standard prior qualification that a source explicitly
+says can be used instead of Form Four, Form Six, certificate, or diploma.
+_Avoid_: generic equivalent, unknown route
+
 **Institution Identity**:
 The real-world institution or campus represented by one or more source names.
 _Avoid_: merge key, normalized name, dedupe key
@@ -53,6 +58,8 @@ _Avoid_: title-only match
 
 - An **Applicant Pathway** is one of Form Four, Form Six, certificate, diploma,
   or equivalent.
+- An **Equivalent Applicant Pathway** must be source-backed and should be
+  conservative in eligibility decisions when details are vague.
 - A **Programme Offering** may support one or more **Applicant Pathways**.
 - Eligibility is evaluated for a student through a specific **Applicant
   Pathway**.
@@ -73,6 +80,11 @@ _Avoid_: title-only match
 > **Dev:** "Should the profile field be called application route?"
 > **Domain expert:** "In the domain, call it **Applicant Pathway**. The code may
 > use `applicationRoute`, but the product language should stay pathway-aware."
+
+> **Dev:** "The source says `or equivalent`. Can we mark the student eligible?"
+> **Domain expert:** "Not from that phrase alone. Treat it as an **Equivalent
+> Applicant Pathway** for discovery, but use `cannot_determine` or
+> `likely_eligible_but_verify` unless the rule is structured enough."
 
 > **Dev:** "Can we merge `Ardhi University (ARU)` and `Ardhi University (ARU),
 > Dar es Salaam`?"
@@ -95,6 +107,11 @@ _Avoid_: title-only match
   `acceptsDiploma`, and implementation fields such as `applicationRoute`.
   Resolved: use **Applicant Pathway** for the domain concept, and use
   implementation names only when referring to code or data fields.
+- "equivalent" can mean foreign qualification, mature-age entry, foundation
+  programme, recognized prior learning, professional qualification, or a vague
+  "or equivalent" phrase. Resolved: **Equivalent Applicant Pathway** is
+  first-class for discovery, but conservative for eligibility unless the source
+  gives enough detail to evaluate it.
 - "identity", "alias", "normalized name", and "dedupe key" have been used
   interchangeably. Resolved: **Institution Identity** is the real-world entity;
   **Institution Name** is source text; **Institution Alias** is an approved
