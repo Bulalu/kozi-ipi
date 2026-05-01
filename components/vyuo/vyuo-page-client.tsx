@@ -71,8 +71,11 @@ export function VyuoPageClient() {
       : "skip"
   )
 
-  // Use regular query for summary/facets with filters applied
-  const summary = useQuery(api.institutions.browseSummary, { filters })
+  // Filtered summaries remain bounded until indexed filtered pagination is added.
+  const summary = useQuery(
+    api.institutions.browseSummary,
+    hasFilters ? { filters } : "skip"
+  )
 
   const institutions = hasFilters
     ? (filteredBrowseResult?.results ?? [])
@@ -81,7 +84,7 @@ export function VyuoPageClient() {
     ? filteredBrowseResult === undefined
     : paginatedResults.status === "LoadingFirstPage"
   const isLoadingMore = !hasFilters && paginatedResults.status === "LoadingMore"
-  const totalResults = summary?.total ?? institutions.length
+  const totalResults = hasFilters ? (summary?.total ?? institutions.length) : institutions.length
   const canLoadMore = hasFilters
     ? institutions.length < totalResults
     : paginatedResults.status === "CanLoadMore"
@@ -166,7 +169,13 @@ export function VyuoPageClient() {
                     className="rounded-full border border-brand-ink/15 px-5 py-2 text-[13px] font-semibold text-brand-ink transition hover:border-brand-ink hover:bg-brand-ink hover:text-white disabled:cursor-wait disabled:opacity-60"
                     type="button"
                   >
-                    {isLoadingMore ? "Loading..." : `Onyesha vingine ${Math.min(PAGE_SIZE, totalResults - institutions.length)}`}
+                    {isLoadingMore
+                      ? "Loading..."
+                      : `Onyesha vingine ${
+                          hasFilters
+                            ? Math.min(PAGE_SIZE, totalResults - institutions.length)
+                            : PAGE_SIZE
+                        }`}
                   </button>
                 </div>
               ) : null}
