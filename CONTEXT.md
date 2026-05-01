@@ -32,6 +32,11 @@ A human-reviewed mapping between **Institution Names** when an **Institution
 Identity Rule** is not safe enough.
 _Avoid_: automatic fuzzy merge
 
+**Campus**:
+A location-specific branch or site of an **Institution Identity** that may have
+its own programmes, location, or application details.
+_Avoid_: location suffix, branch text
+
 ## Relationships
 
 - An **Applicant Pathway** is one of Form Four, Form Six, certificate, diploma,
@@ -44,6 +49,9 @@ _Avoid_: automatic fuzzy merge
   Identity**.
 - A **Manual Alias Review** may approve or reject candidate **Institution
   Aliases**.
+- An **Institution Identity** may have one or more **Campuses**.
+- A **Campus** may host one or more **Programmes**.
+- A **Campus** may have distinct location, contact, or application details.
 
 ## Example dialogue
 
@@ -57,6 +65,10 @@ _Avoid_: automatic fuzzy merge
 > for display, filtering, programmes, and application details. Otherwise record
 > one as a separate identity or send it to **Manual Alias Review**."
 
+> **Dev:** "Should `CBE - Dar es Salaam` and `CBE - Dodoma` become one card?"
+> **Domain expert:** "Not automatically. If programme availability or location
+> differs, model them as **Campuses** under the same **Institution Identity**."
+
 ## Flagged ambiguities
 
 - "route" has been used to mean **Applicant Pathway**, route flags such as
@@ -67,3 +79,7 @@ _Avoid_: automatic fuzzy merge
   interchangeably. Resolved: **Institution Identity** is the real-world entity;
   **Institution Name** is source text; **Institution Alias** is an approved
   alternate name; normalized names and keys are implementation details.
+- Location suffixes such as "Dar es Salaam", "Dodoma", or "Campus" can mean
+  either descriptive location text or a real **Campus**. Resolved: treat
+  **Campus** as first-class when the distinction affects programmes, location,
+  contact, or application details.
