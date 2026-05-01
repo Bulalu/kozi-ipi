@@ -20,6 +20,7 @@ class StatusSnapshot:
     cleanup_counts: list[dict[str, int | str]]
     p0_design_counts: list[dict[str, int | str]]
     candidate_counts: list[dict[str, int | str | bool | None]]
+    gate_counts: list[dict[str, int | str | bool]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -40,6 +41,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     cleanup = _read_json(report_dir / "cleanup-plan.json")
     p0_design = _read_json(report_dir / "p0-cleanup-design.json")
     candidate = _read_json(report_dir / "candidate-vs-current.json")
+    gate = _read_json(report_dir / "candidate-gate.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -123,6 +125,25 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         for file in candidate.get("files", [])
     ]
 
+    gate_checks = gate.get("checks", [])
+    gate_counts: list[dict[str, int | str | bool]]
+    gate_counts = (
+        [
+            {
+                "gate_passed": bool(gate.get("passed")),
+                "blockers": sum(
+                    1 for check in gate_checks if check.get("status") == "blocker"
+                ),
+                "expected": sum(
+                    1 for check in gate_checks if check.get("status") == "expected"
+                ),
+                "checks": len(gate_checks),
+            }
+        ]
+        if gate
+        else []
+    )
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -177,6 +198,14 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/candidate-vs-current.md",
             }
         )
+    if gate:
+        completed_notebooks.append(
+            {
+                "notebook": "08_candidate_gate.py",
+                "question": "Are candidate outputs safe to treat as compatible?",
+                "report": "reports/latest/candidate-gate.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
@@ -184,18 +213,17 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "the current data export pipeline."
         ),
         current_question=(
-            "Can the Python export path produce candidate processed files behind "
-            "the current production contract?"
+            "Are candidate processed outputs safe to treat as production-compatible?"
         ),
         short_answer=(
-            "The copy-through candidate exporter proves the output directory and "
-            "comparison gate before we replace transformation slices."
+            "The candidate gate now blocks unexplained differences and requires "
+            "intentional changes to be listed with reasons."
         ),
         next_question=(
             "Which transformation slice should replace copy-through first while "
             "keeping the processed-data contract stable?"
         ),
-        next_notebook="notebooks/08_transform_slice_identity.py",
+        next_notebook="notebooks/09_transform_slice_identity.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
@@ -203,6 +231,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         cleanup_counts=cleanup_counts,
         p0_design_counts=p0_design_counts,
         candidate_counts=candidate_counts,
+        gate_counts=gate_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
@@ -219,6 +248,8 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "alias review and equivalent-pathway parser/test work.",
             "Candidate export comparison gives us a regression gate before "
             "changing production processed outputs.",
+            "Candidate gate separates unexpected blockers from explained "
+            "expected differences before any transformation slice changes.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",

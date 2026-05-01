@@ -70,6 +70,12 @@ Open the candidate export comparison notebook with:
 uv run marimo edit notebooks/07_candidate_export.py
 ```
 
+Open the candidate export gate notebook with:
+
+```sh
+uv run marimo edit notebooks/08_candidate_gate.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -112,6 +118,12 @@ Regenerate the candidate export comparison report with:
 
 ```sh
 uv run notebooks/07_candidate_export.py --copy-current true --write-report true
+```
+
+Regenerate the candidate export gate report with:
+
+```sh
+uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true
 ```
 
 Generated reports are written to:

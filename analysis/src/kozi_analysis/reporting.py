@@ -5,6 +5,7 @@ from pathlib import Path
 
 from kozi_analysis.aliases import AliasPairSummary, AliasReport
 from kozi_analysis.candidate_export import CandidateComparisonReport
+from kozi_analysis.candidate_gate import CandidateGateReport
 from kozi_analysis.cleanup import CleanupPlanReport
 from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
@@ -642,5 +643,78 @@ def write_candidate_comparison_reports(
         render_candidate_comparison_markdown(report), encoding="utf-8"
     )
     (output_dir / "candidate-vs-current.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_candidate_gate_markdown(report: CandidateGateReport) -> str:
+    lines = [
+        "# Candidate Export Gate",
+        "",
+        "## Question This Answers",
+        "",
+        "Are candidate processed outputs safe to treat as production-compatible?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as the hard stop before replacing transformation slices. "
+        "Unexpected differences are blockers. Expected differences must be "
+        "listed with a reason in the expected-changes file.",
+        "",
+        "## Summary",
+        "",
+        f"- Gate passed: {report.passed}",
+        f"- Blockers: {report.blocker_count}",
+        f"- Expected differences: {report.expected_count}",
+        f"- Checks run: {len(report.checks)}",
+        "",
+        "## Checks",
+        "",
+        "| Status | File | Check | Message | Expected Reason |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+
+    for check in report.checks:
+        reason = check.expected_reason or ""
+        lines.append(
+            f"| {check.status} | `{check.file}` | `{check.check}` | "
+            f"{check.message} | {reason} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Expected Changes File",
+            "",
+            "Add an entry only when a candidate difference is intentional and "
+            "reviewed:",
+            "",
+            "```json",
+            '{ "file": "institutions.jsonl", "check": "hash", '
+            '"reason": "Identity normalization removes duplicate aliases." }',
+            "```",
+            "",
+            "## Next Inspection Prompts",
+            "",
+            "- Which blockers are true regressions?",
+            "- Which expected differences need a clearer reason?",
+            "- Which checks should become stricter before the production switch?",
+            "- Is the next transform slice still small enough to review?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_candidate_gate_reports(
+    report: CandidateGateReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "candidate-gate.md").write_text(
+        render_candidate_gate_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "candidate-gate.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

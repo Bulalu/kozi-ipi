@@ -111,6 +111,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.gate_counts:
+        mo.ui.table(snapshot.gate_counts, label="Candidate export gate")
+    else:
+        mo.md("Candidate export gate: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

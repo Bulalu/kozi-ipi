@@ -21,14 +21,13 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Can the Python export path produce candidate processed files behind the current
-production contract?
+Are candidate processed outputs safe to treat as production-compatible?
 
-Short answer so far: the copy-through candidate exporter proves the output
-directory and comparison gate before we replace transformation slices.
+Short answer so far: the candidate gate now blocks unexplained differences and
+requires intentional changes to be listed with reasons.
 
-The candidate export notebook writes to `analysis/build/candidate-processed/`.
-It does not mutate `data/processed/*`.
+The candidate export and gate notebooks write to ignored analysis output paths.
+They do not mutate `data/processed/*`.
 
 ## What Exists Now
 
@@ -45,6 +44,8 @@ It does not mutate `data/processed/*`.
   review files, and tests?
 - `notebooks/07_candidate_export.py` answers: can Python generate candidate
   processed outputs behind the stable contract?
+- `notebooks/08_candidate_gate.py` answers: are candidate outputs safe to treat
+  as production-compatible?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -84,6 +85,11 @@ It does not mutate `data/processed/*`.
   - copy-through files under `analysis/build/candidate-processed/`
   - file presence, row-count, hash, field-set, key, review-flag, source,
     pathway, parse-status, and changed-sample checks
+- Candidate export gate produced:
+  - blocker/expected/pass statuses for candidate differences
+  - an empty expected-changes file at
+    `analysis/config/candidate-gate-expected.json`
+  - a script mode that can fail on blockers
 
 ## Why This Matters
 
@@ -94,8 +100,8 @@ If we clean or merge records before solving identity drift, we risk:
 - attaching programmes or logos to the wrong institution
 - making search and eligibility coverage look better or worse than it is
 
-So the export replacement must happen through a candidate path with comparison
-reports before `data/processed/*` changes.
+So the export replacement must happen through a candidate path with a gate that
+fails on unexplained differences before `data/processed/*` changes.
 
 ## Next Question
 
@@ -105,7 +111,7 @@ processed-data contract stable?
 The next notebook should be:
 
 ```text
-notebooks/08_transform_slice_identity.py
+notebooks/09_transform_slice_identity.py
 ```
 
 It should implement the first narrow replacement slice behind candidate output.
@@ -128,6 +134,7 @@ analysis/reports/latest/feature-readiness.md
 analysis/reports/latest/cleanup-plan.md
 analysis/reports/latest/p0-cleanup-design.md
 analysis/reports/latest/candidate-vs-current.md
+analysis/reports/latest/candidate-gate.md
 ```
 
 For implementation progress and decisions:
@@ -155,6 +162,7 @@ uv run notebooks/04_feature_readiness.py --write-report true
 uv run notebooks/05_cleanup_plan.py --write-report true
 uv run notebooks/06_p0_cleanup_design.py --write-report true
 uv run notebooks/07_candidate_export.py --copy-current true --write-report true
+uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true
 ```
 
 Run verification:

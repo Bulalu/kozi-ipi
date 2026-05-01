@@ -88,6 +88,12 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-05-01: Candidate export comparison copied current processed outputs to
   `analysis/build/candidate-processed/` and established the regression gate
   before transformation slices are replaced.
+- 2026-05-01: `uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true`
+  generated `analysis/reports/latest/candidate-gate.md` and
+  `analysis/reports/latest/candidate-gate.json`.
+- 2026-05-01: Candidate gate passed the copy-through baseline with no blockers
+  and introduced `analysis/config/candidate-gate-expected.json` for future
+  explained differences.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -158,6 +164,17 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for candidate export comparison logic.
 
+- [x] Create `analysis/notebooks/08_candidate_gate.py` to fail candidate
+  processed outputs on unexplained differences before transformation slices are
+  replaced.
+- [x] Add reusable candidate gate helpers under `analysis/src/kozi_analysis`.
+- [x] Add `analysis/config/candidate-gate-expected.json` as the committed place
+  to explain intentional candidate differences.
+- [x] Generate `analysis/reports/latest/candidate-gate.md`.
+- [x] Generate machine-readable candidate gate output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for candidate gate logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -169,7 +186,7 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/08_transform_slice_identity.py` to replace the first
+Create `analysis/notebooks/09_transform_slice_identity.py` to replace the first
 narrow identity transformation slice behind candidate output while keeping
 `data/processed/*` unchanged.
 
@@ -199,3 +216,6 @@ narrow identity transformation slice behind candidate output while keeping
   review-flag distributions, source dataset distributions, Applicant Pathway
   flag coverage, requirement-rule parse-status distribution, and changed-record
   samples when differences exist.
+- 2026-05-01: Candidate gate must block unexplained candidate differences.
+  Future intentional differences must be listed in
+  `analysis/config/candidate-gate-expected.json` with a reason.
