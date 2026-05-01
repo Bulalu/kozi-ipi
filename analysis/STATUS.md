@@ -21,14 +21,14 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Which cleanup tasks should happen before replacing the current data builder?
+Which P0 work becomes deterministic code, manual review files, and tests?
 
-Short answer so far: institution identity rules and equivalent-route coverage
-are P0 blockers.
+Short answer so far: institution identity work is split into deterministic-rule
+candidates and manual-review candidates. Equivalent pathway work needs
+conservative parser states and tests.
 
-The cleanup-plan notebook turns the current evidence into a prioritized queue.
-Contact/application gaps need fallbacks or enrichment, while logo coverage can
-sit behind higher-risk identity and eligibility work.
+The P0 cleanup-design notebook turns the cleanup queue into implementation
+boundaries. It does not mutate processed data.
 
 ## What Exists Now
 
@@ -41,6 +41,8 @@ sit behind higher-risk identity and eligibility work.
   partial, or weak?
 - `notebooks/05_cleanup_plan.py` answers: what should be cleaned or enriched
   before pipeline replacement?
+- `notebooks/06_p0_cleanup_design.py` answers: which P0 work becomes code,
+  review files, and tests?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -72,6 +74,10 @@ sit behind higher-risk identity and eligibility work.
   - P0: identity aliases and equivalent-route coverage
   - P1: contact/application gaps, programme context matching, source overlap
   - P2: institution logos
+- P0 cleanup design produced:
+  - deterministic identity rule candidates
+  - manual alias review candidates
+  - Equivalent Applicant Pathway parser/test tasks
 
 ## Why This Matters
 
@@ -86,17 +92,17 @@ So the next correct move is identity analysis, not export replacement.
 
 ## Next Question
 
-Which P0 cleanup tasks should become deterministic code, manual review files,
-and tests?
+Which deterministic identity rules and review files should be implemented first
+in the production pipeline?
 
 The next notebook should be:
 
 ```text
-notebooks/06_p0_cleanup_design.py
+notebooks/07_pipeline_replacement_plan.py
 ```
 
-It should design the implementation boundary for the P0 blockers. It should not
-mutate processed data yet.
+It should plan the production replacement sequence. It should not mutate
+processed data yet.
 
 ## How To Read The Files
 
@@ -114,6 +120,7 @@ analysis/reports/latest/source-overlap.md
 analysis/reports/latest/identity-aliases.md
 analysis/reports/latest/feature-readiness.md
 analysis/reports/latest/cleanup-plan.md
+analysis/reports/latest/p0-cleanup-design.md
 ```
 
 For implementation progress and decisions:
@@ -139,6 +146,7 @@ uv run notebooks/02_source_overlap.py --write-report true
 uv run notebooks/03_identity_aliases.py --write-report true
 uv run notebooks/04_feature_readiness.py --write-report true
 uv run notebooks/05_cleanup_plan.py --write-report true
+uv run notebooks/06_p0_cleanup_design.py --write-report true
 ```
 
 Run verification:

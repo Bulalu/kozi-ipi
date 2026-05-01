@@ -18,6 +18,7 @@ class StatusSnapshot:
     alias_counts: list[dict[str, int | str]]
     feature_counts: list[dict[str, int | float | str]]
     cleanup_counts: list[dict[str, int | str]]
+    p0_design_counts: list[dict[str, int | str]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -36,6 +37,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     aliases = _read_json(report_dir / "identity-aliases.json")
     features = _read_json(report_dir / "feature-readiness.json")
     cleanup = _read_json(report_dir / "cleanup-plan.json")
+    p0_design = _read_json(report_dir / "p0-cleanup-design.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -92,6 +94,21 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             }
         )
 
+    p0_design_counts = [
+        {
+            "queue": "deterministic_identity_rules",
+            "items": len(p0_design.get("deterministic_identity_rules", [])),
+        },
+        {
+            "queue": "manual_alias_review_candidates",
+            "items": len(p0_design.get("manual_alias_review_candidates", [])),
+        },
+        {
+            "queue": "equivalent_pathway_tasks",
+            "items": len(p0_design.get("equivalent_pathway_tasks", [])),
+        },
+    ]
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -130,6 +147,14 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/cleanup-plan.md",
             }
         )
+    if p0_design:
+        completed_notebooks.append(
+            {
+                "notebook": "06_p0_cleanup_design.py",
+                "question": "Which P0 work becomes code, review files, and tests?",
+                "report": "reports/latest/p0-cleanup-design.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
@@ -137,24 +162,24 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "the current data export pipeline."
         ),
         current_question=(
-            "Which cleanup tasks should happen before replacing the current data "
-            "builder?"
+            "Which P0 work becomes deterministic code, manual review files, and tests?"
         ),
         short_answer=(
-            "The current blockers are institution identity rules and equivalent "
-            "route coverage. Contact/application gaps need product fallbacks or "
-            "enrichment."
+            "Institution identity work now splits into deterministic rule "
+            "candidates and manual alias review. Equivalent pathway work needs "
+            "conservative parser states and tests."
         ),
         next_question=(
-            "Which P0 cleanup tasks should become deterministic code, manual "
-            "review files, and tests?"
+            "Which deterministic identity rules and review files should be "
+            "implemented first in the production pipeline?"
         ),
-        next_notebook="notebooks/06_p0_cleanup_design.py",
+        next_notebook="notebooks/07_pipeline_replacement_plan.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
         feature_counts=feature_counts,
         cleanup_counts=cleanup_counts,
+        p0_design_counts=p0_design_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
@@ -167,6 +192,8 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "Feature readiness shows search coverage is strongest while contact, "
             "application, and logo coverage are weak.",
             "Cleanup planning now separates P0 blockers from enrichment backlog.",
+            "P0 design separates safe deterministic identity work from manual "
+            "alias review and equivalent-pathway parser/test work.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",

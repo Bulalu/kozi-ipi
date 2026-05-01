@@ -72,6 +72,12 @@ The goal is to understand the current raw, enrichment, and processed data before
   `analysis/reports/latest/cleanup-plan.json`.
 - 2026-04-30: Cleanup planning identified P0 blockers for institution identity
   aliases and equivalent-route coverage before production export replacement.
+- 2026-05-01: `uv run notebooks/06_p0_cleanup_design.py --write-report true`
+  generated `analysis/reports/latest/p0-cleanup-design.md` and
+  `analysis/reports/latest/p0-cleanup-design.json`.
+- 2026-05-01: P0 cleanup design split institution identity work into a
+  Deterministic Identity Rule Queue and Manual Alias Review Queue, and kept
+  Equivalent Applicant Pathway work conservative for eligibility.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -123,6 +129,15 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for cleanup-plan logic.
 
+- [x] Create `analysis/notebooks/06_p0_cleanup_design.py` to design
+  deterministic code, manual review files, and tests for the P0 cleanup
+  blockers without mutating processed data.
+- [x] Add reusable P0 cleanup-design helpers under `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/p0-cleanup-design.md`.
+- [x] Generate machine-readable P0 cleanup-design output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for P0 cleanup-design logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -134,8 +149,8 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/06_p0_cleanup_design.py` to design deterministic
-code, manual review files, and tests for the P0 cleanup blockers without
+Create `analysis/notebooks/07_pipeline_replacement_plan.py` to plan the
+production replacement sequence for the current TypeScript data builder without
 mutating processed data yet.
 
 ## Decision Log

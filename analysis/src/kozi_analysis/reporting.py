@@ -7,6 +7,7 @@ from kozi_analysis.aliases import AliasPairSummary, AliasReport
 from kozi_analysis.cleanup import CleanupPlanReport
 from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
+from kozi_analysis.p0_design import P0CleanupDesignReport
 from kozi_analysis.profiling import InventoryReport
 
 
@@ -459,5 +460,97 @@ def write_cleanup_plan_reports(
         render_cleanup_plan_markdown(report), encoding="utf-8"
     )
     (output_dir / "cleanup-plan.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_p0_cleanup_design_markdown(report: P0CleanupDesignReport) -> str:
+    lines = [
+        "# P0 Cleanup Design",
+        "",
+        "## Question This Answers",
+        "",
+        "Which P0 cleanup tasks should become deterministic code, manual review "
+        "files, and tests?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as the implementation boundary. It proposes rule queues and "
+        "test assertions only; it does not mutate processed data.",
+        "",
+        "## Deterministic Identity Rule Queue",
+        "",
+        "| Rule ID | Rule | Left Example | Right Example | Test Assertion |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+
+    for candidate in report.deterministic_identity_rules:
+        lines.append(
+            f"| `{candidate.rule_id}` | {candidate.rule_name} | "
+            f"{candidate.example_left} | {candidate.example_right} | "
+            f"{candidate.test_assertion} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Manual Alias Review Queue",
+            "",
+            "| Reason | Left Name | Right Name | Context | Review Question |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+    )
+
+    for candidate in report.manual_alias_review_candidates:
+        context = " / ".join(
+            item for item in [candidate.left_context, candidate.right_context] if item
+        )
+        lines.append(
+            f"| {candidate.reason} | {candidate.left_name} | "
+            f"{candidate.right_name} | {context} | {candidate.review_question} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Equivalent Applicant Pathway Tasks",
+            "",
+            "| Task | Evidence | Boundary | Test Assertion |",
+            "| --- | --- | --- | --- |",
+        ]
+    )
+
+    for task in report.equivalent_pathway_tasks:
+        lines.append(
+            f"| {task.task} | {task.evidence} | {task.design_boundary} | "
+            f"{task.test_assertion} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Next Inspection Prompts",
+            "",
+            "- Which deterministic candidates should become code first?",
+            "- Which manual-review candidates need a committed review file?",
+            "- Which equivalent-pathway cases need new parser states or review "
+            "reasons?",
+            "- Which assertions should become tests before replacing `data:build`?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_p0_cleanup_design_reports(
+    report: P0CleanupDesignReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "p0-cleanup-design.md").write_text(
+        render_p0_cleanup_design_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "p0-cleanup-design.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

@@ -93,6 +93,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.p0_design_counts:
+        mo.ui.table(snapshot.p0_design_counts, label="P0 cleanup design")
+    else:
+        mo.md("P0 cleanup design: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

@@ -58,6 +58,12 @@ Open the cleanup-plan notebook with:
 uv run marimo edit notebooks/05_cleanup_plan.py
 ```
 
+Open the P0 cleanup-design notebook with:
+
+```sh
+uv run marimo edit notebooks/06_p0_cleanup_design.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -88,6 +94,12 @@ Regenerate the cleanup-plan report with:
 
 ```sh
 uv run notebooks/05_cleanup_plan.py --write-report true
+```
+
+Regenerate the P0 cleanup-design report with:
+
+```sh
+uv run notebooks/06_p0_cleanup_design.py --write-report true
 ```
 
 Generated reports are written to:

@@ -37,6 +37,16 @@ A human-reviewed mapping between **Institution Names** when an **Institution
 Identity Rule** is not safe enough.
 _Avoid_: automatic fuzzy merge
 
+**Deterministic Identity Rule Queue**:
+The proposed low-risk **Institution Identity Rules** that can be implemented and
+tested without human case-by-case review.
+_Avoid_: automatic fuzzy queue, auto-merge list
+
+**Manual Alias Review Queue**:
+The proposed **Institution Alias** candidates that require human review before
+they can affect merging, display, or imports.
+_Avoid_: rejected matches, fuzzy matches
+
 **Campus**:
 A location-specific branch or site of an **Institution Identity** that may have
 its own programmes, location, or application details.
@@ -68,6 +78,10 @@ _Avoid_: title-only match
   Identity**.
 - A **Manual Alias Review** may approve or reject candidate **Institution
   Aliases**.
+- A **Deterministic Identity Rule Queue** contains only explainable, low-risk
+  **Institution Identity Rules**.
+- A **Manual Alias Review Queue** contains candidate **Institution Aliases**
+  where automatic rules could change what a student sees or chooses.
 - An **Institution Identity** may have one or more **Campuses**.
 - A **Campus** may host one or more **Programme Offerings**.
 - A **Campus** may have distinct location, contact, or application details.
@@ -91,6 +105,10 @@ _Avoid_: title-only match
 > **Domain expert:** "Only if they represent the same **Institution Identity**
 > for display, filtering, programmes, and application details. Otherwise record
 > one as a separate identity or send it to **Manual Alias Review**."
+
+> **Dev:** "Can punctuation and trailing location text be automatic?"
+> **Domain expert:** "Only when the rule is explainable and low-risk. Otherwise
+> put the candidate in the **Manual Alias Review Queue**."
 
 > **Dev:** "Should `CBE - Dar es Salaam` and `CBE - Dodoma` become one card?"
 > **Domain expert:** "Not automatically. If programme availability or location
@@ -116,6 +134,10 @@ _Avoid_: title-only match
   interchangeably. Resolved: **Institution Identity** is the real-world entity;
   **Institution Name** is source text; **Institution Alias** is an approved
   alternate name; normalized names and keys are implementation details.
+- "automatic merge" is too broad. Resolved: use **Deterministic Identity Rule
+  Queue** for low-risk rules, and **Manual Alias Review Queue** for candidates
+  where automatic matching could change display, filtering, programme
+  attachment, or application guidance.
 - Location suffixes such as "Dar es Salaam", "Dodoma", or "Campus" can mean
   either descriptive location text or a real **Campus**. Resolved: treat
   **Campus** as first-class when the distinction affects programmes, location,
