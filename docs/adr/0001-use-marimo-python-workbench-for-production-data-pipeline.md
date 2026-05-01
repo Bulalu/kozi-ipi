@@ -12,3 +12,9 @@ entrypoint and output contract, not changing the downstream app or Convex
 contract. `bun run data:build` should eventually delegate to the Marimo/Python
 export job, and `data/processed/*` should remain the stable import boundary
 until a separately reviewed contract change is needed.
+
+Before replacement, candidate processed outputs from the Marimo/Python pipeline
+will be written under `analysis/build/candidate-processed/`. That directory is a
+generated build artifact, ignored by git, and must be compared against the
+current `data/processed/*` contract before `bun run data:build` delegates to the
+new exporter.

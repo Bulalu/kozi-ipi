@@ -59,6 +59,9 @@ data/processed/requirement-rules.jsonl
 data/processed/data-quality-report.json
 ```
 
+- Write candidate processed exports to `analysis/build/candidate-processed/`
+  until parity is proven and the production build entrypoint is switched.
+
 - Treat Form Four, Form Six, certificate, diploma, and equivalent applicants as first-class pathways.
 - Do not make AI or semantic search the source of eligibility decisions.
 

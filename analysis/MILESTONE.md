@@ -10,6 +10,8 @@ The goal is to understand the current raw, enrichment, and processed data before
 
 - Do not replace `data/processed/*` exports during this milestone.
 - Do not manually edit raw CSV files.
+- Candidate processed exports belong in `analysis/build/candidate-processed/`
+  until parity is proven.
 - Agents must update this file as work happens, including checklist status, next steps, and decision notes.
 - Generated report output belongs in `analysis/reports/latest/`.
 - Reusable analysis logic belongs in `analysis/src/kozi_analysis`.
@@ -165,3 +167,6 @@ mutating processed data yet.
 - 2026-04-30: `analysis/STATUS.md` is the single human-facing dashboard. `analysis/MILESTONE.md` is the agent execution ledger.
 - 2026-04-30: Replaced `STATUS.md` as the primary spectator view with
   `analysis/notebooks/00_status.py`. `STATUS.md` remains a short text fallback.
+- 2026-05-01: Candidate processed exports will be generated under
+  `analysis/build/candidate-processed/` and ignored by git until parity is
+  proven.

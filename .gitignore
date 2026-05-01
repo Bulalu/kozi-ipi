@@ -37,6 +37,7 @@ docs/*.local.md
 
 # generated analysis reports
 /analysis/reports/latest/
+/analysis/build/
 /analysis/.venv/
 /analysis/.pytest_cache/
 /analysis/.ruff_cache/
