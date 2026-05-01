@@ -175,3 +175,6 @@ mutating processed data yet.
 - 2026-05-01: The parity gate blocks unexplained differences, not all
   differences. Candidate-vs-current comparison reports must explain row-count
   and review-flag changes before `bun run data:build` can delegate to Python.
+- 2026-05-01: The first candidate exporter will be copy-through from current
+  `data/processed/*` into `analysis/build/candidate-processed/` before any
+  transforms are reimplemented.

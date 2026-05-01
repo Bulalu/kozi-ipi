@@ -26,3 +26,9 @@ row-count differences in `analysis/reports/latest/candidate-vs-current.*`, keep
 known data/search/eligibility contract tests passing, account for P0
 identity/equivalent-pathway decisions, and avoid unexplained `needsReview`
 spikes.
+
+The first candidate exporter will be copy-through: it will copy the current
+`data/processed/*` files into `analysis/build/candidate-processed/` and generate
+candidate-vs-current reports before any transforms are reimplemented. This
+proves the export path, ignored build artifact path, and comparison machinery
+before pipeline behavior changes.
