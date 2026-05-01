@@ -32,3 +32,10 @@ The first candidate exporter will be copy-through: it will copy the current
 candidate-vs-current reports before any transforms are reimplemented. This
 proves the export path, ignored build artifact path, and comparison machinery
 before pipeline behavior changes.
+
+The candidate-vs-current comparison must inspect file presence, byte hashes,
+JSONL record counts, top-level field sets, key identity coverage, `needsReview`
+and `reviewReasons` distributions, `sourceDatasets` distributions, Applicant
+Pathway flag coverage, requirement-rule parse-status distribution, and sample
+changed records when differences exist. Copy-through exports should have equal
+hashes and zero changed-record samples.

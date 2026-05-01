@@ -178,3 +178,8 @@ mutating processed data yet.
 - 2026-05-01: The first candidate exporter will be copy-through from current
   `data/processed/*` into `analysis/build/candidate-processed/` before any
   transforms are reimplemented.
+- 2026-05-01: Candidate-vs-current comparison scope includes file presence,
+  byte hashes, JSONL record counts, field sets, key identity coverage,
+  review-flag distributions, source dataset distributions, Applicant Pathway
+  flag coverage, requirement-rule parse-status distribution, and changed-record
+  samples when differences exist.
