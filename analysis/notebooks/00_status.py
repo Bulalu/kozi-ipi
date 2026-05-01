@@ -120,6 +120,18 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.identity_transform_counts:
+        mo.ui.table(
+            snapshot.identity_transform_counts,
+            label="Identity transform slice",
+        )
+    else:
+        mo.md("Identity transform slice: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

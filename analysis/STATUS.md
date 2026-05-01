@@ -21,10 +21,11 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Are candidate processed outputs safe to treat as production-compatible?
+Can Python own the first production-shaped identity export slice without
+changing the processed-data contract?
 
-Short answer so far: the candidate gate now blocks unexplained differences and
-requires intentional changes to be listed with reasons.
+Short answer so far: Python now rewrites candidate `institutions.jsonl` while
+the gate keeps the output contract unchanged.
 
 The candidate export and gate notebooks write to ignored analysis output paths.
 They do not mutate `data/processed/*`.
@@ -46,6 +47,8 @@ They do not mutate `data/processed/*`.
   processed outputs behind the stable contract?
 - `notebooks/08_candidate_gate.py` answers: are candidate outputs safe to treat
   as production-compatible?
+- `notebooks/09_transform_slice_identity.py` answers: can Python own the first
+  identity export slice without contract drift?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -90,6 +93,10 @@ They do not mutate `data/processed/*`.
   - an empty expected-changes file at
     `analysis/config/candidate-gate-expected.json`
   - a script mode that can fail on blockers
+- Identity transform slice produced:
+  - Python-owned candidate rewriting for `institutions.jsonl`
+  - identity-key diagnostics for blank keys, duplicate keys, and campus markers
+  - a passing candidate gate after the rewrite
 
 ## Why This Matters
 
@@ -100,21 +107,22 @@ If we clean or merge records before solving identity drift, we risk:
 - attaching programmes or logos to the wrong institution
 - making search and eligibility coverage look better or worse than it is
 
-So the export replacement must happen through a candidate path with a gate that
-fails on unexplained differences before `data/processed/*` changes.
+So the export replacement can advance one file and rule at a time while the gate
+protects `data/processed/*` from unexplained drift.
 
 ## Next Question
 
-Which transformation slice should replace copy-through first while keeping the
-processed-data contract stable?
+Which deterministic identity rule should be added first with expected gate
+differences documented?
 
 The next notebook should be:
 
 ```text
-notebooks/09_transform_slice_identity.py
+notebooks/10_identity_rule_candidate.py
 ```
 
-It should implement the first narrow replacement slice behind candidate output.
+It should apply one deterministic identity rule and document any expected
+candidate gate differences.
 
 ## How To Read The Files
 
@@ -135,6 +143,7 @@ analysis/reports/latest/cleanup-plan.md
 analysis/reports/latest/p0-cleanup-design.md
 analysis/reports/latest/candidate-vs-current.md
 analysis/reports/latest/candidate-gate.md
+analysis/reports/latest/identity-transform-slice.md
 ```
 
 For implementation progress and decisions:
@@ -163,6 +172,7 @@ uv run notebooks/05_cleanup_plan.py --write-report true
 uv run notebooks/06_p0_cleanup_design.py --write-report true
 uv run notebooks/07_candidate_export.py --copy-current true --write-report true
 uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true
+uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true
 ```
 
 Run verification:

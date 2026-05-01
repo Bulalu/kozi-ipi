@@ -8,6 +8,7 @@ from kozi_analysis.candidate_export import CandidateComparisonReport
 from kozi_analysis.candidate_gate import CandidateGateReport
 from kozi_analysis.cleanup import CleanupPlanReport
 from kozi_analysis.features import FeatureReadinessReport
+from kozi_analysis.identity_transform import IdentityTransformSliceReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
 from kozi_analysis.p0_design import P0CleanupDesignReport
 from kozi_analysis.profiling import InventoryReport
@@ -716,5 +717,77 @@ def write_candidate_gate_reports(
         render_candidate_gate_markdown(report), encoding="utf-8"
     )
     (output_dir / "candidate-gate.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_identity_transform_markdown(
+    report: IdentityTransformSliceReport,
+) -> str:
+    lines = [
+        "# Identity Transform Slice",
+        "",
+        "## Question This Answers",
+        "",
+        "Can Python own the first production-shaped identity export slice without "
+        "changing the processed-data contract?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as the first narrow replacement slice. It rewrites "
+        "`institutions.jsonl` from parsed processed records and relies on the "
+        "candidate gate to prove the output is compatible.",
+        "",
+        "## Summary",
+        "",
+        f"- Input institutions: {report.input_count}",
+        f"- Output institutions: {report.output_count}",
+        f"- Blank identity keys: {report.blank_identity_count}",
+        f"- Duplicate identity rows: {report.duplicate_identity_count}",
+        f"- Institution names with campus markers: {report.campus_marker_count}",
+        f"- Rewritten files: {', '.join(report.rewritten_files)}",
+        "",
+        "## Duplicate Identity Examples",
+        "",
+    ]
+
+    if report.duplicate_identity_examples:
+        lines.extend(
+            f"- `{identity}`" for identity in report.duplicate_identity_examples
+        )
+    else:
+        lines.append("- No duplicate identity keys found.")
+
+    lines.extend(
+        [
+            "",
+            "## Decision",
+            "",
+            "This slice is allowed to proceed only when the candidate gate passes. "
+            "If it passes, the next slice can add one deterministic identity rule "
+            "at a time with expected differences explicitly documented.",
+            "",
+            "## Next Inspection Prompts",
+            "",
+            "- Which duplicate identity examples are true duplicate institutions?",
+            "- Which campus-marker rows must remain separate campuses?",
+            "- Which deterministic identity rule should be added first?",
+            "- Which expected gate differences will that rule create?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_identity_transform_reports(
+    report: IdentityTransformSliceReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "identity-transform-slice.md").write_text(
+        render_identity_transform_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "identity-transform-slice.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

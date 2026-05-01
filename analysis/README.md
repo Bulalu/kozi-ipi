@@ -76,6 +76,12 @@ Open the candidate export gate notebook with:
 uv run marimo edit notebooks/08_candidate_gate.py
 ```
 
+Open the identity transform slice notebook with:
+
+```sh
+uv run marimo edit notebooks/09_transform_slice_identity.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -124,6 +130,12 @@ Regenerate the candidate export gate report with:
 
 ```sh
 uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true
+```
+
+Regenerate the identity transform slice report with:
+
+```sh
+uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true
 ```
 
 Generated reports are written to:

@@ -94,6 +94,9 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-05-01: Candidate gate passed the copy-through baseline with no blockers
   and introduced `analysis/config/candidate-gate-expected.json` for future
   explained differences.
+- 2026-05-01: `uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true`
+  generated `analysis/reports/latest/identity-transform-slice.md` and kept the
+  candidate gate passing after Python rewrote `institutions.jsonl`.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -175,6 +178,16 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for candidate gate logic.
 
+- [x] Create `analysis/notebooks/09_transform_slice_identity.py` to let Python
+  rewrite candidate `institutions.jsonl` while preserving the processed-data
+  contract.
+- [x] Add reusable identity transform helpers under
+  `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/identity-transform-slice.md`.
+- [x] Generate machine-readable identity transform output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for identity transform logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -186,9 +199,9 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/09_transform_slice_identity.py` to replace the first
-narrow identity transformation slice behind candidate output while keeping
-`data/processed/*` unchanged.
+Create `analysis/notebooks/10_identity_rule_candidate.py` to apply one
+deterministic identity rule behind candidate output and document any expected
+gate differences.
 
 ## Decision Log
 
@@ -219,3 +232,6 @@ narrow identity transformation slice behind candidate output while keeping
 - 2026-05-01: Candidate gate must block unexplained candidate differences.
   Future intentional differences must be listed in
   `analysis/config/candidate-gate-expected.json` with a reason.
+- 2026-05-01: First identity transform slice rewrites only
+  `institutions.jsonl` from parsed processed records. It is allowed only while
+  the candidate gate passes.

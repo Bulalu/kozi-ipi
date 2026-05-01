@@ -21,6 +21,7 @@ class StatusSnapshot:
     p0_design_counts: list[dict[str, int | str]]
     candidate_counts: list[dict[str, int | str | bool | None]]
     gate_counts: list[dict[str, int | str | bool]]
+    identity_transform_counts: list[dict[str, int | str]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -42,6 +43,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     p0_design = _read_json(report_dir / "p0-cleanup-design.json")
     candidate = _read_json(report_dir / "candidate-vs-current.json")
     gate = _read_json(report_dir / "candidate-gate.json")
+    identity_transform = _read_json(report_dir / "identity-transform-slice.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -144,6 +146,25 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         else []
     )
 
+    identity_transform_counts = (
+        [
+            {
+                "rewritten_files": ", ".join(
+                    identity_transform.get("rewritten_files", [])
+                ),
+                "input": int(identity_transform.get("input_count", 0)),
+                "output": int(identity_transform.get("output_count", 0)),
+                "blank_keys": int(identity_transform.get("blank_identity_count", 0)),
+                "duplicate_rows": int(
+                    identity_transform.get("duplicate_identity_count", 0)
+                ),
+                "campus_markers": int(identity_transform.get("campus_marker_count", 0)),
+            }
+        ]
+        if identity_transform
+        else []
+    )
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -206,6 +227,14 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/candidate-gate.md",
             }
         )
+    if identity_transform:
+        completed_notebooks.append(
+            {
+                "notebook": "09_transform_slice_identity.py",
+                "question": "Can Python own the first identity export slice?",
+                "report": "reports/latest/identity-transform-slice.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
@@ -213,17 +242,18 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "the current data export pipeline."
         ),
         current_question=(
-            "Are candidate processed outputs safe to treat as production-compatible?"
+            "Can Python own the first production-shaped identity export slice "
+            "without changing the processed-data contract?"
         ),
         short_answer=(
-            "The candidate gate now blocks unexplained differences and requires "
-            "intentional changes to be listed with reasons."
+            "Python now rewrites candidate institutions.jsonl while the gate "
+            "keeps the output contract unchanged."
         ),
         next_question=(
-            "Which transformation slice should replace copy-through first while "
-            "keeping the processed-data contract stable?"
+            "Which deterministic identity rule should be added first with "
+            "expected gate differences documented?"
         ),
-        next_notebook="notebooks/09_transform_slice_identity.py",
+        next_notebook="notebooks/10_identity_rule_candidate.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
@@ -232,6 +262,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         p0_design_counts=p0_design_counts,
         candidate_counts=candidate_counts,
         gate_counts=gate_counts,
+        identity_transform_counts=identity_transform_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
@@ -250,6 +281,8 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "changing production processed outputs.",
             "Candidate gate separates unexpected blockers from explained "
             "expected differences before any transformation slice changes.",
+            "Identity transform slice proves Python can rewrite the first "
+            "production-shaped processed file without contract drift.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",
