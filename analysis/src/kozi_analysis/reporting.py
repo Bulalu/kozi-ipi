@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from kozi_analysis.aliases import AliasPairSummary, AliasReport
+from kozi_analysis.candidate_export import CandidateComparisonReport
 from kozi_analysis.cleanup import CleanupPlanReport
 from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
@@ -552,5 +553,94 @@ def write_p0_cleanup_design_reports(
         render_p0_cleanup_design_markdown(report), encoding="utf-8"
     )
     (output_dir / "p0-cleanup-design.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def render_candidate_comparison_markdown(
+    report: CandidateComparisonReport,
+) -> str:
+    lines = [
+        "# Candidate Export Comparison",
+        "",
+        "## Question This Answers",
+        "",
+        "Can the Python export path produce candidate processed files behind the "
+        "current production contract?",
+        "",
+        "## How To Use This Report",
+        "",
+        "Use this as the replacement gate for `bun run data:build`. A clean "
+        "copy-through run proves the candidate output location and comparison "
+        "checks work before we replace one transformation slice at a time.",
+        "",
+        "## Summary",
+        "",
+        f"- Copied files: {len(report.copied_files)}",
+        f"- Files compared: {len(report.files)}",
+        f"- All hashes equal: {report.all_hashes_equal}",
+        "",
+        "## File Contract",
+        "",
+        "| File | Present | Rows | Hashes Equal | Fields Equal | Blank Keys | "
+        "Review Equal | Sources Equal | Pathways Equal | Parse Status Equal |",
+        "| --- | --- | ---: | --- | --- | ---: | --- | --- | --- | --- |",
+    ]
+
+    for file in report.files:
+        present = f"{file.current_exists}/{file.candidate_exists}"
+        rows = (
+            ""
+            if file.current_record_count is None or file.candidate_record_count is None
+            else f"{file.current_record_count}/{file.candidate_record_count}"
+        )
+        blank_keys = "" if file.blank_key_count is None else str(file.blank_key_count)
+        lines.append(
+            f"| `{file.name}` | {present} | {rows} | {file.hashes_equal} | "
+            f"{file.field_sets_equal} | {blank_keys} | "
+            f"{file.needs_review_distribution_equal} | "
+            f"{file.source_datasets_distribution_equal} | "
+            f"{file.applicant_pathway_distribution_equal} | "
+            f"{file.parse_status_distribution_equal} |"
+        )
+
+    changed = [
+        (file.name, sample)
+        for file in report.files
+        for sample in file.changed_record_samples
+    ]
+    lines.extend(["", "## Changed Record Samples", ""])
+    if changed:
+        for name, sample in changed:
+            lines.append(f"- `{name}`: {sample}")
+    else:
+        lines.append("- No changed records in the sampled comparison.")
+
+    lines.extend(
+        [
+            "",
+            "## Next Inspection Prompts",
+            "",
+            "- Which transformation slice can replace copy-through first?",
+            "- Which contract checks should become hard failures in CI?",
+            "- Which candidate differences are intended improvements versus "
+            "regressions?",
+            "- Which processed JSON files still need compatibility handling?",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_candidate_comparison_reports(
+    report: CandidateComparisonReport,
+    output_dir: Path,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "candidate-vs-current.md").write_text(
+        render_candidate_comparison_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "candidate-vs-current.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

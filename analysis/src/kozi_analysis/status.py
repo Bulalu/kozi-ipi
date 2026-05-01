@@ -19,6 +19,7 @@ class StatusSnapshot:
     feature_counts: list[dict[str, int | float | str]]
     cleanup_counts: list[dict[str, int | str]]
     p0_design_counts: list[dict[str, int | str]]
+    candidate_counts: list[dict[str, int | str | bool | None]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -38,6 +39,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     features = _read_json(report_dir / "feature-readiness.json")
     cleanup = _read_json(report_dir / "cleanup-plan.json")
     p0_design = _read_json(report_dir / "p0-cleanup-design.json")
+    candidate = _read_json(report_dir / "candidate-vs-current.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -109,6 +111,18 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         },
     ]
 
+    candidate_counts = [
+        {
+            "file": file["name"],
+            "current_rows": file.get("current_record_count"),
+            "candidate_rows": file.get("candidate_record_count"),
+            "hashes_equal": bool(file.get("hashes_equal")),
+            "fields_equal": bool(file.get("field_sets_equal")),
+            "changed_samples": len(file.get("changed_record_samples", [])),
+        }
+        for file in candidate.get("files", [])
+    ]
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -155,6 +169,14 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/p0-cleanup-design.md",
             }
         )
+    if candidate:
+        completed_notebooks.append(
+            {
+                "notebook": "07_candidate_export.py",
+                "question": "Can Python produce candidate outputs under the contract?",
+                "report": "reports/latest/candidate-vs-current.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
@@ -162,24 +184,25 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "the current data export pipeline."
         ),
         current_question=(
-            "Which P0 work becomes deterministic code, manual review files, and tests?"
+            "Can the Python export path produce candidate processed files behind "
+            "the current production contract?"
         ),
         short_answer=(
-            "Institution identity work now splits into deterministic rule "
-            "candidates and manual alias review. Equivalent pathway work needs "
-            "conservative parser states and tests."
+            "The copy-through candidate exporter proves the output directory and "
+            "comparison gate before we replace transformation slices."
         ),
         next_question=(
-            "Which deterministic identity rules and review files should be "
-            "implemented first in the production pipeline?"
+            "Which transformation slice should replace copy-through first while "
+            "keeping the processed-data contract stable?"
         ),
-        next_notebook="notebooks/07_pipeline_replacement_plan.py",
+        next_notebook="notebooks/08_transform_slice_identity.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
         feature_counts=feature_counts,
         cleanup_counts=cleanup_counts,
         p0_design_counts=p0_design_counts,
+        candidate_counts=candidate_counts,
         key_findings=[
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
@@ -194,6 +217,8 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
             "Cleanup planning now separates P0 blockers from enrichment backlog.",
             "P0 design separates safe deterministic identity work from manual "
             "alias review and equivalent-pathway parser/test work.",
+            "Candidate export comparison gives us a regression gate before "
+            "changing production processed outputs.",
         ],
         risks=[
             "Merging before alias analysis can duplicate institutions.",

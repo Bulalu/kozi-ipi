@@ -64,6 +64,12 @@ Open the P0 cleanup-design notebook with:
 uv run marimo edit notebooks/06_p0_cleanup_design.py
 ```
 
+Open the candidate export comparison notebook with:
+
+```sh
+uv run marimo edit notebooks/07_candidate_export.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -100,6 +106,12 @@ Regenerate the P0 cleanup-design report with:
 
 ```sh
 uv run notebooks/06_p0_cleanup_design.py --write-report true
+```
+
+Regenerate the candidate export comparison report with:
+
+```sh
+uv run notebooks/07_candidate_export.py --copy-current true --write-report true
 ```
 
 Generated reports are written to:

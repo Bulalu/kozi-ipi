@@ -102,6 +102,15 @@ def _(mo, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.candidate_counts:
+        mo.ui.table(snapshot.candidate_counts, label="Candidate export comparison")
+    else:
+        mo.md("Candidate export comparison: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.md(
         "\n".join(
             [

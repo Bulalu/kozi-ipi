@@ -21,14 +21,14 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Which P0 work becomes deterministic code, manual review files, and tests?
+Can the Python export path produce candidate processed files behind the current
+production contract?
 
-Short answer so far: institution identity work is split into deterministic-rule
-candidates and manual-review candidates. Equivalent pathway work needs
-conservative parser states and tests.
+Short answer so far: the copy-through candidate exporter proves the output
+directory and comparison gate before we replace transformation slices.
 
-The P0 cleanup-design notebook turns the cleanup queue into implementation
-boundaries. It does not mutate processed data.
+The candidate export notebook writes to `analysis/build/candidate-processed/`.
+It does not mutate `data/processed/*`.
 
 ## What Exists Now
 
@@ -43,6 +43,8 @@ boundaries. It does not mutate processed data.
   before pipeline replacement?
 - `notebooks/06_p0_cleanup_design.py` answers: which P0 work becomes code,
   review files, and tests?
+- `notebooks/07_candidate_export.py` answers: can Python generate candidate
+  processed outputs behind the stable contract?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -78,6 +80,10 @@ boundaries. It does not mutate processed data.
   - deterministic identity rule candidates
   - manual alias review candidates
   - Equivalent Applicant Pathway parser/test tasks
+- Candidate export comparison produced:
+  - copy-through files under `analysis/build/candidate-processed/`
+  - file presence, row-count, hash, field-set, key, review-flag, source,
+    pathway, parse-status, and changed-sample checks
 
 ## Why This Matters
 
@@ -88,21 +94,21 @@ If we clean or merge records before solving identity drift, we risk:
 - attaching programmes or logos to the wrong institution
 - making search and eligibility coverage look better or worse than it is
 
-So the next correct move is identity analysis, not export replacement.
+So the export replacement must happen through a candidate path with comparison
+reports before `data/processed/*` changes.
 
 ## Next Question
 
-Which deterministic identity rules and review files should be implemented first
-in the production pipeline?
+Which transformation slice should replace copy-through first while keeping the
+processed-data contract stable?
 
 The next notebook should be:
 
 ```text
-notebooks/07_pipeline_replacement_plan.py
+notebooks/08_transform_slice_identity.py
 ```
 
-It should plan the production replacement sequence. It should not mutate
-processed data yet.
+It should implement the first narrow replacement slice behind candidate output.
 
 ## How To Read The Files
 
@@ -121,6 +127,7 @@ analysis/reports/latest/identity-aliases.md
 analysis/reports/latest/feature-readiness.md
 analysis/reports/latest/cleanup-plan.md
 analysis/reports/latest/p0-cleanup-design.md
+analysis/reports/latest/candidate-vs-current.md
 ```
 
 For implementation progress and decisions:
@@ -147,6 +154,7 @@ uv run notebooks/03_identity_aliases.py --write-report true
 uv run notebooks/04_feature_readiness.py --write-report true
 uv run notebooks/05_cleanup_plan.py --write-report true
 uv run notebooks/06_p0_cleanup_design.py --write-report true
+uv run notebooks/07_candidate_export.py --copy-current true --write-report true
 ```
 
 Run verification:

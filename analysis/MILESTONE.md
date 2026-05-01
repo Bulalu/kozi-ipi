@@ -82,6 +82,12 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-05-01: P0 cleanup design split institution identity work into a
   Deterministic Identity Rule Queue and Manual Alias Review Queue, and kept
   Equivalent Applicant Pathway work conservative for eligibility.
+- 2026-05-01: `uv run notebooks/07_candidate_export.py --copy-current true --write-report true`
+  generated `analysis/reports/latest/candidate-vs-current.md` and
+  `analysis/reports/latest/candidate-vs-current.json`.
+- 2026-05-01: Candidate export comparison copied current processed outputs to
+  `analysis/build/candidate-processed/` and established the regression gate
+  before transformation slices are replaced.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -142,6 +148,16 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for P0 cleanup-design logic.
 
+- [x] Create `analysis/notebooks/07_candidate_export.py` to copy current
+  processed outputs into the candidate output directory and compare them against
+  the stable production contract.
+- [x] Add reusable candidate export comparison helpers under
+  `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/candidate-vs-current.md`.
+- [x] Generate machine-readable candidate comparison output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for candidate export comparison logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -153,9 +169,9 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/07_pipeline_replacement_plan.py` to plan the
-production replacement sequence for the current TypeScript data builder without
-mutating processed data yet.
+Create `analysis/notebooks/08_transform_slice_identity.py` to replace the first
+narrow identity transformation slice behind candidate output while keeping
+`data/processed/*` unchanged.
 
 ## Decision Log
 
