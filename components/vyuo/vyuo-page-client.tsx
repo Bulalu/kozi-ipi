@@ -24,6 +24,25 @@ export function VyuoPageClient() {
   const [awardLevels, setAwardLevels] = useState<Set<string>>(new Set())
   const [field, setField] = useState("")
 
+  const hasFilters =
+    types.size > 0 ||
+    Boolean(region) ||
+    Boolean(ownership) ||
+    awardLevels.size > 0 ||
+    Boolean(field) ||
+    Boolean(query)
+  const filterKey = `${query.trim()}|${[...types].sort().join(",")}|${region}|${ownership}|${[
+    ...awardLevels,
+  ]
+    .sort()
+    .join(",")}|${field}`
+  const [visibleCountState, setVisibleCountState] = useState({
+    key: filterKey,
+    count: PAGE_SIZE,
+  })
+  const visibleCount =
+    visibleCountState.key === filterKey ? visibleCountState.count : PAGE_SIZE
+
   const filters = useMemo(() => {
     return {
       ...(query.trim() ? { query: query.trim() } : {}),
@@ -38,18 +57,34 @@ export function VyuoPageClient() {
   // Use paginated query for unfiltered browse (true backend pagination)
   const paginatedResults = usePaginatedQuery(
     api.institutions.browsePaginated,
-    {},
+    hasFilters ? "skip" : {},
     { initialNumItems: PAGE_SIZE }
+  )
+
+  const filteredBrowseResult = useQuery(
+    api.institutions.browse,
+    hasFilters
+      ? {
+          filters,
+          limit: visibleCount,
+        }
+      : "skip"
   )
 
   // Use regular query for summary/facets with filters applied
   const summary = useQuery(api.institutions.browseSummary, { filters })
 
-  const institutions = paginatedResults.results
-  const isLoading = paginatedResults.status === "LoadingFirstPage"
-  const isLoadingMore = paginatedResults.status === "LoadingMore"
-  const canLoadMore = paginatedResults.status === "CanLoadMore"
+  const institutions = hasFilters
+    ? (filteredBrowseResult?.results ?? [])
+    : paginatedResults.results
+  const isLoading = hasFilters
+    ? filteredBrowseResult === undefined
+    : paginatedResults.status === "LoadingFirstPage"
+  const isLoadingMore = !hasFilters && paginatedResults.status === "LoadingMore"
   const totalResults = summary?.total ?? institutions.length
+  const canLoadMore = hasFilters
+    ? institutions.length < totalResults
+    : paginatedResults.status === "CanLoadMore"
 
   const regions = useMemo(() => {
     return [
@@ -60,8 +95,6 @@ export function VyuoPageClient() {
     ].sort()
   }, [summary?.regions])
 
-  const hasFilters = types.size > 0 || Boolean(region) || Boolean(ownership) || awardLevels.size > 0 || Boolean(field) || Boolean(query)
-
   function clearAll() {
     setTypes(new Set())
     setRegion("")
@@ -69,6 +102,7 @@ export function VyuoPageClient() {
     setAwardLevels(new Set())
     setField("")
     setQuery("")
+    setVisibleCountState({ key: "", count: PAGE_SIZE })
   }
 
   return (
@@ -117,7 +151,17 @@ export function VyuoPageClient() {
               {canLoadMore ? (
                 <div className="mt-7 flex justify-center">
                   <button
-                    onClick={() => paginatedResults.loadMore(PAGE_SIZE)}
+                    onClick={() => {
+                      if (hasFilters) {
+                        setVisibleCountState({
+                          key: filterKey,
+                          count: visibleCount + PAGE_SIZE,
+                        })
+                        return
+                      }
+
+                      paginatedResults.loadMore(PAGE_SIZE)
+                    }}
                     disabled={isLoadingMore}
                     className="rounded-full border border-brand-ink/15 px-5 py-2 text-[13px] font-semibold text-brand-ink transition hover:border-brand-ink hover:bg-brand-ink hover:text-white disabled:cursor-wait disabled:opacity-60"
                     type="button"
