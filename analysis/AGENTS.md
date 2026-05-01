@@ -61,6 +61,9 @@ data/processed/data-quality-report.json
 
 - Write candidate processed exports to `analysis/build/candidate-processed/`
   until parity is proven and the production build entrypoint is switched.
+- Treat unexplained differences between candidate and current processed outputs
+  as blockers. Parity is contract-compatible and regression-controlled, not
+  byte-for-byte identical.
 
 - Treat Form Four, Form Six, certificate, diploma, and equivalent applicants as first-class pathways.
 - Do not make AI or semantic search the source of eligibility decisions.

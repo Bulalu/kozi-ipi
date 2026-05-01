@@ -18,3 +18,11 @@ will be written under `analysis/build/candidate-processed/`. That directory is a
 generated build artifact, ignored by git, and must be compared against the
 current `data/processed/*` contract before `bun run data:build` delegates to the
 new exporter.
+
+The replacement gate is contract-compatible and regression-controlled parity,
+not byte-for-byte equality. Candidate outputs must contain the same output files,
+validate against expected schemas, preserve Convex import table names, explain
+row-count differences in `analysis/reports/latest/candidate-vs-current.*`, keep
+known data/search/eligibility contract tests passing, account for P0
+identity/equivalent-pathway decisions, and avoid unexplained `needsReview`
+spikes.

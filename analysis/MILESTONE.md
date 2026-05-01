@@ -12,6 +12,8 @@ The goal is to understand the current raw, enrichment, and processed data before
 - Do not manually edit raw CSV files.
 - Candidate processed exports belong in `analysis/build/candidate-processed/`
   until parity is proven.
+- Candidate export parity means contract-compatible and regression-controlled,
+  not byte-for-byte identical.
 - Agents must update this file as work happens, including checklist status, next steps, and decision notes.
 - Generated report output belongs in `analysis/reports/latest/`.
 - Reusable analysis logic belongs in `analysis/src/kozi_analysis`.
@@ -170,3 +172,6 @@ mutating processed data yet.
 - 2026-05-01: Candidate processed exports will be generated under
   `analysis/build/candidate-processed/` and ignored by git until parity is
   proven.
+- 2026-05-01: The parity gate blocks unexplained differences, not all
+  differences. Candidate-vs-current comparison reports must explain row-count
+  and review-flag changes before `bun run data:build` can delegate to Python.
