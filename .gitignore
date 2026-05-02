@@ -43,6 +43,7 @@ docs/*.local.md
 /analysis/.ruff_cache/
 /analysis/src/*.egg-info/
 /analysis/notebooks/layouts/
+/analysis/notebooks/__marimo__/
 __pycache__/
 
 # typescript

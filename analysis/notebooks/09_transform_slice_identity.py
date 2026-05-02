@@ -118,8 +118,9 @@ def _(IdentityTransformParams, mo, params_from_cli, print_usage):
             print_usage()
             raise SystemExit(0)
         params_form = None
-        params = params_from_cli(cli_args)
+        cli_params = params_from_cli(cli_args)
     else:
+        cli_params = None
         params_form = (
             mo.md(
                 """
@@ -159,21 +160,28 @@ def _(IdentityTransformParams, mo, params_from_cli, print_usage):
             )
             .form()
         )
-        params = (
-            IdentityTransformParams(**params_form.value)
-            if params_form.value is not None
-            else IdentityTransformParams()
-        )
 
-    return params, params_form
+    return cli_params, params_form
+
+
+@app.cell
+def _(IdentityTransformParams, cli_params, params_form):
+    if cli_params is not None:
+        params = cli_params
+    elif params_form.value is not None:
+        params = IdentityTransformParams(**params_form.value)
+    else:
+        params = IdentityTransformParams()
+    return (params,)
 
 
 @app.cell
 def _(mo, params_form):
-    if params_form is not None:
+    (
         mo.vstack([mo.md("# Identity Transform Slice"), params_form])
-    else:
-        mo.md("# Identity Transform Slice")
+        if params_form is not None
+        else mo.md("# Identity Transform Slice")
+    )
     return
 
 

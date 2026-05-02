@@ -114,8 +114,9 @@ def _(CandidateGateParams, mo, params_from_cli, print_usage):
             print_usage()
             raise SystemExit(0)
         params_form = None
-        params = params_from_cli(cli_args)
+        cli_params = params_from_cli(cli_args)
     else:
+        cli_params = None
         params_form = (
             mo.md(
                 """
@@ -155,21 +156,28 @@ def _(CandidateGateParams, mo, params_from_cli, print_usage):
             )
             .form()
         )
-        params = (
-            CandidateGateParams(**params_form.value)
-            if params_form.value is not None
-            else CandidateGateParams()
-        )
 
-    return params, params_form
+    return cli_params, params_form
+
+
+@app.cell
+def _(CandidateGateParams, cli_params, params_form):
+    if cli_params is not None:
+        params = cli_params
+    elif params_form.value is not None:
+        params = CandidateGateParams(**params_form.value)
+    else:
+        params = CandidateGateParams()
+    return (params,)
 
 
 @app.cell
 def _(mo, params_form):
-    if params_form is not None:
+    (
         mo.vstack([mo.md("# Candidate Export Gate"), params_form])
-    else:
-        mo.md("# Candidate Export Gate")
+        if params_form is not None
+        else mo.md("# Candidate Export Gate")
+    )
     return
 
 

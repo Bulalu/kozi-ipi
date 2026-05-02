@@ -76,8 +76,9 @@ def _(P0CleanupDesignParams, mo, params_from_cli, print_usage):
             print_usage()
             raise SystemExit(0)
         params_form = None
-        params = params_from_cli(cli_args)
+        cli_params = params_from_cli(cli_args)
     else:
+        cli_params = None
         params_form = (
             mo.md(
                 """
@@ -97,21 +98,28 @@ def _(P0CleanupDesignParams, mo, params_from_cli, print_usage):
             )
             .form()
         )
-        params = (
-            P0CleanupDesignParams(**params_form.value)
-            if params_form.value is not None
-            else P0CleanupDesignParams()
-        )
 
-    return params, params_form
+    return cli_params, params_form
+
+
+@app.cell
+def _(P0CleanupDesignParams, cli_params, params_form):
+    if cli_params is not None:
+        params = cli_params
+    elif params_form.value is not None:
+        params = P0CleanupDesignParams(**params_form.value)
+    else:
+        params = P0CleanupDesignParams()
+    return (params,)
 
 
 @app.cell
 def _(mo, params_form):
-    if params_form is not None:
+    (
         mo.vstack([mo.md("# P0 Cleanup Design"), params_form])
-    else:
-        mo.md("# P0 Cleanup Design")
+        if params_form is not None
+        else mo.md("# P0 Cleanup Design")
+    )
     return
 
 

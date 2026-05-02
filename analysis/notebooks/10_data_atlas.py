@@ -81,15 +81,16 @@ def _():
 
 
 @app.cell
-def _(DataAtlasParams, mo, params_from_cli, print_usage):
+def _(mo, params_from_cli, print_usage):
     if mo.app_meta().mode == "script":
         cli_args = mo.cli_args()
         if "help" in cli_args or "h" in cli_args:
             print_usage()
             raise SystemExit(0)
         params_form = None
-        params = params_from_cli(cli_args)
+        cli_params = params_from_cli(cli_args)
     else:
+        cli_params = None
         params_form = (
             mo.md(
                 """
@@ -117,21 +118,27 @@ def _(DataAtlasParams, mo, params_from_cli, print_usage):
             )
             .form()
         )
-        params = (
-            DataAtlasParams(**params_form.value)
-            if params_form.value is not None
-            else DataAtlasParams()
-        )
+    return cli_params, params_form
 
-    return params, params_form
+
+@app.cell
+def _(DataAtlasParams, cli_params, params_form):
+    if cli_params is not None:
+        params = cli_params
+    elif params_form.value is not None:
+        params = DataAtlasParams(**params_form.value)
+    else:
+        params = DataAtlasParams()
+    return (params,)
 
 
 @app.cell
 def _(mo, params_form):
-    if params_form is not None:
+    (
         mo.vstack([mo.md("# Data Atlas"), params_form])
-    else:
-        mo.md("# Data Atlas")
+        if params_form is not None
+        else mo.md("# Data Atlas")
+    )
     return
 
 
