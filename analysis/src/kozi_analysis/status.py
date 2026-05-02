@@ -22,6 +22,7 @@ class StatusSnapshot:
     candidate_counts: list[dict[str, int | str | bool | None]]
     gate_counts: list[dict[str, int | str | bool]]
     identity_transform_counts: list[dict[str, int | str]]
+    data_atlas_counts: list[dict[str, int | str]]
     key_findings: list[str]
     risks: list[str]
     completed_notebooks: list[dict[str, str]]
@@ -44,6 +45,7 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
     candidate = _read_json(report_dir / "candidate-vs-current.json")
     gate = _read_json(report_dir / "candidate-gate.json")
     identity_transform = _read_json(report_dir / "identity-transform-slice.json")
+    data_atlas = _read_json(report_dir / "data-atlas.json")
 
     rows_by_group = inventory.get("rows_by_group", {})
     data_counts = [
@@ -165,6 +167,11 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         else []
     )
 
+    data_atlas_counts = [
+        {"metric": metric.replace("_", " "), "count": int(count)}
+        for metric, count in data_atlas.get("headline", {}).items()
+    ]
+
     completed_notebooks = [
         {
             "notebook": "01_inventory.py",
@@ -235,25 +242,36 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
                 "report": "reports/latest/identity-transform-slice.md",
             }
         )
+    if data_atlas:
+        completed_notebooks.append(
+            {
+                "notebook": "10_data_atlas.py",
+                "question": "What does the data say about the product surface?",
+                "report": "reports/latest/data-atlas.md",
+            }
+        )
 
     return StatusSnapshot(
         current_goal=(
-            "Build a production Marimo/Python analysis workbench before replacing "
-            "the current data export pipeline."
+            "Use a production Marimo/Python data atlas to understand Kozi Ipi's "
+            "institutions, programmes, locations, categories, pathways, and gaps "
+            "before cleaning data."
         ),
         current_question=(
-            "Can Python own the first production-shaped identity export slice "
-            "without changing the processed-data contract?"
+            "What does Kozi Ipi currently know about institutions, campuses, "
+            "programmes, locations, course categories, applicant pathways, and "
+            "data gaps?"
         ),
         short_answer=(
-            "Python now rewrites candidate institutions.jsonl while the gate "
-            "keeps the output contract unchanged."
+            "The data atlas is now the main EDA view. Pipeline notebooks remain "
+            "supporting tools until EDA identifies the next justified cleanup."
         ),
         next_question=(
-            "Which deterministic identity rule should be added first with "
-            "expected gate differences documented?"
+            "Which atlas finding should become the first focused deep-dive: "
+            "campus identity, course categorization, requirements intensity, "
+            "or missing contact/application data?"
         ),
-        next_notebook="notebooks/10_identity_rule_candidate.py",
+        next_notebook="notebooks/11_campus_identity.py",
         data_counts=data_counts,
         source_counts=source_counts,
         alias_counts=alias_counts,
@@ -263,7 +281,9 @@ def build_status_snapshot(report_dir: Path) -> StatusSnapshot:
         candidate_counts=candidate_counts,
         gate_counts=gate_counts,
         identity_transform_counts=identity_transform_counts,
+        data_atlas_counts=data_atlas_counts,
         key_findings=[
+            "Data atlas is the current starting point for product-facing EDA.",
             "Inventory is in place: we can see files, row counts, and columns.",
             "Exact source overlap is now measurable instead of guessed.",
             "Canonical pathway data connects to processed data better than the "

@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from pathlib import Path
 
 from kozi_analysis.aliases import AliasPairSummary, AliasReport
 from kozi_analysis.candidate_export import CandidateComparisonReport
 from kozi_analysis.candidate_gate import CandidateGateReport
 from kozi_analysis.cleanup import CleanupPlanReport
+from kozi_analysis.data_atlas import CountRow, DataAtlasReport
 from kozi_analysis.features import FeatureReadinessReport
 from kozi_analysis.identity_transform import IdentityTransformSliceReport
 from kozi_analysis.overlap import PairOverlap, SourceOverlapReport, SourceSummary
@@ -789,5 +791,164 @@ def write_identity_transform_reports(
         render_identity_transform_markdown(report), encoding="utf-8"
     )
     (output_dir / "identity-transform-slice.json").write_text(
+        json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def _count_table(rows: Sequence[CountRow], label_title: str = "Label") -> list[str]:
+    lines = [
+        f"| {label_title} | Count |",
+        "| --- | ---: |",
+    ]
+    for row in rows:
+        lines.append(f"| {row.label} | {row.count} |")
+    return lines
+
+
+def render_data_atlas_markdown(report: DataAtlasReport) -> str:
+    lines = [
+        "# Data Atlas",
+        "",
+        "## Question This Answers",
+        "",
+        "What does Kozi Ipi currently know about institutions, campuses, "
+        "programmes, locations, course categories, applicant pathways, and "
+        "data gaps?",
+        "",
+        "## Data Brief",
+        "",
+        "| Metric | Count |",
+        "| --- | ---: |",
+    ]
+    for metric, count in report.headline.items():
+        lines.append(f"| {metric.replace('_', ' ')} | {count} |")
+
+    lines.extend(
+        [
+            "",
+            "Campus records are not merged. Counts show listed institution records "
+            "unless a section explicitly says it is grouping parent-like names.",
+            "",
+            "## Source Caveat",
+            "",
+            "| Source | Rows |",
+            "| --- | ---: |",
+        ]
+    )
+    for source, count in report.source_counts.items():
+        lines.append(f"| `{source}` | {count} |")
+
+    lines.extend(["", "## Institution Categories", ""])
+    lines.extend(_count_table(report.institution_categories, "Category"))
+    lines.extend(["", "## Institution Regulators", ""])
+    lines.extend(_count_table(report.institution_regulators, "Regulator"))
+    lines.extend(["", "## Institution Regions", ""])
+    lines.extend(_count_table(report.institution_regions, "Region"))
+    lines.extend(["", "## Programme Opportunity Regions", ""])
+    lines.extend(_count_table(report.programme_regions, "Region"))
+    lines.extend(["", "## Programmes By Award Level", ""])
+    lines.extend(_count_table(report.award_levels, "Award Level"))
+    lines.extend(["", "## Programmes By Course Category", ""])
+    lines.extend(_count_table(report.field_categories, "Field Category"))
+    lines.extend(["", "## Programmes By Course Family", ""])
+    lines.extend(_count_table(report.course_families, "Course Family"))
+    lines.extend(["", "## Applicant Pathway Coverage", ""])
+    lines.extend(_count_table(report.applicant_pathways, "Pathway"))
+    lines.extend(["", "## Institutions With The Most Programmes", ""])
+    lines.extend(_count_table(report.top_institutions, "Institution"))
+
+    lines.extend(
+        [
+            "",
+            "## Top Institutions Inside Each Course Category",
+            "",
+            "| Category | Institution | Programmes |",
+            "| --- | --- | ---: |",
+        ]
+    )
+    for row in report.top_institutions_by_category:
+        lines.append(f"| {row.category} | {row.institution} | {row.count} |")
+
+    lines.extend(["", "## Campus And Parent-Like Signals", ""])
+    lines.extend(_count_table(report.campus_like_institutions, "Campus-like record"))
+    lines.extend(["", "## Multi-Location Parent-Like Groups", ""])
+    lines.extend(_count_table(report.multi_location_parent_groups, "Parent-like group"))
+
+    lines.extend(
+        [
+            "",
+            "## Biggest Missing Fields",
+            "",
+            "| Dataset | Field | Missing | Total | Missing % |",
+            "| --- | --- | ---: | ---: | ---: |",
+        ]
+    )
+    for row in report.missing_fields[:24]:
+        lines.append(
+            f"| {row.dataset} | `{row.field}` | {row.missing_count} | "
+            f"{row.total_count} | {row.missing_percent:.2f}% |"
+        )
+
+    lines.extend(["", "## Review Risk Flags", ""])
+    lines.extend(_count_table(report.review_reasons, "Reason"))
+
+    lines.extend(
+        [
+            "",
+            "## Requirements Intensity: Programme View",
+            "",
+            "This is an exploratory proxy, not an official ranking.",
+            "",
+            "| Score | Programme | Institution | Category | Award | Reasons |",
+            "| ---: | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in report.high_requirement_programmes:
+        lines.append(
+            f"| {row.score} | {row.programme} | {row.institution} | "
+            f"{row.category} | {row.award_level} | {', '.join(row.reasons)} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Requirements Intensity: Institution View",
+            "",
+            "| Institution | Programmes | Average Score | High-Intensity Programmes |",
+            "| --- | ---: | ---: | ---: |",
+        ]
+    )
+    for row in report.institution_requirement_intensity:
+        lines.append(
+            f"| {row.institution} | {row.programme_count} | "
+            f"{row.average_score:.2f} | {row.high_intensity_count} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## What This Suggests",
+            "",
+            "- Keep EDA product-facing first, then use source caveats to decide "
+            "deeper audits.",
+            "- Treat campus-like records as student-relevant until a dedicated "
+            "campus identity notebook proves otherwise.",
+            "- Use course categories for discovery, but audit weak categories "
+            "such as `other` and `missing/unknown`.",
+            "- Use requirements intensity only as an inspection signal, not as "
+            "a public ranking.",
+            "",
+        ]
+    )
+
+    return "\n".join(lines)
+
+
+def write_data_atlas_reports(report: DataAtlasReport, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "data-atlas.md").write_text(
+        render_data_atlas_markdown(report), encoding="utf-8"
+    )
+    (output_dir / "data-atlas.json").write_text(
         json.dumps(report.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
     )

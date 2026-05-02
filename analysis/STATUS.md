@@ -21,11 +21,11 @@ missing, and which cleaning rules are justified.
 
 ## Current Question
 
-Can Python own the first production-shaped identity export slice without
-changing the processed-data contract?
+What does Kozi Ipi currently know about institutions, campuses, programmes,
+locations, course categories, applicant pathways, and data gaps?
 
-Short answer so far: Python now rewrites candidate `institutions.jsonl` while
-the gate keeps the output contract unchanged.
+Short answer so far: the data atlas is now the main EDA view. Pipeline notebooks
+remain supporting tools until EDA identifies the next justified cleanup.
 
 The candidate export and gate notebooks write to ignored analysis output paths.
 They do not mutate `data/processed/*`.
@@ -49,6 +49,9 @@ They do not mutate `data/processed/*`.
   as production-compatible?
 - `notebooks/09_transform_slice_identity.py` answers: can Python own the first
   identity export slice without contract drift?
+- `notebooks/10_data_atlas.py` answers: what does the current data say about
+  institutions, campuses, programmes, categories, pathways, missingness, and
+  requirements intensity?
 - `src/kozi_analysis/` contains reusable analysis logic used by the notebooks.
 - `tests/` verifies the reusable logic.
 - `reports/latest/` contains generated local reports.
@@ -97,6 +100,14 @@ They do not mutate `data/processed/*`.
   - Python-owned candidate rewriting for `institutions.jsonl`
   - identity-key diagnostics for blank keys, duplicate keys, and campus markers
   - a passing candidate gate after the rewrite
+- Data atlas produced:
+  - a one-screen product-facing data brief
+  - institution/category/regulator/location distributions
+  - programme location, award, field, course-family, and pathway distributions
+  - top institutions overall and inside course categories
+  - campus-like and parent-like grouping signals
+  - missing field and review-risk summaries
+  - exploratory requirements intensity, clearly not an official ranking
 
 ## Why This Matters
 
@@ -107,22 +118,24 @@ If we clean or merge records before solving identity drift, we risk:
 - attaching programmes or logos to the wrong institution
 - making search and eligibility coverage look better or worse than it is
 
-So the export replacement can advance one file and rule at a time while the gate
-protects `data/processed/*` from unexplained drift.
+So cleaning decisions should now come from visible EDA findings, not pipeline
+mechanics alone.
 
 ## Next Question
 
-Which deterministic identity rule should be added first with expected gate
-differences documented?
+Which atlas finding should become the first focused deep-dive: campus identity,
+course categorization, requirements intensity, or missing contact/application
+data?
 
 The next notebook should be:
 
 ```text
-notebooks/10_identity_rule_candidate.py
+notebooks/11_campus_identity.py
 ```
 
-It should apply one deterministic identity rule and document any expected
-candidate gate differences.
+This is only the current recommendation because campus-like records affect
+counts, location, and programme availability. The atlas should guide whether we
+keep that priority.
 
 ## How To Read The Files
 
@@ -144,6 +157,7 @@ analysis/reports/latest/p0-cleanup-design.md
 analysis/reports/latest/candidate-vs-current.md
 analysis/reports/latest/candidate-gate.md
 analysis/reports/latest/identity-transform-slice.md
+analysis/reports/latest/data-atlas.md
 ```
 
 For implementation progress and decisions:
@@ -173,6 +187,7 @@ uv run notebooks/06_p0_cleanup_design.py --write-report true
 uv run notebooks/07_candidate_export.py --copy-current true --write-report true
 uv run notebooks/08_candidate_gate.py --copy-current true --write-report true --fail-on-blockers true
 uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true
+uv run notebooks/10_data_atlas.py --write-report true
 ```
 
 Run verification:

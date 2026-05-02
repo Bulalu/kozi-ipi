@@ -82,6 +82,12 @@ Open the identity transform slice notebook with:
 uv run marimo edit notebooks/09_transform_slice_identity.py
 ```
 
+Open the broad data atlas with:
+
+```sh
+uv run marimo edit notebooks/10_data_atlas.py
+```
+
 ## CLI Reports
 
 Regenerate the inventory report with:
@@ -136,6 +142,12 @@ Regenerate the identity transform slice report with:
 
 ```sh
 uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true
+```
+
+Regenerate the data atlas report with:
+
+```sh
+uv run notebooks/10_data_atlas.py --write-report true
 ```
 
 Generated reports are written to:

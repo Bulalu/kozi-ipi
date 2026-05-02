@@ -60,6 +60,15 @@ def _(mo, progress_bar_html, snapshot):
 
 @app.cell
 def _(mo, snapshot):
+    if snapshot.data_atlas_counts:
+        mo.ui.table(snapshot.data_atlas_counts, label="Data atlas brief")
+    else:
+        mo.md("Data atlas brief: not generated yet.")
+    return
+
+
+@app.cell
+def _(mo, snapshot):
     mo.ui.table(snapshot.source_counts, label="Source comparison coverage")
     return
 

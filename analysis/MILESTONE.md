@@ -97,6 +97,10 @@ The goal is to understand the current raw, enrichment, and processed data before
 - 2026-05-01: `uv run notebooks/09_transform_slice_identity.py --copy-current true --write-report true --fail-on-blockers true`
   generated `analysis/reports/latest/identity-transform-slice.md` and kept the
   candidate gate passing after Python rewrote `institutions.jsonl`.
+- 2026-05-02: User corrected the direction: EDA/data understanding must lead
+  cleanup decisions. `uv run notebooks/10_data_atlas.py --write-report true`
+  generated `analysis/reports/latest/data-atlas.md` and
+  `analysis/reports/latest/data-atlas.json`.
 - 2026-04-30: User feedback showed `MILESTONE.md` and generated reports were
   not clear enough as a single spectator view. Added `analysis/STATUS.md` as
   the human-facing dashboard and kept this file as the implementation ledger.
@@ -188,6 +192,15 @@ Use this file for execution details, checklist status, and decision history.
   `analysis/reports/latest/`.
 - [x] Add focused tests/checks for identity transform logic.
 
+- [x] Create `analysis/notebooks/10_data_atlas.py` as the broad product-facing
+  EDA notebook for institutions, campuses, programmes, course categories,
+  pathways, missingness, and requirements intensity.
+- [x] Add reusable data atlas helpers under `analysis/src/kozi_analysis`.
+- [x] Generate `analysis/reports/latest/data-atlas.md`.
+- [x] Generate machine-readable data atlas output under
+  `analysis/reports/latest/`.
+- [x] Add focused tests/checks for data atlas logic.
+
 - [x] Create `analysis/notebooks/02_source_overlap.py` to compare institution and
   programme identity overlap across canonical raw, fallback raw, enrichment,
   extracted, and processed sources.
@@ -199,9 +212,9 @@ Use this file for execution details, checklist status, and decision history.
 
 ## Next Candidate Task
 
-Create `analysis/notebooks/10_identity_rule_candidate.py` to apply one
-deterministic identity rule behind candidate output and document any expected
-gate differences.
+Use `analysis/notebooks/10_data_atlas.py` as the main EDA view. Pick the next
+focused deep-dive from atlas findings before applying more transform changes.
+The current likely next notebook is `analysis/notebooks/11_campus_identity.py`.
 
 ## Decision Log
 
@@ -235,3 +248,6 @@ gate differences.
 - 2026-05-01: First identity transform slice rewrites only
   `institutions.jsonl` from parsed processed records. It is allowed only while
   the candidate gate passes.
+- 2026-05-02: Data atlas is the lead narrative again. Pipeline replacement
+  notebooks are supporting infrastructure, not the main story, until EDA
+  identifies the next justified cleanup.
