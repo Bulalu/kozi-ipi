@@ -1,4 +1,5 @@
 export * from "./evaluate"
+export * from "./evidence"
 export * from "./explanations"
 export * from "./grades"
 export * from "./parse-requirements"

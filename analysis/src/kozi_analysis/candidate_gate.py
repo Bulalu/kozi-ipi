@@ -154,6 +154,13 @@ def file_checks(
         ),
         gate_check(
             file.name,
+            "manual_review_queue_distribution",
+            file.manual_review_queue_distribution_equal is True,
+            "Manual Review Queue distribution changes must be explained.",
+            expected_changes,
+        ),
+        gate_check(
+            file.name,
             "source_datasets",
             file.source_datasets_distribution_equal is True,
             "Source dataset distributions must be explained.",

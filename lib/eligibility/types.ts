@@ -1,9 +1,6 @@
-export type ApplicationRoute =
-  | "form_four"
-  | "form_six"
-  | "certificate"
-  | "diploma"
-  | "equivalent"
+import type { ApplicationRoute } from "../domain/applicant-pathways"
+
+export type { ApplicationRoute }
 
 export type CseeDivision = "I" | "II" | "III" | "IV" | "0"
 export type AcseeDivision = "I" | "II" | "III" | "IV" | "0"

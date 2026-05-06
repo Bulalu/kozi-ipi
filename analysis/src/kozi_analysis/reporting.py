@@ -587,8 +587,9 @@ def render_candidate_comparison_markdown(
         "## File Contract",
         "",
         "| File | Present | Rows | Hashes Equal | Fields Equal | Blank Keys | "
-        "Review Equal | Sources Equal | Pathways Equal | Parse Status Equal |",
-        "| --- | --- | ---: | --- | --- | ---: | --- | --- | --- | --- |",
+        "Review Equal | Review Queue Equal | Sources Equal | Pathways Equal | "
+        "Parse Status Equal |",
+        "| --- | --- | ---: | --- | --- | ---: | --- | --- | --- | --- | --- |",
     ]
 
     for file in report.files:
@@ -603,6 +604,7 @@ def render_candidate_comparison_markdown(
             f"| `{file.name}` | {present} | {rows} | {file.hashes_equal} | "
             f"{file.field_sets_equal} | {blank_keys} | "
             f"{file.needs_review_distribution_equal} | "
+            f"{file.manual_review_queue_distribution_equal} | "
             f"{file.source_datasets_distribution_equal} | "
             f"{file.applicant_pathway_distribution_equal} | "
             f"{file.parse_status_distribution_equal} |"

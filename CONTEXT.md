@@ -64,6 +64,37 @@ _Avoid_: programme offering
 An alternate programme label that refers to the same **Programme Offering**.
 _Avoid_: title-only match
 
+**Processed-Data Contract**:
+The stable generated files imported into Convex after raw-source normalization,
+deduplication, enrichment, and requirement-rule parsing.
+_Avoid_: raw data, export snapshot
+
+**Processed-Data Builder**:
+The deterministic pipeline that turns raw, fallback, extracted, and enrichment
+sources into the **Processed-Data Contract**.
+_Avoid_: one-off export script, data munging script
+
+**Search Vocabulary**:
+The curated English and Swahili terms, course families, intent terms, and
+rankable search tokens used to connect student language to **Programme
+Offerings**.
+_Avoid_: hard-coded search regexes, AI synonyms
+
+**Requirement Rule Evidence**:
+The parsed clauses, source text, parse status, and fallback pathway flags used
+to explain an eligibility decision.
+_Avoid_: eligibility result only, parser status only
+
+**Eligibility Profile**:
+The student's entered CSEE, ACSEE, prior-award, or equivalent details for one
+**Applicant Pathway**.
+_Avoid_: form state, grade blob
+
+**Manual Review Queue**:
+Typed review work produced by the data pipeline when a row needs human judgment
+before it can safely affect identity, display, eligibility, or imports.
+_Avoid_: generic needsReview pile
+
 ## Relationships
 
 - An **Applicant Pathway** is one of Form Four, Form Six, certificate, diploma,
@@ -88,6 +119,18 @@ _Avoid_: title-only match
 - A **Programme Offering** belongs to exactly one **Institution Identity** or
   **Campus** for search and selection purposes.
 - A **Programme Alias** links a **Programme Name** to a **Programme Offering**.
+- The **Processed-Data Contract** is the stable seam between data generation and
+  Convex imports.
+- The **Processed-Data Builder** must preserve the **Processed-Data Contract**
+  unless a contract change is explicitly reviewed.
+- **Search Vocabulary** can suggest and rank **Programme Offerings**, but
+  eligibility still comes from rules.
+- **Requirement Rule Evidence** supports conservative eligibility explanations
+  for an **Eligibility Profile**.
+- An **Eligibility Profile** belongs to exactly one **Applicant Pathway** for
+  each check.
+- A **Manual Review Queue** item may explain why `needsReview` is true, but
+  `needsReview` remains only the summary flag.
 
 ## Example dialogue
 
@@ -101,7 +144,7 @@ _Avoid_: title-only match
 > `likely_eligible_but_verify` unless the rule is structured enough."
 
 > **Dev:** "Can we merge `Ardhi University (ARU)` and `Ardhi University (ARU),
-> Dar es Salaam`?"
+Dar es Salaam`?"
 > **Domain expert:** "Only if they represent the same **Institution Identity**
 > for display, filtering, programmes, and application details. Otherwise record
 > one as a separate identity or send it to **Manual Alias Review**."

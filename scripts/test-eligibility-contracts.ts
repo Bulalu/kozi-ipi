@@ -1,11 +1,18 @@
 import assert from "node:assert/strict"
 
 import {
+  acceptedApplicantPathwayLabels,
+  applicantPathwayFlagField,
+  applicantPathways,
+  summarizeApplicantPathwayCoverage,
+} from "../lib/domain/applicant-pathways"
+import {
   calculateAcseePoints,
   countAcseePrincipalPasses,
   countAcseeSubsidiaryPasses,
   countCseePasses,
   evaluateRequirementRuleSet,
+  fallbackEligibilityFromApplicantPathwayFlag,
   normalizeStudentProfile,
   normalizeSubjectName,
   parseRequirementRuleSet,
@@ -17,6 +24,57 @@ import {
   formSixEngineeringProfile,
   sampleRequirementRuleSets,
 } from "./fixtures/eligibility-gold-fixtures"
+
+assert.equal(
+  applicantPathways.length,
+  5,
+  "Applicant Pathway model should keep all supported pathways first-class."
+)
+assert.equal(
+  applicantPathwayFlagField("equivalent"),
+  "acceptsEquivalent",
+  "Equivalent Applicant Pathway should map to the processed route flag."
+)
+assert.deepEqual(
+  acceptedApplicantPathwayLabels({
+    acceptsFormFourDirect: "yes",
+    acceptsFormSix: "no",
+    acceptsCertificate: "unknown",
+    acceptsDiploma: "yes",
+    acceptsEquivalent: "unknown",
+  }),
+  ["CSEE", "Diploma"],
+  "Accepted Applicant Pathway labels should come from the shared route model."
+)
+assert.deepEqual(
+  summarizeApplicantPathwayCoverage([
+    {
+      acceptsFormFourDirect: "yes",
+      acceptsFormSix: "unknown",
+      acceptsCertificate: "no",
+      acceptsDiploma: "yes",
+      acceptsEquivalent: "unknown",
+    },
+  ]).form_four,
+  { yes: 1, no: 0, unknown: 0 },
+  "Applicant Pathway coverage should summarize route flags through the shared model."
+)
+assert.equal(
+  fallbackEligibilityFromApplicantPathwayFlag(
+    {
+      acceptsFormFourDirect: "unknown",
+      acceptsFormSix: "unknown",
+      acceptsCertificate: "unknown",
+      acceptsDiploma: "yes",
+      acceptsEquivalent: "unknown",
+      confidenceLevel: "high",
+      officialSourceUrl: "https://example.test",
+    },
+    "diploma"
+  ).status,
+  "likely_eligible_but_verify",
+  "Fallback eligibility should use Applicant Pathway flags conservatively."
+)
 
 assert.equal(
   normalizeSubjectName("Basic Mathematics"),

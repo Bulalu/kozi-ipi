@@ -26,6 +26,7 @@ def comparison_file(**overrides: Any) -> FileComparison:
         "candidate_fields": ["normalizedInstitutionName"],
         "blank_key_count": 0,
         "needs_review_distribution_equal": True,
+        "manual_review_queue_distribution_equal": True,
         "source_datasets_distribution_equal": True,
         "applicant_pathway_distribution_equal": True,
         "parse_status_distribution_equal": True,

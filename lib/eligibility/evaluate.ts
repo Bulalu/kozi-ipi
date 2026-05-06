@@ -1,4 +1,5 @@
 import { normalizeSubjectName } from "./subjects"
+import { compareEligibilityEvaluations } from "./evidence"
 import type {
   AcseeDivision,
   AcseeGrade,
@@ -19,14 +20,6 @@ type ClauseEvaluation = {
   matchedClauses: string[]
   missingClauses: string[]
   warnings: string[]
-}
-
-const STATUS_RANK: Record<EligibilityStatus, number> = {
-  eligible: 5,
-  likely_eligible_but_verify: 4,
-  cannot_determine: 3,
-  interest_match_only: 2,
-  not_eligible: 1,
 }
 
 const DIVISION_RANK: Record<CseeDivision | AcseeDivision, number> = {
@@ -78,7 +71,7 @@ export function evaluateRequirementRuleSet(
     .map((variant, index) =>
       evaluateRequirementVariant(ruleSet, variant, profile, index)
     )
-    .sort(compareEvaluations)[0]!
+    .sort(compareEligibilityEvaluations)[0]!
 }
 
 export function evaluateRequirementVariant(
@@ -100,8 +93,12 @@ export function evaluateRequirementVariant(
   const clauseResults = variant.clauses.map((clause) =>
     evaluateClause(clause, profile)
   )
-  const matchedClauses = clauseResults.flatMap((result) => result.matchedClauses)
-  const missingClauses = clauseResults.flatMap((result) => result.missingClauses)
+  const matchedClauses = clauseResults.flatMap(
+    (result) => result.matchedClauses
+  )
+  const missingClauses = clauseResults.flatMap(
+    (result) => result.missingClauses
+  )
   const warnings = clauseResults.flatMap((result) => result.warnings)
   const allClausesPassed = clauseResults.every((result) => result.passed)
 
@@ -163,7 +160,9 @@ function evaluateClause(
     }
     return passCount >= clause.count
       ? matched(`CSEE pass count ${passCount} meets minimum ${clause.count}.`)
-      : missing(`Needs at least ${clause.count} CSEE passes; found ${passCount}.`)
+      : missing(
+          `Needs at least ${clause.count} CSEE passes; found ${passCount}.`
+        )
   }
 
   if (clause.kind === "min_csee_division") {
@@ -203,7 +202,9 @@ function evaluateClause(
     }
     return points >= clause.points
       ? matched(`ACSEE points ${points} meet minimum ${clause.points}.`)
-      : missing(`Needs at least ${clause.points} ACSEE points; found ${points}.`)
+      : missing(
+          `Needs at least ${clause.points} ACSEE points; found ${points}.`
+        )
   }
 
   if (clause.kind === "min_acsee_subsidiary_passes") {
@@ -245,7 +246,9 @@ function evaluateDivisionClause(
   }
   return DIVISION_RANK[actual] <= DIVISION_RANK[required]
     ? matched(`${label} division ${actual} meets minimum division ${required}.`)
-    : missing(`${label} division ${actual} is below minimum division ${required}.`)
+    : missing(
+        `${label} division ${actual} is below minimum division ${required}.`
+      )
 }
 
 function evaluateAcseeSubjectGradeClause(
@@ -259,7 +262,9 @@ function evaluateAcseeSubjectGradeClause(
   }
 
   return gradeMeetsMinimum(grade, clause.minGrade, "acsee")
-    ? matched(`ACSEE ${subject} grade ${grade} meets minimum ${clause.minGrade}.`)
+    ? matched(
+        `ACSEE ${subject} grade ${grade} meets minimum ${clause.minGrade}.`
+      )
     : missing(`ACSEE ${subject} grade ${grade} is below ${clause.minGrade}.`)
 }
 
@@ -368,7 +373,9 @@ function evaluateOLevelSubjectGradeClause(
   }
 
   return gradeMeetsMinimum(grade, clause.minGrade, "csee")
-    ? matched(`O-Level ${subject} grade ${grade} meets minimum ${clause.minGrade}.`)
+    ? matched(
+        `O-Level ${subject} grade ${grade} meets minimum ${clause.minGrade}.`
+      )
     : missing(`O-Level ${subject} grade ${grade} is below ${clause.minGrade}.`)
 }
 
@@ -378,9 +385,15 @@ function gradeMeetsMinimum(
   level: "csee" | "acsee"
 ): boolean {
   if (level === "csee") {
-    return CSEE_GRADE_RANK[grade as CseeGrade] <= CSEE_GRADE_RANK[minimum as CseeGrade]
+    return (
+      CSEE_GRADE_RANK[grade as CseeGrade] <=
+      CSEE_GRADE_RANK[minimum as CseeGrade]
+    )
   }
-  return ACSEE_GRADE_RANK[grade as AcseeGrade] <= ACSEE_GRADE_RANK[minimum as AcseeGrade]
+  return (
+    ACSEE_GRADE_RANK[grade as AcseeGrade] <=
+    ACSEE_GRADE_RANK[minimum as AcseeGrade]
+  )
 }
 
 function matched(message: string): ClauseEvaluation {
@@ -424,27 +437,6 @@ function baseEvaluation(
     sourceUrl: ruleSet.sourceUrl,
     rawRequirementText: ruleSet.rawRequirementText,
   }
-}
-
-function compareEvaluations(
-  left: EligibilityEvaluation,
-  right: EligibilityEvaluation
-): number {
-  const statusDifference = STATUS_RANK[right.status] - STATUS_RANK[left.status]
-  if (statusDifference !== 0) {
-    return statusDifference
-  }
-  return confidenceRank(right.confidence) - confidenceRank(left.confidence)
-}
-
-function confidenceRank(confidence: ConfidenceLevel): number {
-  if (confidence === "high") {
-    return 3
-  }
-  if (confidence === "medium") {
-    return 2
-  }
-  return 1
 }
 
 function lowerConfidence(confidence: ConfidenceLevel): ConfidenceLevel {

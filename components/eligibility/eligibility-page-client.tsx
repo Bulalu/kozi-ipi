@@ -14,7 +14,22 @@ import {
 } from "@/components/search/search-icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  buildSubjectsForCombination,
+  findAcseeCombination,
+  resolveEligibilityBasis,
+  resolveEligibilityQuery,
+} from "@/components/eligibility/eligibility-profile-query"
+import {
+  countOLevelBlockedResults,
+  groupEligibilityResults,
+} from "@/components/eligibility/eligibility-result-groups"
 import { api } from "@/convex/_generated/api"
+import {
+  applicantPathways,
+  type ApplicationRoute,
+} from "@/lib/domain/applicant-pathways"
+import { acseeCombinationSearchSeeds } from "@/lib/domain/search-vocabulary"
 import {
   calculateAcseePoints,
   countCseePasses,
@@ -23,12 +38,13 @@ import {
   type AcseeGrade,
   type CseeGrade,
   type EligibilityStatus,
+  type StudentEligibilityProfile,
 } from "@/lib/eligibility"
 
 const INITIAL_RESULT_LIMIT = 12
 const MAX_CANDIDATE_LIMIT = 1000
 
-type Route = "form_six" | "diploma"
+type Route = ApplicationRoute
 
 type SubjectGrade = {
   subject: string
@@ -40,34 +56,7 @@ type CseeSubjectGrade = {
   grade: CseeGrade
 }
 
-type AcseeCombination = {
-  code: string
-  label: string
-  searchQuery: string
-  subjects: string[]
-}
-
-type SubmittedProfile =
-  | {
-      applicationRoute: "form_six"
-      acsee: {
-        division?: "I" | "II" | "III" | "IV" | "0"
-        combination?: string
-        subjects: SubjectGrade[]
-      }
-      csee?: {
-        subjects: CseeSubjectGrade[]
-      }
-    }
-  | {
-      applicationRoute: "diploma"
-      diploma: {
-        awardName: string
-        field?: string
-        ntaLevel?: string
-        gpa?: number
-      }
-    }
+type SubmittedProfile = StudentEligibilityProfile
 
 type EligibilityResult = {
   _id: string
@@ -100,7 +89,8 @@ type EligibilityResult = {
 
 const acseeGrades: AcseeGrade[] = ["A", "B", "C", "D", "E", "S", "F"]
 const cseeGrades: CseeGrade[] = ["A", "B", "C", "D", "E", "F"]
-const acseeDivisions = ["I", "II", "III", "IV", "0"] as const
+const cseeDivisions = ["I", "II", "III", "IV", "0"] as const
+const acseeDivisions = cseeDivisions
 const cseeSupportSubjects = [
   "Basic Mathematics",
   "English Language",
@@ -115,88 +105,15 @@ const cseeSupportSubjects = [
   "Agriculture",
 ]
 
-const acseeCombinations: AcseeCombination[] = [
-  {
-    code: "PCB",
-    label: "Physics, Chemistry, Biology",
-    searchQuery: "medicine nursing clinical medicine health biology chemistry physics",
-    subjects: ["Physics", "Chemistry", "Biology"],
-  },
-  {
-    code: "PCM",
-    label: "Physics, Chemistry, Advanced Mathematics",
-    searchQuery: "engineering computer science technology physics mathematics",
-    subjects: ["Physics", "Chemistry", "Advanced Mathematics"],
-  },
-  {
-    code: "PGM",
-    label: "Physics, Geography, Advanced Mathematics",
-    searchQuery: "engineering architecture land surveying geography physics mathematics",
-    subjects: ["Physics", "Geography", "Advanced Mathematics"],
-  },
-  {
-    code: "CBG",
-    label: "Chemistry, Biology, Geography",
-    searchQuery: "health agriculture environmental science biology chemistry geography",
-    subjects: ["Chemistry", "Biology", "Geography"],
-  },
-  {
-    code: "CBN",
-    label: "Chemistry, Biology, Nutrition",
-    searchQuery: "nutrition health food science biology chemistry",
-    subjects: ["Chemistry", "Biology", "Nutrition"],
-  },
-  {
-    code: "EGM",
-    label: "Economics, Geography, Advanced Mathematics",
-    searchQuery: "business economics accounting finance statistics geography",
-    subjects: ["Economics", "Geography", "Advanced Mathematics"],
-  },
-  {
-    code: "ECA",
-    label: "Economics, Commerce, Accountancy",
-    searchQuery: "business economics accounting finance management",
-    subjects: ["Economics", "Commerce", "Accountancy"],
-  },
-  {
-    code: "HGE",
-    label: "History, Geography, Economics",
-    searchQuery: "education law economics development geography",
-    subjects: ["History", "Geography", "Economics"],
-  },
-  {
-    code: "HGL",
-    label: "History, Geography, English Language",
-    searchQuery: "education law social work community development geography",
-    subjects: ["History", "Geography", "English Language"],
-  },
-  {
-    code: "HGK",
-    label: "History, Geography, Kiswahili",
-    searchQuery: "education law social work community development geography",
-    subjects: ["History", "Geography", "Kiswahili"],
-  },
-  {
-    code: "HKL",
-    label: "History, Kiswahili, English Language",
-    searchQuery: "education law social work language communication",
-    subjects: ["History", "Kiswahili", "English Language"],
-  },
-  {
-    code: "KLF",
-    label: "Kiswahili, English Language, French",
-    searchQuery: "education language communication translation",
-    subjects: ["Kiswahili", "English Language", "French"],
-  },
-  {
-    code: "CBA",
-    label: "Chemistry, Biology, Agriculture",
-    searchQuery: "agriculture veterinary medicine health biology chemistry",
-    subjects: ["Chemistry", "Biology", "Agriculture"],
-  },
-]
+const acseeCombinations = acseeCombinationSearchSeeds
 
 const defaultSubjects: SubjectGrade[] = buildSubjectsForCombination("PCB")
+const defaultCseeSubjects: CseeSubjectGrade[] = [
+  "Basic Mathematics",
+  "English Language",
+  "Biology",
+  "Chemistry",
+].map((subject) => ({ subject, grade: "D" as const }))
 
 const statusOrder: EligibilityStatus[] = [
   "eligible",
@@ -250,17 +167,28 @@ export function EligibilityPageClient() {
   const [awardLevel, setAwardLevel] = useState("degree")
   const [region, setRegion] = useState("")
   const [combination, setCombination] = useState("PCB")
+  const [cseeDivision, setCseeDivision] =
+    useState<(typeof cseeDivisions)[number]>("III")
   const [acseeDivision, setAcseeDivision] =
     useState<(typeof acseeDivisions)[number]>("II")
   const [subjects, setSubjects] = useState<SubjectGrade[]>(defaultSubjects)
+  const [formFourSubjects, setFormFourSubjects] =
+    useState<CseeSubjectGrade[]>(defaultCseeSubjects)
   const [cseeSubjects, setCseeSubjects] = useState<CseeSubjectGrade[]>([])
   const [showOLevelSupport, setShowOLevelSupport] = useState(false)
+  const [certificateAwardName, setCertificateAwardName] = useState(
+    "Basic Technician Certificate"
+  )
+  const [certificateField, setCertificateField] = useState("health")
+  const [certificateNtaLevel, setCertificateNtaLevel] = useState("5")
+  const [certificateGpa, setCertificateGpa] = useState("3.0")
   const [diplomaAwardName, setDiplomaAwardName] = useState(
     "Diploma in Clinical Medicine"
   )
   const [diplomaField, setDiplomaField] = useState("health")
   const [diplomaNtaLevel, setDiplomaNtaLevel] = useState("6")
   const [diplomaGpa, setDiplomaGpa] = useState("3.2")
+  const [equivalentDescription, setEquivalentDescription] = useState("")
   const [submittedProfile, setSubmittedProfile] =
     useState<SubmittedProfile | null>(null)
   const [submittedQuery, setSubmittedQuery] = useState("")
@@ -289,6 +217,15 @@ export function EligibilityPageClient() {
       passCount: countCseePasses(grades),
     }
   }, [cseeSubjects])
+  const formFourSummary = useMemo(() => {
+    const grades = formFourSubjects
+      .filter((subject) => subject.subject.trim())
+      .map((subject) => subject.grade)
+
+    return {
+      passCount: countCseePasses(grades),
+    }
+  }, [formFourSubjects])
 
   const queryArgs = useMemo(() => {
     if (!submittedProfile) {
@@ -329,7 +266,7 @@ export function EligibilityPageClient() {
   const isFirstLoad =
     submittedProfile && paginatedResults.status === "LoadingFirstPage"
   const canLoadMore = paginatedResults.status === "CanLoadMore"
-  const groupedResults = groupResults(results)
+  const groupedResults = groupEligibilityResults(results)
   const oLevelBlockedCount =
     submittedProfile?.applicationRoute === "form_six"
       ? countOLevelBlockedResults(results)
@@ -345,18 +282,24 @@ export function EligibilityPageClient() {
     setError("")
     setSubmittedQuery(
       resolveEligibilityQuery({
+        certificateAwardName,
+        certificateField,
         combination,
         diplomaAwardName,
         diplomaField,
+        equivalentDescription,
         route,
         subjects,
       })
     )
     setSubmittedBasis(
       resolveEligibilityBasis({
+        certificateAwardName,
+        certificateField,
         combination,
         diplomaAwardName,
         diplomaField,
+        equivalentDescription,
         route,
         subjects,
       })
@@ -369,8 +312,17 @@ export function EligibilityPageClient() {
   }
 
   function validateForm() {
+    if (route === "form_four") {
+      const completeSubjects = formFourSubjects.filter(
+        (subject) => subject.subject.trim() && subject.grade
+      )
+      if (completeSubjects.length < 4) {
+        return "Add at least four CSEE subjects."
+      }
+    }
+
     if (route === "form_six") {
-      if (!findCombination(combination)) {
+      if (!findAcseeCombination(combination)) {
         return "Choose one of the listed ACSEE combinations."
       }
 
@@ -379,6 +331,15 @@ export function EligibilityPageClient() {
       )
       if (completeSubjects.length < 2) {
         return "Add at least two ACSEE subjects."
+      }
+    }
+
+    if (route === "certificate") {
+      if (!certificateAwardName.trim()) {
+        return "Add the certificate award name."
+      }
+      if (certificateGpa && Number.isNaN(Number.parseFloat(certificateGpa))) {
+        return "Certificate GPA must be a number."
       }
     }
 
@@ -391,10 +352,29 @@ export function EligibilityPageClient() {
       }
     }
 
+    if (route === "equivalent" && !equivalentDescription.trim()) {
+      return "Describe the equivalent qualification."
+    }
+
     return ""
   }
 
   function buildProfile(): SubmittedProfile {
+    if (route === "form_four") {
+      return {
+        applicationRoute: "form_four",
+        csee: {
+          division: cseeDivision,
+          subjects: formFourSubjects
+            .filter((subject) => subject.subject.trim())
+            .map((subject) => ({
+              subject: subject.subject.trim(),
+              grade: subject.grade,
+            })),
+        },
+      }
+    }
+
     if (route === "form_six") {
       return {
         applicationRoute: "form_six",
@@ -420,6 +400,27 @@ export function EligibilityPageClient() {
               },
             }
           : {}),
+      }
+    }
+
+    if (route === "certificate") {
+      return {
+        applicationRoute: "certificate",
+        certificate: {
+          awardName: certificateAwardName.trim(),
+          field: certificateField.trim() || undefined,
+          ntaLevel: certificateNtaLevel.trim() || undefined,
+          gpa: certificateGpa ? Number.parseFloat(certificateGpa) : undefined,
+        },
+      }
+    }
+
+    if (route === "equivalent") {
+      return {
+        applicationRoute: "equivalent",
+        equivalent: {
+          description: equivalentDescription.trim(),
+        },
       }
     }
 
@@ -473,15 +474,23 @@ export function EligibilityPageClient() {
             <div className="border-b border-brand-ink/8 p-5">
               <h2 className="text-[16px] font-bold">Your results</h2>
               <p className="mt-1 text-[12.5px] leading-5 text-brand-ink/55">
-                Start with Form Six or diploma. Form Four and certificate can
-                follow after this first pass.
+                Choose the Applicant Pathway you want to check against published
+                entry routes.
               </p>
             </div>
 
             <div className="space-y-6 p-5">
               <RouteSelector route={route} setRoute={setRoute} />
 
-              {route === "form_six" ? (
+              {route === "form_four" ? (
+                <FormFourFields
+                  cseeDivision={cseeDivision}
+                  setCseeDivision={setCseeDivision}
+                  setSubjects={setFormFourSubjects}
+                  subjects={formFourSubjects}
+                  summary={formFourSummary}
+                />
+              ) : route === "form_six" ? (
                 <FormSixFields
                   acseeDivision={acseeDivision}
                   combination={combination}
@@ -496,8 +505,19 @@ export function EligibilityPageClient() {
                   setShowOLevelSupport={setShowOLevelSupport}
                   summary={acseeSummary}
                 />
-              ) : (
-                <DiplomaFields
+              ) : route === "certificate" ? (
+                <PriorAwardFields
+                  awardName={certificateAwardName}
+                  field={certificateField}
+                  gpa={certificateGpa}
+                  ntaLevel={certificateNtaLevel}
+                  setAwardName={setCertificateAwardName}
+                  setField={setCertificateField}
+                  setGpa={setCertificateGpa}
+                  setNtaLevel={setCertificateNtaLevel}
+                />
+              ) : route === "diploma" ? (
+                <PriorAwardFields
                   awardName={diplomaAwardName}
                   field={diplomaField}
                   gpa={diplomaGpa}
@@ -506,6 +526,11 @@ export function EligibilityPageClient() {
                   setField={setDiplomaField}
                   setGpa={setDiplomaGpa}
                   setNtaLevel={setDiplomaNtaLevel}
+                />
+              ) : (
+                <EquivalentFields
+                  description={equivalentDescription}
+                  setDescription={setEquivalentDescription}
                 />
               )}
 
@@ -640,23 +665,155 @@ function RouteSelector({
     <div>
       <LabelText>Application route</LabelText>
       <div className="mt-2 grid grid-cols-2 gap-2">
-        {[
-          { label: "Form Six", value: "form_six" as const },
-          { label: "Diploma", value: "diploma" as const },
-        ].map((option) => (
+        {applicantPathways.map((option) => (
           <button
             className={`rounded-lg border px-3 py-2 text-left text-[13px] font-semibold transition ${
-              route === option.value
+              route === option.route
                 ? "border-brand-blue bg-brand-blue text-white"
                 : "border-brand-ink/10 bg-white text-brand-ink/70 hover:border-brand-blue/40"
             }`}
-            key={option.value}
-            onClick={() => setRoute(option.value)}
+            key={option.route}
+            onClick={() => setRoute(option.route)}
             type="button"
           >
             {option.label}
           </button>
         ))}
+      </div>
+    </div>
+  )
+}
+
+function FormFourFields({
+  cseeDivision,
+  setCseeDivision,
+  setSubjects,
+  subjects,
+  summary,
+}: {
+  cseeDivision: (typeof cseeDivisions)[number]
+  setCseeDivision: (division: (typeof cseeDivisions)[number]) => void
+  setSubjects: (subjects: CseeSubjectGrade[]) => void
+  subjects: CseeSubjectGrade[]
+  summary: {
+    passCount: number
+  }
+}) {
+  function updateSubject(index: number, update: Partial<CseeSubjectGrade>) {
+    setSubjects(
+      subjects.map((subject, subjectIndex) =>
+        subjectIndex === index ? { ...subject, ...update } : subject
+      )
+    )
+  }
+
+  function addSubject(subjectName = "") {
+    const exists = subjects.some(
+      (subject) =>
+        subject.subject.trim().toLowerCase() ===
+        subjectName.trim().toLowerCase()
+    )
+    if (subjectName && exists) return
+
+    setSubjects([...subjects, { subject: subjectName, grade: "D" }])
+  }
+
+  return (
+    <div className="space-y-4">
+      <Field label="Division">
+        <select
+          className="h-10 w-full rounded-lg border border-brand-ink/10 bg-white px-3 text-[13px]"
+          onChange={(event) =>
+            setCseeDivision(
+              event.target.value as (typeof cseeDivisions)[number]
+            )
+          }
+          value={cseeDivision}
+        >
+          {cseeDivisions.map((division) => (
+            <option key={division} value={division}>
+              {division}
+            </option>
+          ))}
+        </select>
+      </Field>
+
+      <div>
+        <LabelText>CSEE subjects</LabelText>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {cseeSupportSubjects.slice(0, 8).map((subject) => (
+            <button
+              className="rounded-full border border-brand-ink/10 px-2.5 py-1 text-[11.5px] font-medium text-brand-ink/65 transition hover:border-brand-blue/35 hover:text-brand-blue"
+              key={subject}
+              onClick={() => addSubject(subject)}
+              type="button"
+            >
+              {subject}
+            </button>
+          ))}
+        </div>
+        <div className="mt-3 space-y-2">
+          {subjects.map((subject, index) => (
+            <div className="grid grid-cols-[1fr_4.5rem_2rem] gap-2" key={index}>
+              <Input
+                className="h-10 rounded-lg text-[13px]"
+                list="csee-support-subjects"
+                onChange={(event) =>
+                  updateSubject(index, { subject: event.target.value })
+                }
+                placeholder="Basic Mathematics"
+                value={subject.subject}
+              />
+              <select
+                className="h-10 rounded-lg border border-brand-ink/10 bg-white px-2 text-[13px]"
+                onChange={(event) =>
+                  updateSubject(index, {
+                    grade: event.target.value as CseeGrade,
+                  })
+                }
+                value={subject.grade}
+              >
+                {cseeGrades.map((grade) => (
+                  <option key={grade} value={grade}>
+                    {grade}
+                  </option>
+                ))}
+              </select>
+              <button
+                aria-label="Remove CSEE subject"
+                className="grid size-10 place-items-center rounded-lg text-brand-ink/45 transition hover:bg-brand-ink/5 hover:text-brand-ink"
+                onClick={() =>
+                  setSubjects(
+                    subjects.filter((_, subjectIndex) => subjectIndex !== index)
+                  )
+                }
+                type="button"
+              >
+                <XIcon className="size-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <datalist id="csee-support-subjects">
+          {cseeSupportSubjects.map((subject) => (
+            <option key={subject} value={subject} />
+          ))}
+        </datalist>
+        <button
+          className="mt-2 text-[12.5px] font-semibold text-brand-blue"
+          onClick={() => addSubject()}
+          type="button"
+        >
+          Add subject
+        </button>
+        <div className="mt-3 rounded-lg bg-brand-ink/[0.035] px-3 py-2">
+          <p className="text-[10.5px] font-semibold tracking-[0.13em] text-brand-ink/40 uppercase">
+            CSEE passes entered
+          </p>
+          <p className="mt-0.5 text-[14px] font-semibold">
+            {summary.passCount}
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -698,7 +855,7 @@ function FormSixFields({
     const nextValue = value.toUpperCase()
     setCombination(nextValue)
 
-    const selectedCombination = findCombination(nextValue)
+    const selectedCombination = findAcseeCombination(nextValue)
     if (!selectedCombination) {
       return
     }
@@ -1001,7 +1158,7 @@ function OLevelSupportFields({
   )
 }
 
-function DiplomaFields({
+function PriorAwardFields({
   awardName,
   field,
   gpa,
@@ -1053,6 +1210,31 @@ function DiplomaFields({
           />
         </Field>
       </div>
+    </div>
+  )
+}
+
+function EquivalentFields({
+  description,
+  setDescription,
+}: {
+  description: string
+  setDescription: (value: string) => void
+}) {
+  return (
+    <div className="space-y-3">
+      <Field label="Qualification">
+        <Input
+          className="h-10 rounded-lg text-[13px]"
+          onChange={(event) => setDescription(event.target.value)}
+          placeholder="Foundation certificate, foreign qualification, or other source-backed equivalent"
+          value={description}
+        />
+      </Field>
+      <p className="text-[11.5px] leading-5 text-brand-ink/50">
+        Equivalent cases stay conservative unless the published rule gives
+        enough detail to evaluate.
+      </p>
     </div>
   )
 }
@@ -1150,8 +1332,8 @@ function EmptyState() {
           Enter results to begin
         </p>
         <p className="mt-2 max-w-md text-[14px] leading-6 text-brand-ink/60">
-          Start with Form Six or diploma details, then check matching programmes
-          with official requirements.
+          Enter the Applicant Pathway details you have, then check matching
+          programmes with official requirements.
         </p>
       </div>
     </div>
@@ -1183,7 +1365,7 @@ function NoResultsState() {
 }
 
 function BucketSummary({ results }: { results: EligibilityResult[] }) {
-  const grouped = groupResults(results)
+  const grouped = groupEligibilityResults(results)
   return (
     <div>
       <p className="mb-2 text-[12.5px] leading-5 text-brand-ink/55">
@@ -1224,7 +1406,8 @@ function OLevelSupportPrompt({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-[13px] font-semibold">
-            {count} result{count === 1 ? "" : "s"} need O-Level grades to verify.
+            {count} result{count === 1 ? "" : "s"} need O-Level grades to
+            verify.
           </p>
           <p className="mt-1 text-[12.5px] leading-5 text-amber-950/70">
             Some Form Six degree rules still require CSEE support subjects like
@@ -1449,166 +1632,6 @@ function Tag({ children }: { children: React.ReactNode }) {
       {children}
     </span>
   )
-}
-
-function groupResults(results: EligibilityResult[]) {
-  return results.reduce<Record<EligibilityStatus, EligibilityResult[]>>(
-    (groups, result) => {
-      groups[result.eligibility.status].push(result)
-      return groups
-    },
-    {
-      eligible: [],
-      likely_eligible_but_verify: [],
-      cannot_determine: [],
-      interest_match_only: [],
-      not_eligible: [],
-    }
-  )
-}
-
-function countOLevelBlockedResults(results: EligibilityResult[]) {
-  return results.filter(
-    (result) =>
-      result.eligibility.status === "cannot_determine" &&
-      result.eligibility.missingClauses.some(isOLevelMissingClause)
-  ).length
-}
-
-function isOLevelMissingClause(clause: string) {
-  return /\b(O-Level|CSEE)\b/i.test(clause)
-}
-
-function buildSubjectsForCombination(code: string): SubjectGrade[] {
-  const selectedCombination = findCombination(code) ?? acseeCombinations[0]
-
-  return selectedCombination.subjects.map((subject) => ({
-    subject,
-    grade: "D",
-  }))
-}
-
-function findCombination(code: string) {
-  const normalizedCode = code.trim().toUpperCase()
-  return acseeCombinations.find(
-    (combination) => combination.code === normalizedCode
-  )
-}
-
-function resolveEligibilityQuery({
-  combination,
-  diplomaAwardName,
-  diplomaField,
-  route,
-  subjects,
-}: {
-  combination: string
-  diplomaAwardName: string
-  diplomaField: string
-  route: Route
-  subjects: SubjectGrade[]
-}) {
-  if (route === "diploma") {
-    return [diplomaAwardName, diplomaField]
-      .map((value) => value.trim())
-      .filter(Boolean)
-      .join(" ")
-  }
-
-  return inferFormSixQuery(combination, subjects)
-}
-
-function resolveEligibilityBasis({
-  combination,
-  diplomaAwardName,
-  diplomaField,
-  route,
-  subjects,
-}: {
-  combination: string
-  diplomaAwardName: string
-  diplomaField: string
-  route: Route
-  subjects: SubjectGrade[]
-}) {
-  if (route === "diploma") {
-    return [diplomaAwardName, diplomaField]
-      .map((value) => value.trim())
-      .filter(Boolean)
-      .join(" · ")
-  }
-
-  const selectedCombination = findCombination(combination)
-  if (selectedCombination) {
-    return `${selectedCombination.code} · ${selectedCombination.label}`
-  }
-
-  return subjects
-    .map((subject) => subject.subject.trim())
-    .filter(Boolean)
-    .join(", ")
-}
-
-function inferFormSixQuery(
-  combination: string,
-  subjects: SubjectGrade[]
-): string {
-  const normalizedCombination = combination.trim().toUpperCase()
-  const selectedCombination = findCombination(normalizedCombination)
-  if (selectedCombination) {
-    return selectedCombination.searchQuery
-  }
-
-  const subjectWords = subjects
-    .map((subject) => subject.subject.trim().toLowerCase())
-    .filter(Boolean)
-  const subjectText = subjectWords.join(" ")
-  const source = `${normalizedCombination} ${subjectText}`
-
-  if (
-    normalizedCombination.includes("PCB") ||
-    (source.includes("biology") &&
-      source.includes("chemistry") &&
-      source.includes("physics"))
-  ) {
-    return "medicine nursing clinical medicine health biology chemistry physics"
-  }
-
-  if (
-    normalizedCombination.includes("PCM") ||
-    (source.includes("physics") && source.includes("mathematics"))
-  ) {
-    return "engineering computer science technology physics mathematics"
-  }
-
-  if (
-    normalizedCombination.includes("CBG") ||
-    (source.includes("chemistry") && source.includes("geography"))
-  ) {
-    return "health agriculture environmental science biology chemistry geography"
-  }
-
-  if (
-    normalizedCombination.includes("EGM") ||
-    normalizedCombination.includes("ECA") ||
-    source.includes("economics") ||
-    source.includes("commerce") ||
-    source.includes("account")
-  ) {
-    return "business economics accounting finance management"
-  }
-
-  if (
-    normalizedCombination.includes("HGL") ||
-    normalizedCombination.includes("HKL") ||
-    source.includes("history") ||
-    source.includes("kiswahili") ||
-    source.includes("language")
-  ) {
-    return "education law social work community development"
-  }
-
-  return subjectWords.length > 0 ? subjectWords.join(" ") : normalizedCombination
 }
 
 function formatPoints(points: number) {

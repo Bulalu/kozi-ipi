@@ -6,18 +6,16 @@ import shutil
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from kozi_analysis.io import json_records, jsonl_records
-
-ProcessedFileKind = Literal["json", "jsonl"]
-
-
-@dataclass(frozen=True)
-class ProcessedFileSpec:
-    name: str
-    kind: ProcessedFileKind
-    key_fields: tuple[str, ...]
+from kozi_analysis.manual_review_queue import manual_review_queue_distribution
+from kozi_analysis.processed_contract import (
+    APPLICANT_PATHWAY_FIELDS,
+    PROCESSED_FILE_SPECS,
+    ProcessedFileKind,
+    ProcessedFileSpec,
+)
 
 
 @dataclass(frozen=True)
@@ -35,6 +33,7 @@ class FileComparison:
     candidate_fields: list[str]
     blank_key_count: int | None
     needs_review_distribution_equal: bool | None
+    manual_review_queue_distribution_equal: bool | None
     source_datasets_distribution_equal: bool | None
     applicant_pathway_distribution_equal: bool | None
     parse_status_distribution_equal: bool | None
@@ -55,43 +54,6 @@ class CandidateComparisonReport:
             file.current_exists and file.candidate_exists and file.hashes_equal
             for file in self.files
         )
-
-
-PROCESSED_FILE_SPECS = [
-    ProcessedFileSpec(
-        name="institutions.jsonl",
-        kind="jsonl",
-        key_fields=("normalizedInstitutionName",),
-    ),
-    ProcessedFileSpec(
-        name="programmes.jsonl",
-        kind="jsonl",
-        key_fields=("normalizedInstitutionName", "normalizedProgrammeName"),
-    ),
-    ProcessedFileSpec(
-        name="entry-requirements.jsonl",
-        kind="jsonl",
-        key_fields=("normalizedInstitutionName", "normalizedProgrammeName"),
-    ),
-    ProcessedFileSpec(
-        name="requirement-rules.jsonl",
-        kind="jsonl",
-        key_fields=("institutionKey", "programmeKey"),
-    ),
-    ProcessedFileSpec(
-        name="data-quality-report.json",
-        kind="json",
-        key_fields=(),
-    ),
-]
-
-APPLICANT_PATHWAY_FIELDS = (
-    "acceptsFormFourDirect",
-    "acceptsFormSix",
-    "acceptsCertificate",
-    "acceptsDiploma",
-    "acceptsEquivalent",
-)
 
 
 def file_hash(path: Path) -> str | None:
@@ -255,6 +217,10 @@ def compare_file(
         needs_review_distribution_equal=(
             needs_review_distribution(current_records)
             == needs_review_distribution(candidate_records)
+        ),
+        manual_review_queue_distribution_equal=(
+            manual_review_queue_distribution(current_records)
+            == manual_review_queue_distribution(candidate_records)
         ),
         source_datasets_distribution_equal=(
             source_datasets_distribution(current_records)

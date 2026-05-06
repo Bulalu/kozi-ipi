@@ -1,4 +1,9 @@
 import { normalizeSubjectList, normalizeSubjectName } from "./subjects"
+import {
+  applicantPathways,
+  type ApplicantPathwayFlagField,
+  type Suitability,
+} from "../domain/applicant-pathways"
 import type {
   AcseeGrade,
   ApplicationRoute,
@@ -11,13 +16,7 @@ import type {
 
 const PARSE_VERSION = "requirement-parser-v2"
 
-type RouteFlags = {
-  acceptsFormFourDirect: "yes" | "no" | "unknown"
-  acceptsFormSix: "yes" | "no" | "unknown"
-  acceptsCertificate: "yes" | "no" | "unknown"
-  acceptsDiploma: "yes" | "no" | "unknown"
-  acceptsEquivalent: "yes" | "no" | "unknown"
-}
+type RouteFlags = Record<ApplicantPathwayFlagField, Suitability>
 
 type RequirementSource = RouteFlags & {
   programmeKey: string
@@ -64,13 +63,9 @@ function parseRequirementVariant(
 }
 
 function routesForSource(source: RouteFlags): ApplicationRoute[] {
-  return [
-    source.acceptsFormFourDirect === "yes" ? "form_four" : undefined,
-    source.acceptsFormSix === "yes" ? "form_six" : undefined,
-    source.acceptsCertificate === "yes" ? "certificate" : undefined,
-    source.acceptsDiploma === "yes" ? "diploma" : undefined,
-    source.acceptsEquivalent === "yes" ? "equivalent" : undefined,
-  ].filter((route): route is ApplicationRoute => Boolean(route))
+  return applicantPathways
+    .filter((pathway) => source[pathway.flagField] === "yes")
+    .map((pathway) => pathway.route)
 }
 
 function buildClauses(
@@ -96,7 +91,10 @@ function buildFormFourClauses(source: RequirementSource): RequirementClause[] {
     clauses.push({ kind: "min_csee_passes", count: passCount })
   }
 
-  return mergeClauses([...clauses, ...parseCseeSubjectClauses(source.rawRequirementText)])
+  return mergeClauses([
+    ...clauses,
+    ...parseCseeSubjectClauses(source.rawRequirementText),
+  ])
 }
 
 function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
@@ -127,10 +125,8 @@ function buildFormSixClauses(source: RequirementSource): RequirementClause[] {
   }
 
   const subjects = parseSubjectList(source.requiredSubjects)
-  const hasPerSubjectAcseeGrades = parseSubjectGradeClauses(
-    source.rawRequirementText,
-    "acsee"
-  ).length > 0
+  const hasPerSubjectAcseeGrades =
+    parseSubjectGradeClauses(source.rawRequirementText, "acsee").length > 0
   if (subjects.length > 0 && principalPasses) {
     clauses.push({
       kind: "subject_group",
@@ -159,13 +155,18 @@ function buildPriorAwardClauses(
   const acceptedFields = parsePriorFields(source)
   const clauses: RequirementClause[] = []
 
-  if (minGpa || acceptedFields.length > 0 || /related field/i.test(source.rawRequirementText)) {
+  if (
+    minGpa ||
+    acceptedFields.length > 0 ||
+    /related field/i.test(source.rawRequirementText)
+  ) {
     clauses.push({
       kind: "prior_award",
       acceptedAwardLevels: [route],
       acceptedFields: acceptedFields.length > 0 ? acceptedFields : undefined,
       relatedFieldRequired:
-        acceptedFields.length > 0 || /related field/i.test(source.rawRequirementText),
+        acceptedFields.length > 0 ||
+        /related field/i.test(source.rawRequirementText),
       minGpa,
     })
   }
@@ -187,7 +188,9 @@ function classifyParseStatus(
   const hasConditional = /\bif\b|without|unless/.test(text)
   const hasSubjectSpecificity =
     /including|following subjects|from the following/.test(text)
-  const hasSubjectGroupClause = clauses.some((clause) => clause.kind === "subject_group")
+  const hasSubjectGroupClause = clauses.some(
+    (clause) => clause.kind === "subject_group"
+  )
   const hasSubjectGradeClause = clauses.some(
     (clause) =>
       clause.kind === "acsee_subject_grade" ||
@@ -197,7 +200,11 @@ function classifyParseStatus(
   if (hasConditional || hasComplexBranching) {
     return "partial"
   }
-  if (hasSubjectSpecificity && !hasSubjectGroupClause && !hasSubjectGradeClause) {
+  if (
+    hasSubjectSpecificity &&
+    !hasSubjectGroupClause &&
+    !hasSubjectGradeClause
+  ) {
     return "partial"
   }
   return "structured"
@@ -206,8 +213,12 @@ function classifyParseStatus(
 function parseCseePassCount(text: string) {
   const normalized = text.toLowerCase()
   const match =
-    normalized.match(/\bat least\s+(\d+|one|two|three|four|five|six)\s+\(?\d*\)?\s*passes/) ??
-    normalized.match(/\bminimum\s+(?:pass\s+of\s+)?(\d+|one|two|three|four|five|six)\s+\(?\d*\)?\s*(?:d\s+grades|passes)/)
+    normalized.match(
+      /\bat least\s+(\d+|one|two|three|four|five|six)\s+\(?\d*\)?\s*passes/
+    ) ??
+    normalized.match(
+      /\bminimum\s+(?:pass\s+of\s+)?(\d+|one|two|three|four|five|six)\s+\(?\d*\)?\s*(?:d\s+grades|passes)/
+    )
   return parseNumber(match?.[1])
 }
 
@@ -261,9 +272,7 @@ function parseCseeSubjectClauses(text: string): RequirementClause[] {
   const specificGradeClauses = parseSubjectGradeClauses(text, "csee")
   clauses.push(...specificGradeClauses)
 
-  const includingMatch = text.match(
-    /\bincluding\s+([^.|;]+?)(?:\.|;|\|\||$)/i
-  )
+  const includingMatch = text.match(/\bincluding\s+([^.|;]+?)(?:\.|;|\|\||$)/i)
   const subjects = parseRequirementSubjects(includingMatch?.[1])
   if (subjects.length > 0) {
     clauses.push({
@@ -292,7 +301,9 @@ function parseAcseeSubjectClauses(
     /\b(?:principal(?:\s+level)?\s+passes|passes)\s+in\s+(.+?)\s+and\s+either\s+(.+?)(?:\s+with\b|\s+at\b|\s+whereby\b|\.|;|\|\||$)/i
   )
   if (requiredPlusEitherMatch?.[1] && requiredPlusEitherMatch[2]) {
-    const requiredSubjects = parseRequirementSubjects(requiredPlusEitherMatch[1])
+    const requiredSubjects = parseRequirementSubjects(
+      requiredPlusEitherMatch[1]
+    )
     const oneOfSubjects = parseRequirementSubjects(requiredPlusEitherMatch[2])
     if (requiredSubjects.length > 0) {
       clauses.push({
@@ -437,7 +448,9 @@ function parsePriorFields(source: RequirementSource) {
     return explicitFields
   }
 
-  const match = source.rawRequirementText.match(/\bDiploma in ([^.]+?)(?: with| or|,|\.)/i)
+  const match = source.rawRequirementText.match(
+    /\bDiploma in ([^.]+?)(?: with| or|,|\.)/i
+  )
   if (!match?.[1]) {
     return []
   }

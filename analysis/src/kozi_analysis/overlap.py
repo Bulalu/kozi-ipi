@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import re
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Literal
 
+from kozi_analysis.identity_rules import normalize_identity_text
 from kozi_analysis.io import csv_records, json_records, jsonl_records
 
 RecordType = Literal["institution", "programme"]
@@ -226,10 +226,7 @@ PROGRAMME_SOURCES = [
 
 
 def normalize_identity(value: object) -> str:
-    text = str(value or "").lower()
-    text = text.replace("&", " and ")
-    text = re.sub(r"[^a-z0-9]+", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
+    return normalize_identity_text(value)
 
 
 def read_source_records(

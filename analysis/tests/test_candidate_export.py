@@ -69,6 +69,7 @@ def test_copy_through_candidate_export_matches_current_processed_files(
     assert report.all_hashes_equal
     assert all(file.current_exists and file.candidate_exists for file in report.files)
     assert all(file.changed_record_samples == [] for file in report.files)
+    assert all(file.manual_review_queue_distribution_equal for file in report.files)
     assert "Candidate Export Comparison" in markdown
 
 

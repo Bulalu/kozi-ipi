@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from kozi_analysis.aliases import normalize_identity
+from kozi_analysis.identity_rules import has_campus_marker
 
 
 @dataclass(frozen=True)
@@ -47,28 +48,11 @@ class P0CleanupDesignReport:
         return asdict(self)
 
 
-CAMPUS_MARKERS = {
-    "campus",
-    "centre",
-    "center",
-    "branch",
-    "college",
-}
-
-
 def _read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     value = json.loads(path.read_text(encoding="utf-8"))
     return value if isinstance(value, dict) else {}
-
-
-def token_set(value: str) -> set[str]:
-    return set(normalize_identity(value).split())
-
-
-def has_campus_marker(value: str) -> bool:
-    return bool(token_set(value) & CAMPUS_MARKERS)
 
 
 def context_conflicts(left_context: str, right_context: str) -> bool:
