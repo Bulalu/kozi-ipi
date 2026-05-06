@@ -460,8 +460,8 @@ export function EligibilityPageClient() {
                 Privacy
               </p>
               <p className="mt-1.5 text-[13px] leading-6 text-brand-ink/65">
-                Grades stay in this page state only. We do not save them to the
-                server, browser storage, cookies, or URL.
+                Grades are sent to the backend to run this eligibility check.
+                We do not put them in browser storage, cookies, or the URL.
               </p>
             </div>
           </div>

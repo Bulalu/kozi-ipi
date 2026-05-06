@@ -17,6 +17,10 @@ import type {
 const PARSE_VERSION = "requirement-parser-v2"
 
 type RouteFlags = Record<ApplicantPathwayFlagField, Suitability>
+type SubjectGroupClause = Extract<
+  RequirementClause,
+  { kind: "subject_group" }
+>
 
 type RequirementSource = RouteFlags & {
   programmeKey: string
@@ -273,18 +277,65 @@ function parseCseeSubjectClauses(text: string): RequirementClause[] {
   clauses.push(...specificGradeClauses)
 
   const includingMatch = text.match(/\bincluding\s+([^.|;]+?)(?:\.|;|\|\||$)/i)
-  const subjects = parseRequirementSubjects(includingMatch?.[1])
-  if (subjects.length > 0) {
-    clauses.push({
-      kind: "subject_group",
-      level: "csee",
-      mode: "all_of",
-      subjects,
-      minGrade: "D",
-    })
-  }
+  clauses.push(...parseCseeSubjectGroups(includingMatch?.[1]))
 
   return clauses
+}
+
+function parseCseeSubjectGroups(value: string | undefined): RequirementClause[] {
+  const subjectText = isolateCseeSubjectBranch(value)
+  if (!subjectText) {
+    return []
+  }
+
+  const eitherMatch = subjectText.match(/\b(.+?)\s+and\s+either\s+(.+)$/i)
+  if (eitherMatch?.[1] && eitherMatch[2]) {
+    const clauses: SubjectGroupClause[] = [
+      {
+        kind: "subject_group",
+        level: "csee",
+        mode: "all_of",
+        subjects: parseRequirementSubjects(eitherMatch[1]),
+        minGrade: "D",
+      },
+      {
+        kind: "subject_group",
+        level: "csee",
+        mode: "one_of",
+        subjects: parseRequirementSubjects(eitherMatch[2]),
+        minGrade: "D",
+      },
+    ]
+
+    return clauses.filter((clause) => clause.subjects.length > 0)
+  }
+
+  const subjects = parseRequirementSubjects(subjectText)
+  if (subjects.length === 0) {
+    return []
+  }
+
+  return [
+    {
+      kind: "subject_group",
+      level: "csee",
+      mode: /\bor\b|\//i.test(subjectText) ? "one_of" : "all_of",
+      subjects,
+      minGrade: "D",
+    },
+  ]
+}
+
+function isolateCseeSubjectBranch(value: string | undefined) {
+  if (!value) {
+    return undefined
+  }
+
+  return value
+    .split(
+      /\s+\bOR\b\s+(?=(?:its\s+equivalence|equivalent|holders?\s+of\s+(?:the\s+)?(?:national\s+vocational\s+award|nva|trade\s+test|basic\s+technician\s+certificate|advanced\s+certificate|certificate\s+of\s+secondary\s+education|csee|diploma|certificate)|(?:national\s+vocational\s+award|nva|trade\s+test|basic\s+technician\s+certificate|advanced\s+certificate|acsee|certificate\s+of\s+secondary\s+education|csee|diploma|certificate))\b)/i
+    )[0]
+    ?.trim()
 }
 
 function parseAcseeSubjectClauses(
@@ -486,14 +537,41 @@ function parseRequirementSubjects(value: string | undefined) {
     cleaned
       .split(/;|,|\/|\bor\b|\band\b/i)
       .map((subject) => subject.trim())
+      .map(cleanSubjectToken)
       .map((subject) => subject.replace(/\s+subjects?$/i, ""))
       .filter(isParseableSubjectToken)
   )
 }
 
+function cleanSubjectToken(value: string) {
+  return value
+    .replace(/^["“”']?[ABCDE]["“”']?\s+passes?\s+in\s+/i, "")
+    .replace(/^["“”']?[ABCDE]["“”']?\s+pass\s+in\s+/i, "")
+    .replace(/^(?:a\s+)?passes?\s+in\s+/i, "")
+    .replace(/^(?:a\s+)?pass\s+in\s+/i, "")
+    .replace(/^(?:credits?|subsidiary|principal(?:\s+level)?)\s+in\s+/i, "")
+    .replace(/^either\s+/i, "")
+    .trim()
+}
+
 function isParseableSubjectToken(value: string) {
   const normalized = normalizeSubjectName(value)
   if (!normalized || normalized.length < 3) {
+    return false
+  }
+
+  if (
+    [
+      "holder_of",
+      "holders_of",
+      "national_vocational_award",
+      "trade_test",
+      "basic_technician_certificate",
+      "certificate_of_secondary_education",
+      "secondary_education_examination",
+      "its_equivalence",
+    ].some((blockedValue) => normalized.includes(blockedValue))
+  ) {
     return false
   }
 

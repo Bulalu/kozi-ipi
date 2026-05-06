@@ -102,6 +102,97 @@ assert.equal(
   "Computer Studies should normalize to computer_science."
 )
 
+const baseRequirementSource = {
+  programmeKey: "ordinary_diploma_business_it",
+  institutionKey: "abdulrahman_al_sumait",
+  sourceUrl: "https://example.test/guidebook.pdf",
+  confidence: "high" as const,
+  acceptsFormFourDirect: "yes" as const,
+  acceptsFormSix: "no" as const,
+  acceptsCertificate: "yes" as const,
+  acceptsDiploma: "no" as const,
+  acceptsEquivalent: "yes" as const,
+}
+
+const cseeAlternateCredentialRuleSet = parseRequirementRuleSet({
+  ...baseRequirementSource,
+  rawRequirementText:
+    "Holders of Certificate of Secondary Education Examination (CSEE) with at least four (4) passes in non-religious subjects including Basic Mathematics and English Language OR National Vocational Award (NVA) Level III or Trade Test Grade I with a Certificate of Secondary Education Examination (CSEE)",
+})
+const cseeAlternateCredentialVariant =
+  cseeAlternateCredentialRuleSet.variants.find(
+    (variant) => variant.route === "form_four"
+  )
+assert(cseeAlternateCredentialVariant)
+const cseeAlternateCredentialSubjectGroup =
+  cseeAlternateCredentialVariant.clauses.find(
+    (clause) => clause.kind === "subject_group" && clause.level === "csee"
+  )
+assert(
+  cseeAlternateCredentialSubjectGroup &&
+    cseeAlternateCredentialSubjectGroup.kind === "subject_group"
+)
+assert.deepEqual(
+  cseeAlternateCredentialSubjectGroup.subjects,
+  ["mathematics", "english"],
+  "CSEE subject parsing should stop before alternate credential OR branches."
+)
+assert.equal(
+  cseeAlternateCredentialSubjectGroup.mode,
+  "all_of",
+  "CSEE Basic Mathematics and English Language should remain an all-of requirement."
+)
+
+const cseeHelperWordRuleSet = parseRequirementRuleSet({
+  ...baseRequirementSource,
+  rawRequirementText:
+    "Holders of Certificate of Secondary Education Examination (CSEE) with at least four (4) passes in Non-religious subjects including passes in Basic Mathematics and English Language.",
+})
+const cseeHelperWordVariant = cseeHelperWordRuleSet.variants.find(
+  (variant) => variant.route === "form_four"
+)
+assert(cseeHelperWordVariant)
+const cseeHelperWordSubjectGroup = cseeHelperWordVariant.clauses.find(
+  (clause) => clause.kind === "subject_group" && clause.level === "csee"
+)
+assert(
+  cseeHelperWordSubjectGroup &&
+    cseeHelperWordSubjectGroup.kind === "subject_group"
+)
+assert.deepEqual(
+  cseeHelperWordSubjectGroup.subjects,
+  ["mathematics", "english"],
+  "CSEE subject parsing should strip helper words such as passes in."
+)
+
+const cseeEitherSubjectRuleSet = parseRequirementRuleSet({
+  ...baseRequirementSource,
+  rawRequirementText:
+    "Holders of Certificate of Secondary Education Examination (CSEE) with four (4) Passes in non-religious Subjects including Passes in Basic Mathematics, English Language and Either Physics or Chemistry Or Holder of Certificate of Secondary Education Examination (CSEE) with A Minimum Pass in Mathematics.",
+})
+const cseeEitherSubjectVariant = cseeEitherSubjectRuleSet.variants.find(
+  (variant) => variant.route === "form_four"
+)
+assert(cseeEitherSubjectVariant)
+const cseeEitherSubjectGroups = cseeEitherSubjectVariant.clauses.filter(
+  (clause) => clause.kind === "subject_group" && clause.level === "csee"
+)
+assert.equal(
+  cseeEitherSubjectGroups.length,
+  2,
+  "CSEE subject parsing should preserve all-of subjects plus either/or subjects as separate groups."
+)
+assert.deepEqual(
+  cseeEitherSubjectGroups.map((clause) =>
+    clause.kind === "subject_group" ? clause.subjects : []
+  ),
+  [
+    ["mathematics", "english"],
+    ["physics", "chemistry"],
+  ],
+  "CSEE either/or parsing should keep alternate credential branches out of subject groups."
+)
+
 assert.equal(
   countCseePasses(["A", "B", "C", "D", "E", "F"]),
   4,
