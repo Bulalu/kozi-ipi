@@ -1,0 +1,39 @@
+[project]
+name = "kozi-analysis"
+version = "0.1.0"
+description = "Production data analysis workbench for Kozi Ipi."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "marimo>=0.18.0",
+    "polars>=1.36.0",
+    "pydantic>=2.12.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.0",
+    "ruff>=0.14.0",
+    "ty>=0.0.1a0",
+]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ty.src]
+include = ["src", "notebooks", "tests"]
+

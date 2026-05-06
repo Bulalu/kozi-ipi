@@ -8,9 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "bun run test:data && bun run test:search",
+    "test": "bun run test:data && bun run test:search && bun run test:eligibility",
     "test:data": "bun scripts/test-data-quality.ts",
     "test:search": "bun scripts/test-search-contracts.ts",
+    "test:eligibility": "bun scripts/test-eligibility-contracts.ts",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "convex:dev": "convex dev",
@@ -18,8 +19,8 @@
     "tcu:extract": "bun scripts/extract-tcu-secondary-guidebook.ts",
     "udsm:compare": "bun scripts/compare-udsm-prospectus.ts",
     "data:build": "bun scripts/build-processed-data.ts",
-    "data:import": "convex import --replace --yes --table institutions data/processed/institutions.jsonl && convex import --replace --yes --table programmes data/processed/programmes.jsonl && convex import --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl",
-    "data:import:prod": "convex import --prod --replace --yes --table institutions data/processed/institutions.jsonl && convex import --prod --replace --yes --table programmes data/processed/programmes.jsonl && convex import --prod --replace --yes --table entryRequirements data/processed/entry-requirements.jsonl"
+    "data:import": "bun scripts/import-processed-data.ts",
+    "data:import:prod": "bun scripts/import-processed-data.ts --prod"
   },
   "dependencies": {
     "@convex-dev/rate-limiter": "^0.3.2",

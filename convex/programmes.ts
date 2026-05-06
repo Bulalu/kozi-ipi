@@ -2,24 +2,117 @@ import { paginationOptsValidator } from "convex/server"
 import { v } from "convex/values"
 
 import { query } from "./_generated/server"
-import type { Doc } from "./_generated/dataModel"
 import type { QueryCtx } from "./_generated/server"
+import type { StudentEligibilityProfile } from "../lib/eligibility"
+import {
+  applicationRouteValidator,
+  queryProgrammesByApplicantPathway,
+  type ApplicationRoute,
+} from "./applicantPathways"
+import { evaluateEligibilityPage } from "./programmeEligibility/search"
 import { formatProgrammeSearchResults } from "./programmeSearch/display"
 import {
   filtersValidator,
   type ProgrammeFilters,
 } from "./programmeSearch/filters"
-import { interpretProgrammeQuery } from "./programmeSearch/interpret"
+import {
+  clampResultCount,
+  getSmartSearchCandidates,
+} from "./programmeSearch/candidates"
 import { matchesProgrammeFilters } from "./programmeSearch/matching"
 import { sliceSearchPage } from "./programmeSearch/pagination"
-import { isNursingIntent, rankProgrammes } from "./programmeSearch/ranking"
 import { queryProgrammesBySearchText } from "./programmeSearch/search"
 
-const INSTITUTION_PROGRAMME_SCAN_LIMIT = 1000
 const DEFAULT_RESULT_LIMIT = 25
 const MAX_VISIBLE_RESULT_LIMIT = 200
 const MAX_CANDIDATE_SCAN_LIMIT = 1000
-const NURSING_CANDIDATE_SCAN_MINIMUM = 80
+const ELIGIBILITY_BROWSE_SCAN_LIMIT = 1000
+
+const cseeDivision = v.union(
+  v.literal("I"),
+  v.literal("II"),
+  v.literal("III"),
+  v.literal("IV"),
+  v.literal("0")
+)
+const acseeDivision = cseeDivision
+const cseeGrade = v.union(
+  v.literal("A"),
+  v.literal("B"),
+  v.literal("C"),
+  v.literal("D"),
+  v.literal("E"),
+  v.literal("F")
+)
+const acseeGrade = v.union(
+  v.literal("A"),
+  v.literal("B"),
+  v.literal("C"),
+  v.literal("D"),
+  v.literal("E"),
+  v.literal("S"),
+  v.literal("F")
+)
+
+const eligibilityProfileValidator = v.object({
+  applicationRoute: applicationRouteValidator,
+  csee: v.optional(
+    v.object({
+      division: v.optional(cseeDivision),
+      subjects: v.array(
+        v.object({
+          subject: v.string(),
+          grade: cseeGrade,
+        })
+      ),
+    })
+  ),
+  acsee: v.optional(
+    v.object({
+      division: v.optional(acseeDivision),
+      combination: v.optional(v.string()),
+      subjects: v.array(
+        v.object({
+          subject: v.string(),
+          grade: acseeGrade,
+        })
+      ),
+    })
+  ),
+  certificate: v.optional(
+    v.object({
+      awardName: v.string(),
+      field: v.optional(v.string()),
+      ntaLevel: v.optional(v.string()),
+      gpa: v.optional(v.number()),
+    })
+  ),
+  diploma: v.optional(
+    v.object({
+      awardName: v.string(),
+      field: v.optional(v.string()),
+      ntaLevel: v.optional(v.string()),
+      gpa: v.optional(v.number()),
+    })
+  ),
+  equivalent: v.optional(
+    v.object({
+      description: v.string(),
+    })
+  ),
+  preferences: v.optional(
+    v.object({
+      query: v.optional(v.string()),
+      fieldCategory: v.optional(v.string()),
+      region: v.optional(v.string()),
+      awardLevel: v.optional(v.string()),
+    })
+  ),
+})
+
+type EligibilityProfile = {
+  applicationRoute: ApplicationRoute
+}
 
 export const search = query({
   args: {
@@ -32,7 +125,7 @@ export const search = query({
     if (!text) {
       return []
     }
-    const limit = clampCount(
+    const limit = clampResultCount(
       args.limit,
       DEFAULT_RESULT_LIMIT,
       MAX_VISIBLE_RESULT_LIMIT
@@ -58,7 +151,7 @@ export const smartSearch = query({
     maxCount: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const visibleLimit = clampCount(
+    const visibleLimit = clampResultCount(
       args.limit,
       DEFAULT_RESULT_LIMIT,
       MAX_VISIBLE_RESULT_LIMIT
@@ -116,7 +209,7 @@ export const smartSearchPaginated = query({
     maxCount: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const pageSize = clampCount(
+    const pageSize = clampResultCount(
       args.paginationOpts.numItems,
       DEFAULT_RESULT_LIMIT,
       MAX_VISIBLE_RESULT_LIMIT
@@ -141,98 +234,79 @@ export const smartSearchPaginated = query({
   },
 })
 
-async function getSmartSearchCandidates(
-  ctx: QueryCtx,
+export const eligibleSearchPaginated = query({
   args: {
-    query: string
-    filters?: ProgrammeFilters
-    formFourOnly?: boolean
-    limit?: number
-    maxCount?: number
-  }
-) {
-  const interpreted = interpretProgrammeQuery(
-    args.query,
-    args.filters,
-    args.formFourOnly
-  )
-  if (!interpreted.query) {
-    return {
-      interpreted,
-      rankedResults: [] as Doc<"programmes">[],
-      capped: false,
-    }
-  }
-
-  const visibleLimit = clampCount(
-    args.limit,
-    DEFAULT_RESULT_LIMIT,
-    MAX_VISIBLE_RESULT_LIMIT
-  )
-  const maxCount = Math.max(
-    clampCount(
+    query: v.optional(v.string()),
+    filters: filtersValidator,
+    profile: eligibilityProfileValidator,
+    paginationOpts: paginationOptsValidator,
+    maxCount: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const text = args.query?.trim() ?? ""
+    const pageSize = clampResultCount(
+      args.paginationOpts.numItems,
+      DEFAULT_RESULT_LIMIT,
+      MAX_VISIBLE_RESULT_LIMIT
+    )
+    const requestedMaxCount = clampResultCount(
       args.maxCount,
       MAX_CANDIDATE_SCAN_LIMIT,
       MAX_CANDIDATE_SCAN_LIMIT
-    ),
-    visibleLimit
-  )
-
-  if (interpreted.appliedFilters.normalizedInstitutionName) {
+    )
     const candidateLimit = Math.min(
-      Math.max(maxCount, visibleLimit),
-      INSTITUTION_PROGRAMME_SCAN_LIMIT
+      Math.max(requestedMaxCount, pageSize),
+      ELIGIBILITY_BROWSE_SCAN_LIMIT
     )
-    const institutionResults = await ctx.db
-      .query("programmes")
-      .withIndex("by_normalizedInstitutionName", (q) =>
-        q.eq(
-          "normalizedInstitutionName",
-          interpreted.appliedFilters.normalizedInstitutionName!
-        )
-      )
-      .take(candidateLimit)
-    const filteredResults = institutionResults.filter((programme) =>
-      matchesProgrammeFilters(programme, interpreted.appliedFilters)
-    )
+    const candidates = text
+      ? (
+          await getSmartSearchCandidates(ctx, {
+            query: text,
+            filters: args.filters,
+            limit: pageSize,
+            maxCount: candidateLimit,
+          })
+        ).rankedResults
+      : await getRouteBrowseCandidates(ctx, {
+          route: args.profile.applicationRoute,
+          filters: args.filters,
+          limit: candidateLimit,
+        })
+
+    const page = sliceSearchPage(candidates, {
+      cursor: args.paginationOpts.cursor,
+      pageSize,
+    })
+    const evaluated = await evaluateEligibilityPage(ctx, {
+      programmes: page.results,
+      profile: args.profile as StudentEligibilityProfile,
+    })
 
     return {
-      interpreted,
-      rankedResults: rankProgrammes(filteredResults, interpreted.query),
-      capped: institutionResults.length === candidateLimit,
+      page: evaluated.page,
+      buckets: evaluated.buckets,
+      isDone: !page.hasMore,
+      continueCursor: page.nextCursor ?? page.cursor ?? "",
     }
-  }
+  },
+})
 
-  const candidateLimit = Math.min(
-    Math.max(
-      maxCount,
-      visibleLimit,
-      isNursingIntent(interpreted.query)
-        ? NURSING_CANDIDATE_SCAN_MINIMUM
-        : DEFAULT_RESULT_LIMIT
-    ),
-    MAX_CANDIDATE_SCAN_LIMIT
-  )
-  const searchResults = await queryProgrammesBySearchText(
+async function getRouteBrowseCandidates(
+  ctx: QueryCtx,
+  args: {
+    route: EligibilityProfile["applicationRoute"]
+    filters?: ProgrammeFilters
+    limit: number
+  }
+) {
+  const routeResults = await queryProgrammesByApplicantPathway(
     ctx,
-    interpreted.query,
-    interpreted.appliedFilters,
-    candidateLimit
+    args.route,
+    args.limit
   )
-
-  return {
-    interpreted,
-    rankedResults: rankProgrammes(searchResults, interpreted.query),
-    capped: searchResults.length === candidateLimit,
-  }
-}
-
-function clampCount(value: number | undefined, fallback: number, max: number) {
-  if (typeof value !== "number" || !Number.isFinite(value)) {
-    return fallback
-  }
-
-  return Math.min(Math.max(Math.trunc(value), 1), max)
+  return routeResults.filter((programme) =>
+    matchesProgrammeFilters(programme, args.filters ?? {})
+  )
 }
 
 export const byInstitution = query({

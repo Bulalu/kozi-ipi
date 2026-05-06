@@ -46,6 +46,7 @@ Processed import files:
 data/processed/institutions.jsonl
 data/processed/programmes.jsonl
 data/processed/entry-requirements.jsonl
+data/processed/requirement-rules.jsonl
 ```
 
 Import processed data into Convex with:
@@ -75,6 +76,7 @@ MVP search should use full-text search, structured filters, synonym/intent mappi
 ```text
 docs/search-queries.md
 docs/search-architecture.md
+docs/eligibility-architecture.md
 docs/data-integration.md
 docs/admin-api.md
 data/README.md

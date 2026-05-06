@@ -30,6 +30,7 @@ The processed import keeps a conservative union of the pathway export and curren
 - 742 institution records
 - 4,551 programme records
 - 5,358 entry requirement records
+- 5,358 parsed requirement rule records
 - 69 verified institution logos from local enrichment
 
 ### `raw/tanzania-education-dataset`
@@ -49,6 +50,7 @@ raw CSV exports
 -> normalization
 -> conservative union/deduplication
 -> enrichment
+-> parsed requirement rules
 -> processed import files
 -> backend database import
 ```

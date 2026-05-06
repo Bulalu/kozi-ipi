@@ -3,6 +3,11 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 import { matchesField } from "../lib/domain/taxonomy"
+import {
+  acseeCombinationSearchSeed,
+  inferAcseeCombinationSearchQuery,
+  programmeIntentForQuery,
+} from "../lib/domain/search-vocabulary"
 import { interpretProgrammeQuery } from "../convex/programmeSearch/interpret"
 import { sliceSearchPage } from "../convex/programmeSearch/pagination"
 
@@ -57,6 +62,21 @@ const interpretedEngineering = interpretProgrammeQuery("civil engineering")
 assert(
   interpretedEngineering.inferredCourseFamily === "engineering",
   'Expected "civil engineering" to infer the engineering course family.'
+)
+assert(
+  programmeIntentForQuery("nataka kuwa nurse").rewrittenQuery === "nurse",
+  "Search Vocabulary should own vague-intent query rewriting."
+)
+assert(
+  acseeCombinationSearchSeed("PCM")?.searchQuery.includes("engineering"),
+  "Search Vocabulary should own ACSEE combination query seeds."
+)
+assert(
+  inferAcseeCombinationSearchQuery({
+    combination: "custom",
+    subjects: ["Physics", "Advanced Mathematics"],
+  }).includes("engineering"),
+  "Search Vocabulary should infer query seeds from custom ACSEE subjects."
 )
 
 assert(

@@ -6,12 +6,17 @@ import { fileURLToPath } from "node:url"
 
 import { parse } from "csv-parse/sync"
 
+import { normalizeIdentityName } from "../lib/domain/institution-identity"
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
 const defaultPdfSource =
   "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf"
 const outputDir = join(root, "data/extracted")
-const pathwayProgrammesPath = join(root, "data/raw/tanzania-education-pathways-dataset/programmes.csv")
+const pathwayProgrammesPath = join(
+  root,
+  "data/raw/tanzania-education-pathways-dataset/programmes.csv"
+)
 const processedProgrammesPath = join(root, "data/processed/programmes.jsonl")
 
 type CsvRow = Record<string, string>
@@ -33,11 +38,7 @@ type ExtractedProgramme = {
 }
 
 function normalizeName(value: string | undefined) {
-  return (value ?? "")
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim()
+  return normalizeIdentityName(value)
 }
 
 function cleanText(value: string | undefined) {
@@ -52,7 +53,10 @@ function stripRowNumber(value: string) {
   return value.replace(/^\s*\d+[\.,]?\s*/, "").trim()
 }
 
-function findRequirementContinuationColumn(line: string, expectedColumn: number) {
+function findRequirementContinuationColumn(
+  line: string,
+  expectedColumn: number
+) {
   const candidates = [...line.matchAll(/ {6,}\S/g)]
     .map((match) => (match.index ?? 0) + match[0].search(/\S/))
     .filter((column) => Math.abs(column - expectedColumn) <= 8)
@@ -87,10 +91,16 @@ function isIgnorableLine(line: string) {
   if (trimmed === "5") return true
   if (/^\d+$/.test(trimmed)) return true
   if (/Bachelor.s Degree Admission Guidebook/i.test(trimmed)) return true
-  if (/For Holders of Secondary School Qualifications/i.test(trimmed)) return true
+  if (/For Holders of Secondary School Qualifications/i.test(trimmed))
+    return true
   if (/^S\/?\s*N\b|^SN\b/i.test(trimmed)) return true
   if (/^Programme\s+Code\b/i.test(trimmed)) return true
-  if (/^(Minimum|Institutional|Admission|Points|Capacity|Duration|Programme)$/i.test(trimmed)) return true
+  if (
+    /^(Minimum|Institutional|Admission|Points|Capacity|Duration|Programme)$/i.test(
+      trimmed
+    )
+  )
+    return true
   if (/^Minimum\s+Institutional/i.test(trimmed)) return true
   if (/^Admission\s+Requirements/i.test(trimmed)) return true
   if (/^Programme\s+Duration/i.test(trimmed)) return true
@@ -99,7 +109,9 @@ function isIgnorableLine(line: string) {
 }
 
 function parsePdfText(pdfPath: string) {
-  const result = spawnSync("pdftotext", ["-layout", pdfPath, "-"], { encoding: "utf8" })
+  const result = spawnSync("pdftotext", ["-layout", pdfPath, "-"], {
+    encoding: "utf8",
+  })
 
   if (result.status !== 0) {
     throw new Error(`pdftotext failed: ${result.stderr}`)
@@ -118,7 +130,9 @@ async function resolvePdfSource(source: string) {
 
   const response = await fetch(source)
   if (!response.ok) {
-    throw new Error(`Failed to download TCU guidebook PDF: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to download TCU guidebook PDF: ${response.status} ${response.statusText}`
+    )
   }
 
   const pdfPath = join(tmpdir(), "tcu-secondary-guidebook-2025-2026.pdf")
@@ -131,22 +145,34 @@ async function resolvePdfSource(source: string) {
 }
 
 function extractPageNumber(page: string, fallback: number) {
-  const lines = page.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+  const lines = page
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
   const numeric = [...lines].reverse().find((line) => /^\d{1,4}$/.test(line))
   return numeric ?? String(fallback)
 }
 
 function extractInstitutionHeading(page: string) {
   const lines = page.split(/\r?\n/)
-  const headerIndex = lines.findIndex((line) => /\bAdmission Requirements\b/i.test(line))
+  const headerIndex = lines.findIndex((line) =>
+    /\bAdmission Requirements\b/i.test(line)
+  )
   if (headerIndex < 0) return undefined
 
   for (let index = headerIndex - 1; index >= 0; index -= 1) {
     const candidate = cleanText(lines[index])
     if (!candidate || isIgnorableLine(candidate)) continue
-    if (/Table of Content|List of Abbreviations|Important Dates/i.test(candidate)) continue
+    if (
+      /Table of Content|List of Abbreviations|Important Dates/i.test(candidate)
+    )
+      continue
     if (candidate.length < 8) continue
-    if (/\b(University|Institute|College|Academy|Centre|Center|School)\b/i.test(candidate)) {
+    if (
+      /\b(University|Institute|College|Academy|Centre|Center|School)\b/i.test(
+        candidate
+      )
+    ) {
       return candidate
     }
   }
@@ -157,7 +183,7 @@ function extractInstitutionHeading(page: string) {
 function parseMetrics(text: string) {
   const normalized = text.replace(/\s+/g, " ").trim()
   const match = normalized.match(
-    /^(.*?)(?:((?:\d+\s*(?:\.\s*\d+)?|\d+\s+from\s+3\s+subjects)))\s+(\d{1,5})\s+(\d+(?:\s+or\s+\d+)?)\s*$/i,
+    /^(.*?)(?:((?:\d+\s*(?:\.\s*\d+)?|\d+\s+from\s+3\s+subjects)))\s+(\d{1,5})\s+(\d+(?:\s+or\s+\d+)?)\s*$/i
   )
 
   if (!match) {
@@ -180,9 +206,13 @@ function parseMetrics(text: string) {
 function isInstitutionHeadingLine(line: string) {
   const trimmed = cleanText(line)
   return (
-    /\b(University|Institute|College|Academy|Centre|Center|School)\b/i.test(trimmed) &&
+    /\b(University|Institute|College|Academy|Centre|Center|School)\b/i.test(
+      trimmed
+    ) &&
     /\([A-Z0-9-]+\)|,\s*[A-Z][A-Za-z ]+$/.test(trimmed) &&
-    !/\b(Two|Three|principal|passes|subjects|minimum|applicant|Diploma)\b/i.test(trimmed)
+    !/\b(Two|Three|principal|passes|subjects|minimum|applicant|Diploma)\b/i.test(
+      trimmed
+    )
   )
 }
 
@@ -216,8 +246,12 @@ function parseRows(pdfText: string, sourcePdf: string): ExtractedProgramme[] {
       !active.institutionName ? "missing_institution" : undefined,
       !programmeName ? "missing_programme_name" : undefined,
       !admissionRequirements ? "missing_admission_requirements" : undefined,
-      !active.points || !active.capacity || !active.duration ? "missing_points_capacity_or_duration" : undefined,
-      /\b(Bachelor|Doctor|Shahada)\b/i.test(programmeName) ? undefined : "programme_name_does_not_look_like_degree",
+      !active.points || !active.capacity || !active.duration
+        ? "missing_points_capacity_or_duration"
+        : undefined,
+      /\b(Bachelor|Doctor|Shahada)\b/i.test(programmeName)
+        ? undefined
+        : "programme_name_does_not_look_like_degree",
     ].filter(Boolean) as string[]
 
     rows.push({
@@ -295,10 +329,12 @@ function parseRows(pdfText: string, sourcePdf: string): ExtractedProgramme[] {
 
       if (active.requirementColumn === undefined) {
         const likelyRequirementStart = trimmed.search(
-          /\b(Two|Three|One|A)\s+(principal|Principal)|\bDiploma\b|^with\s+a\s+minimum\b/i,
+          /\b(Two|Three|One|A)\s+(principal|Principal)|\bDiploma\b|^with\s+a\s+minimum\b/i
         )
         const likelyRequirementColumn =
-          likelyRequirementStart >= 0 ? firstNonSpace + likelyRequirementStart : undefined
+          likelyRequirementStart >= 0
+            ? firstNonSpace + likelyRequirementStart
+            : undefined
 
         if (
           likelyRequirementColumn !== undefined &&
@@ -312,12 +348,15 @@ function parseRows(pdfText: string, sourcePdf: string): ExtractedProgramme[] {
 
       if (active.requirementColumn !== undefined) {
         const splitColumn =
-          findRequirementContinuationColumn(line, active.requirementColumn) ?? active.requirementColumn
+          findRequirementContinuationColumn(line, active.requirementColumn) ??
+          active.requirementColumn
         if (splitColumn < active.requirementColumn) {
           active.requirementColumn = splitColumn
         }
 
-        const programmeSegment = line.slice(0, Math.max(0, splitColumn - 1)).trim()
+        const programmeSegment = line
+          .slice(0, Math.max(0, splitColumn - 1))
+          .trim()
         const requirementSegment = line.slice(splitColumn).trim()
 
         if (programmeSegment && firstNonSpace < splitColumn - 2) {
@@ -364,7 +403,7 @@ function addRequirementPart(
     capacity: string
     duration: string
   },
-  text: string,
+  text: string
 ) {
   if (isIgnorableLine(text)) return
 
@@ -396,7 +435,9 @@ function writeCsv(path: string, rows: ExtractedProgramme[]) {
 
   const csv = [
     headers.join(","),
-    ...rows.map((row) => headers.map((header) => csvEscape(row[header])).join(",")),
+    ...rows.map((row) =>
+      headers.map((header) => csvEscape(row[header])).join(",")
+    ),
   ].join("\n")
 
   writeFileSync(path, `${csv}\n`)
@@ -419,31 +460,53 @@ function readJsonl(path: string): CsvRow[] {
 }
 
 function compareAgainstCurrent(rows: ExtractedProgramme[]) {
-  const rawRows = existsSync(pathwayProgrammesPath) ? readCsv(pathwayProgrammesPath) : []
-  const processedRows = existsSync(processedProgrammesPath) ? readJsonl(processedProgrammesPath) : []
+  const rawRows = existsSync(pathwayProgrammesPath)
+    ? readCsv(pathwayProgrammesPath)
+    : []
+  const processedRows = existsSync(processedProgrammesPath)
+    ? readJsonl(processedProgrammesPath)
+    : []
   const rawTcuCodes = new Set(
     rawRows
-      .filter((row) => row.regulator === "TCU" || row.official_source_url?.includes("tcu.go.tz"))
+      .filter(
+        (row) =>
+          row.regulator === "TCU" ||
+          row.official_source_url?.includes("tcu.go.tz")
+      )
       .map((row) => row.programme_code)
-      .filter(Boolean),
+      .filter(Boolean)
   )
   const processedTcuCodes = new Set(
     processedRows
-      .filter((row) => row.regulator === "TCU" || row.officialSourceUrl?.includes("tcu.go.tz"))
+      .filter(
+        (row) =>
+          row.regulator === "TCU" ||
+          row.officialSourceUrl?.includes("tcu.go.tz")
+      )
       .map((row) => row.programmeCode)
-      .filter(Boolean),
+      .filter(Boolean)
   )
 
   const extractedCodes = new Set(rows.map((row) => row.programmeCode))
-  const missingFromRaw = rows.filter((row) => !rawTcuCodes.has(row.programmeCode))
-  const missingFromProcessed = rows.filter((row) => !processedTcuCodes.has(row.programmeCode))
-  const rawNotInExtraction = [...rawTcuCodes].filter((code) => !extractedCodes.has(code))
-  const processedNotInExtraction = [...processedTcuCodes].filter((code) => !extractedCodes.has(code))
+  const missingFromRaw = rows.filter(
+    (row) => !rawTcuCodes.has(row.programmeCode)
+  )
+  const missingFromProcessed = rows.filter(
+    (row) => !processedTcuCodes.has(row.programmeCode)
+  )
+  const rawNotInExtraction = [...rawTcuCodes].filter(
+    (code) => !extractedCodes.has(code)
+  )
+  const processedNotInExtraction = [...processedTcuCodes].filter(
+    (code) => !extractedCodes.has(code)
+  )
 
   return {
     extractedRows: rows.length,
     extractedDistinctCodes: extractedCodes.size,
-    extractedInstitutionCount: new Set(rows.map((row) => row.normalizedInstitutionName)).size,
+    extractedInstitutionCount: new Set(
+      rows.map((row) => row.normalizedInstitutionName)
+    ).size,
     needsReviewCount: rows.filter((row) => row.needsReview === "yes").length,
     currentRawTcuCodeCount: rawTcuCodes.size,
     currentProcessedTcuCodeCount: processedTcuCodes.size,
@@ -459,7 +522,10 @@ function compareAgainstCurrent(rows: ExtractedProgramme[]) {
 }
 
 async function main() {
-  const pdfSource = process.argv[2] ?? process.env.TCU_SECONDARY_GUIDEBOOK_PDF ?? defaultPdfSource
+  const pdfSource =
+    process.argv[2] ??
+    process.env.TCU_SECONDARY_GUIDEBOOK_PDF ??
+    defaultPdfSource
   const { pdfPath, sourcePdf } = await resolvePdfSource(pdfSource)
 
   if (!existsSync(pdfPath)) {
@@ -470,8 +536,14 @@ async function main() {
 
   const pdfText = parsePdfText(pdfPath)
   const extractedRows = parseRows(pdfText, sourcePdf)
-  const csvPath = join(outputDir, "tcu-secondary-guidebook-2025-2026-programmes.csv")
-  const comparisonPath = join(outputDir, "tcu-secondary-guidebook-2025-2026-comparison.json")
+  const csvPath = join(
+    outputDir,
+    "tcu-secondary-guidebook-2025-2026-programmes.csv"
+  )
+  const comparisonPath = join(
+    outputDir,
+    "tcu-secondary-guidebook-2025-2026-comparison.json"
+  )
   const comparison = compareAgainstCurrent(extractedRows)
 
   writeCsv(csvPath, extractedRows)
@@ -487,8 +559,8 @@ async function main() {
         ...comparison,
       },
       null,
-      2,
-    ),
+      2
+    )
   )
 }
 

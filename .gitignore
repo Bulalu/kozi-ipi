@@ -35,6 +35,17 @@ pnpm-debug.log*
 # private local admin notes
 docs/*.local.md
 
+# generated analysis reports
+/analysis/reports/latest/
+/analysis/build/
+/analysis/.venv/
+/analysis/.pytest_cache/
+/analysis/.ruff_cache/
+/analysis/src/*.egg-info/
+/analysis/notebooks/layouts/
+/analysis/notebooks/__marimo__/
+__pycache__/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

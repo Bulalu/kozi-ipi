@@ -1,12 +1,83 @@
 import { defineSchema, defineTable } from "convex/server"
 import { v } from "convex/values"
 
-const confidenceLevel = v.union(v.literal("high"), v.literal("medium"), v.literal("low"))
-const suitability = v.union(v.literal("yes"), v.literal("no"), v.literal("unknown"))
+import { applicationRouteValidator } from "./applicantPathwayValidators"
+
+const confidenceLevel = v.union(
+  v.literal("high"),
+  v.literal("medium"),
+  v.literal("low")
+)
+const suitability = v.union(
+  v.literal("yes"),
+  v.literal("no"),
+  v.literal("unknown")
+)
+const parseStatus = v.union(
+  v.literal("structured"),
+  v.literal("partial"),
+  v.literal("unparsed")
+)
 const logoStatus = v.union(
   v.literal("verified"),
   v.literal("missing"),
-  v.literal("needs_review"),
+  v.literal("needs_review")
+)
+
+const requirementClause = v.union(
+  v.object({
+    kind: v.literal("min_csee_passes"),
+    count: v.number(),
+  }),
+  v.object({
+    kind: v.literal("min_csee_division"),
+    division: v.string(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_division"),
+    division: v.string(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_principal_passes"),
+    count: v.number(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_subsidiary_passes"),
+    count: v.number(),
+  }),
+  v.object({
+    kind: v.literal("min_acsee_points"),
+    points: v.number(),
+  }),
+  v.object({
+    kind: v.literal("acsee_subject_grade"),
+    subject: v.string(),
+    minGrade: v.string(),
+  }),
+  v.object({
+    kind: v.literal("subject_group"),
+    level: v.union(v.literal("csee"), v.literal("acsee")),
+    mode: v.union(
+      v.literal("all_of"),
+      v.literal("one_of"),
+      v.literal("at_least_n_of")
+    ),
+    count: v.optional(v.number()),
+    subjects: v.array(v.string()),
+    minGrade: v.optional(v.string()),
+  }),
+  v.object({
+    kind: v.literal("prior_award"),
+    acceptedAwardLevels: v.optional(v.array(v.string())),
+    acceptedFields: v.optional(v.array(v.string())),
+    relatedFieldRequired: v.optional(v.boolean()),
+    minGpa: v.optional(v.number()),
+  }),
+  v.object({
+    kind: v.literal("o_level_subject_grade"),
+    subject: v.string(),
+    minGrade: v.string(),
+  })
 )
 
 export default defineSchema({
@@ -120,9 +191,11 @@ export default defineSchema({
     .index("by_region", ["region"])
     .index("by_fieldCategory", ["fieldCategory"])
     .index("by_suitableForFormFourLeaver", ["suitableForFormFourLeaver"])
+    .index("by_acceptsFormFourDirect", ["acceptsFormFourDirect"])
     .index("by_acceptsFormSix", ["acceptsFormSix"])
     .index("by_acceptsCertificate", ["acceptsCertificate"])
     .index("by_acceptsDiploma", ["acceptsDiploma"])
+    .index("by_acceptsEquivalent", ["acceptsEquivalent"])
     .searchIndex("search_searchText", {
       searchField: "searchText",
       filterFields: [
@@ -134,6 +207,11 @@ export default defineSchema({
         "institutionType",
         "ownershipType",
         "suitableForFormFourLeaver",
+        "acceptsFormFourDirect",
+        "acceptsFormSix",
+        "acceptsCertificate",
+        "acceptsDiploma",
+        "acceptsEquivalent",
         "confidenceLevel",
       ],
     }),
@@ -170,6 +248,7 @@ export default defineSchema({
     .index("by_acceptsFormSix", ["acceptsFormSix"])
     .index("by_acceptsCertificate", ["acceptsCertificate"])
     .index("by_acceptsDiploma", ["acceptsDiploma"])
+    .index("by_acceptsEquivalent", ["acceptsEquivalent"])
     .searchIndex("search_searchText", {
       searchField: "searchText",
       filterFields: [
@@ -183,8 +262,43 @@ export default defineSchema({
       ],
     }),
 
+  requirementRules: defineTable({
+    programmeName: v.string(),
+    normalizedProgrammeName: v.string(),
+    institutionName: v.string(),
+    normalizedInstitutionName: v.string(),
+    programmeKey: v.string(),
+    institutionKey: v.string(),
+    variants: v.array(
+      v.object({
+        route: applicationRouteValidator,
+        clauses: v.array(requirementClause),
+        parseStatus,
+      })
+    ),
+    rawRequirementText: v.string(),
+    sourceUrl: v.string(),
+    confidence: confidenceLevel,
+    parseVersion: v.string(),
+    searchText: v.string(),
+  })
+    .index("by_normalizedInstitutionName", ["normalizedInstitutionName"])
+    .index("by_normalizedProgrammeName", ["normalizedProgrammeName"])
+    .index("by_normalizedProgrammeName_and_normalizedInstitutionName", [
+      "normalizedProgrammeName",
+      "normalizedInstitutionName",
+    ])
+    .searchIndex("search_searchText", {
+      searchField: "searchText",
+      filterFields: ["normalizedInstitutionName", "confidence"],
+    }),
+
   correctionSubmissions: defineTable({
-    targetType: v.union(v.literal("institution"), v.literal("programme"), v.literal("general")),
+    targetType: v.union(
+      v.literal("institution"),
+      v.literal("programme"),
+      v.literal("general")
+    ),
     targetId: v.optional(v.string()),
     targetName: v.optional(v.string()),
     correctionType: v.string(),
@@ -196,7 +310,7 @@ export default defineSchema({
       v.literal("pending"),
       v.literal("approved"),
       v.literal("rejected"),
-      v.literal("needs_more_info"),
+      v.literal("needs_more_info")
     ),
   }).index("by_status", ["status"]),
 
