@@ -24,7 +24,14 @@ Recovery checkout: `/Users/elishabulalu/Documents/random9/output/kozi-cloudflare
 
 Original working checkout: `/Users/elishabulalu/Documents/kozi-ipi`. At handoff, its active branch is `redesign/home-poster`, commit `2fa73a7`, with additional uncommitted work. The recovery branch has been fetched there for inspection.
 
-Update 15 October 2026: the hosting changes listed below are now integrated on `redesign/home-poster` (static export config, `_headers`, `wrangler.jsonc`, the Suspense search page, Vercel components removed from the layout, `pages:deploy`). The redesigned home page builds as a static export, and its images are pre-compressed WebP because `images.unoptimized` is on. The recovery commit's Form Six runtime, Convex schema and hero changes were not copied; that checkout already has its own uncommitted versions. Nothing has been merged into GitHub `master` or deployed from this branch.
+Update 15 October 2026: the hosting changes listed below are now integrated on `redesign/home-poster` (static export config, `_headers`, `wrangler.jsonc`, the Suspense search page, Vercel components removed from the layout, `pages:deploy`). The redesigned home page builds as a static export, and its images are pre-compressed WebP because `images.unoptimized` is on. The recovery commit's Form Six runtime, Convex schema and hero changes were not copied; that checkout already had its own versions, now committed in `adf917e`.
+
+## Latest production deploy
+
+- 15 October 2026: production deployment `https://8b547601.kozi-ipi.pages.dev`, built from `redesign/home-poster` at `adf917e` (home redesign, Cloudflare hosting, Form Six lookup, ACSEE analytics pages). Verified on www.koziipi.com, koziipi.com and kozi-ipi.pages.dev.
+- Built with `.env.production.local` pointing at `hushed-sandpiper-727` (production Convex). The checkout's `.env.local` still points at the old `first-mammoth` deployment; never build for production without `.env.production.local`.
+- Production Convex functions were not redeployed. The frontend only calls functions already live there. Local `institutions.browsePaginated`/`browseSummary` exist in Git but are not deployed or used.
+- GitHub `master` does not include this yet; merge `redesign/home-poster` to bring `master` in line with production.
 
 Wrangler's `--branch master` argument marks a Pages deployment as production. It does not push Git commits or change GitHub's `master` branch. This site was published by CLI direct upload, not an automatic GitHub build.
 
