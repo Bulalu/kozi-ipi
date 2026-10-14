@@ -1,6 +1,4 @@
 import "./globals.css"
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Archivo, Archivo_Black, Geist_Mono, Inter } from "next/font/google"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
 import { SiteFooter } from "@/components/site-footer"
@@ -52,8 +50,6 @@ export default function RootLayout({
             </div>
           </ThemeProvider>
         </ConvexClientProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   )

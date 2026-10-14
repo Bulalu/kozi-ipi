@@ -20,7 +20,8 @@
     "udsm:compare": "bun scripts/compare-udsm-prospectus.ts",
     "data:build": "bun scripts/build-processed-data.ts",
     "data:import": "bun scripts/import-processed-data.ts",
-    "data:import:prod": "bun scripts/import-processed-data.ts --prod"
+    "data:import:prod": "bun scripts/import-processed-data.ts --prod",
+    "pages:deploy": "CLOUDFLARE_ACCOUNT_ID=9ce726f052303bc518bd2016de2d418f npx --yes wrangler@4.151.0 pages deploy out --project-name kozi-ipi --branch master"
   },
   "dependencies": {
     "@convex-dev/rate-limiter": "^0.3.2",

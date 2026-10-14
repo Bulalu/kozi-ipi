@@ -24,11 +24,11 @@ export function HomeHero() {
           <span className="sr-only">Unachukua kozi ipi?</span>
         </h1>
 
-        <Sticker className="absolute top-[190px] right-5 z-20 size-24 text-[17px] sm:top-[240px] sm:right-10 sm:size-32 sm:text-2xl lg:top-[390px] lg:right-auto lg:left-[545px] lg:size-[150px] lg:text-[30px]" />
+        <Sticker className="absolute top-[190px] right-5 z-20 size-24 text-[17px] sm:top-[150px] sm:right-10 sm:size-32 sm:text-2xl lg:top-[150px] lg:right-auto lg:left-[690px] lg:size-[150px] lg:text-[30px] xl:top-[390px] xl:left-[545px]" />
 
         <Link
           href="/form-six"
-          className="absolute top-[132px] right-[72px] z-20 hidden rotate-[4deg] items-center gap-2.5 border-[3px] border-kozi-ink bg-white px-5 py-3.5 shadow-[5px_5px_0_var(--kozi-ink)] transition-transform hover:rotate-[2deg] lg:flex"
+          className="absolute top-[132px] right-[72px] z-20 hidden rotate-[4deg] items-center gap-2.5 border-[3px] border-kozi-ink bg-white px-5 py-3.5 shadow-[5px_5px_0_var(--kozi-ink)] transition-transform hover:rotate-[2deg] xl:flex"
         >
           <span className="font-display text-[15px] text-kozi-ink">
             ACSEE IMETOKA?
@@ -38,9 +38,9 @@ export function HomeHero() {
           </span>
         </Link>
 
-        <div className="relative -mx-5 -mt-2 h-[300px] sm:h-[420px] lg:absolute lg:right-[-40px] lg:bottom-[-30px] lg:mx-0 lg:mt-0 lg:h-[675px] lg:w-[900px]">
+        <div className="relative -mx-5 -mt-2 h-[300px] sm:h-[420px] lg:absolute lg:right-[-40px] lg:bottom-[-30px] lg:mx-0 lg:mt-0 lg:h-[540px] lg:w-[720px] xl:h-[675px] xl:w-[900px]">
           <Image
-            src="/home/students-cutout.png"
+            src="/home/students-cutout.webp"
             alt="Three Tanzanian students looking ahead, in blue and yellow"
             fill
             priority
@@ -50,7 +50,7 @@ export function HomeHero() {
         </div>
 
         <div className="relative z-10 -mt-7 flex flex-col gap-4 pb-7 lg:absolute lg:bottom-14 lg:left-14 lg:mt-0 lg:w-[560px] lg:pb-0">
-          <p className="hidden max-w-[500px] font-poster text-[19px] leading-7 font-medium text-kozi-ink lg:block">
+          <p className="hidden max-w-[500px] font-poster text-[19px] leading-7 font-medium text-kozi-ink xl:block">
             Kozi {HOME_STATS.programmes} · vyuo {HOME_STATS.institutions} · kwa
             Form Four, Form Six na Diploma. Chagua smart.
           </p>
@@ -80,7 +80,7 @@ export function HomeHero() {
 
           <Link
             href="/form-six"
-            className="flex items-center justify-center gap-2 rounded-2xl bg-kozi-ink px-4 py-3.5 font-display text-sm text-kozi-yellow lg:hidden"
+            className="flex items-center justify-center gap-2 rounded-2xl bg-kozi-ink px-4 py-3.5 font-display text-sm text-kozi-yellow xl:hidden"
           >
             ACSEE IMETOKA? WEKA INDEX
             <ArrowRightIcon className="size-4" />

@@ -65,7 +65,7 @@ export const FIELDS = [
     count: "764",
     family: "health",
     query: "Health",
-    image: "/home/field-health.jpg",
+    image: "/home/field-health.webp",
     alt: "Medical student in scrubs with a stethoscope",
   },
   {
@@ -73,7 +73,7 @@ export const FIELDS = [
     count: "395",
     family: "engineering",
     query: "Engineering",
-    image: "/home/field-engineering.jpg",
+    image: "/home/field-engineering.webp",
     alt: "Engineering student in a hard hat holding blueprints",
   },
   {
@@ -81,7 +81,7 @@ export const FIELDS = [
     count: "1,023",
     family: "business",
     query: "Business",
-    image: "/home/field-business.jpg",
+    image: "/home/field-business.webp",
     alt: "Business student in a blazer holding a tablet",
   },
   {
@@ -89,7 +89,7 @@ export const FIELDS = [
     count: "326",
     family: "ICT",
     query: "ICT",
-    image: "/home/field-ict.jpg",
+    image: "/home/field-ict.webp",
     alt: "Computer science student holding a laptop",
   },
   {
@@ -97,7 +97,7 @@ export const FIELDS = [
     count: "135",
     family: "tourism_hospitality",
     query: "Tourism",
-    image: "/home/field-tourism.jpg",
+    image: "/home/field-tourism.webp",
     alt: "Hospitality student in a chef jacket",
   },
 ]
