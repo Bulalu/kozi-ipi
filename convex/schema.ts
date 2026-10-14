@@ -328,4 +328,46 @@ export default defineSchema({
   })
     .index("by_createdAt", ["createdAt"])
     .index("by_normalizedQuery", ["normalizedQuery"]),
+
+  acseeResults: defineTable({
+    examType: v.literal("ACSEE"),
+    examYear: v.number(),
+    indexNumber: v.string(),
+    normalizedIndexNumber: v.string(),
+    centreCode: v.string(),
+    centreName: v.string(),
+    centreType: v.union(
+      v.literal("school"),
+      v.literal("private_centre"),
+      v.literal("unknown")
+    ),
+    sex: v.string(),
+    aggregate: v.string(),
+    aggregatePoints: v.optional(v.number()),
+    division: v.string(),
+    resultStatus: v.union(
+      v.literal("released"),
+      v.literal("absent"),
+      v.literal("not_eligible_for_lookup")
+    ),
+    subjects: v.array(
+      v.object({
+        rawSubject: v.string(),
+        subject: v.string(),
+        normalizedSubject: v.string(),
+        grade: v.string(),
+      })
+    ),
+    subjectSummary: v.string(),
+    sourceUrl: v.string(),
+    sourcePath: v.string(),
+    parserVersion: v.string(),
+    fetchedAt: v.number(),
+  })
+    .index("by_examYear_and_normalizedIndexNumber", [
+      "examYear",
+      "normalizedIndexNumber",
+    ])
+    .index("by_examYear_and_centreCode", ["examYear", "centreCode"])
+    .index("by_examYear_and_resultStatus", ["examYear", "resultStatus"]),
 })

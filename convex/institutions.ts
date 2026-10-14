@@ -62,6 +62,14 @@ const tones = ["blue", "green", "amber", "indigo", "red", "ink"] as const
 
 type InstitutionType = "University" | "College" | "TVET"
 type InstitutionOwnership = "Public" | "Private" | "Unknown"
+type BrowseFilters = {
+  query?: string
+  types?: string[]
+  region?: string
+  ownership?: string
+  awardLevels?: string[]
+  field?: string
+}
 
 export const listForBrowse = query({
   args: {
@@ -79,6 +87,53 @@ export const listForBrowse = query({
   },
 })
 
+export const browsePaginated = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query("institutions")
+      .withIndex("by_programmeCount")
+      .order("desc")
+      .paginate(args.paginationOpts)
+
+    return {
+      page: result.page.map(toBrowseInstitution),
+      isDone: result.isDone,
+      continueCursor: result.continueCursor,
+    }
+  },
+})
+
+export const browseSummary = query({
+  args: {
+    filters: browseFiltersValidator,
+  },
+  handler: async (ctx, args) => {
+    const institutions = await ctx.db
+      .query("institutions")
+      .withIndex("by_programmeCount")
+      .order("desc")
+      .take(5000)
+    const filtered = applyBrowseFilters(institutions.map(toBrowseInstitution), args.filters)
+
+    return {
+      regions: [
+        ...new Set(
+          filtered
+            .map((institution) => institution.region)
+            .filter(isValidRegion),
+        ),
+      ].sort(),
+      typeCounts: countBy(filtered, (institution) => institution.type),
+      ownershipCounts: countBy(filtered, (institution) => institution.ownership),
+      awardLevelCounts: countByMany(filtered, (institution) => institution.awardLevels),
+      total: filtered.length,
+    }
+  },
+})
+
 export const browse = query({
   args: {
     filters: browseFiltersValidator,
@@ -93,26 +148,7 @@ export const browse = query({
       // TODO: Replace this capped scan with indexed pagination before the catalogue exceeds 1000 institutions.
       .take(1000)
     const browseInstitutions = institutions.map(toBrowseInstitution)
-    const filters = args.filters
-    const query = normalize(filters?.query)
-    const types = new Set(filters?.types ?? [])
-    const awardLevels = new Set(filters?.awardLevels ?? [])
-
-    const results = browseInstitutions.filter((institution) => {
-      if (types.size > 0 && !types.has(institution.type)) return false
-      if (filters?.region && institution.region !== filters.region) return false
-      if (filters?.ownership && institution.ownership !== filters.ownership) return false
-      if (
-        awardLevels.size > 0 &&
-        !institution.awardLevels.some((award) => awardLevels.has(award))
-      ) {
-        return false
-      }
-      if (filters?.field && !fieldMatches(institution, filters.field)) return false
-      if (!query) return true
-
-      return institution.searchText.includes(query)
-    })
+    const results = applyBrowseFilters(browseInstitutions, args.filters)
 
     return {
       results: results.slice(0, limit),
@@ -132,6 +168,28 @@ export const browse = query({
     }
   },
 })
+
+function applyBrowseFilters(institutions: BrowseInstitution[], filters?: BrowseFilters) {
+  const query = normalize(filters?.query)
+  const types = new Set(filters?.types ?? [])
+  const awardLevels = new Set(filters?.awardLevels ?? [])
+
+  return institutions.filter((institution) => {
+    if (types.size > 0 && !types.has(institution.type)) return false
+    if (filters?.region && institution.region !== filters.region) return false
+    if (filters?.ownership && institution.ownership !== filters.ownership) return false
+    if (
+      awardLevels.size > 0 &&
+      !institution.awardLevels.some((award) => awardLevels.has(award))
+    ) {
+      return false
+    }
+    if (filters?.field && !fieldMatches(institution, filters.field)) return false
+    if (!query) return true
+
+    return institution.searchText.includes(query)
+  })
+}
 
 export const search = query({
   args: {

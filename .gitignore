@@ -35,6 +35,12 @@ pnpm-debug.log*
 # private local admin notes
 docs/*.local.md
 
+# public exam-result snapshots imported into Convex, not source-controlled
+/data/raw/necta-acsee-*/
+/data/raw/acsee-analytics-*/
+/data/processed/acsee-results-*.jsonl
+/data/processed/acsee-results-*-report.json
+
 # generated analysis reports
 /analysis/reports/latest/
 /analysis/build/
