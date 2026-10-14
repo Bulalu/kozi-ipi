@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 const NAV = [
-  { label: "Kozi", href: "/search" },
-  { label: "Vyuo", href: "/vyuo" },
-  { label: "Sifa", href: "/eligibility" },
+  { label: "Kozi", href: "/search", className: "hidden sm:block" },
+  { label: "Vyuo", href: "/vyuo", className: "hidden md:block" },
+  { label: "Form Six", href: "/form-six" },
+  { label: "Sifa", href: "/eligibility", className: "hidden lg:block" },
 ]
 
 const FEATURED_INSTITUTIONS: Array<{
@@ -112,12 +113,12 @@ function SiteHeader() {
         </span>
       </Link>
 
-      <nav className="flex items-center gap-5 lg:gap-8">
+      <nav className="flex items-center gap-4 sm:gap-5 lg:gap-8">
         {NAV.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className="group relative text-[14px] font-medium text-brand-ink/85 transition-colors hover:text-brand-blue"
+            className={`group relative text-[14px] font-medium text-brand-ink/85 transition-colors hover:text-brand-blue ${item.className ?? ""}`}
           >
             {item.label}
             <span className="absolute -bottom-1.5 left-0 h-[2px] w-0 bg-brand-blue transition-[width] duration-300 group-hover:w-full" />
@@ -165,6 +166,14 @@ function HeroCopy() {
       </p>
 
       <SearchBar className="mt-9" />
+
+      <Link
+        className="mt-4 inline-flex items-center gap-2 rounded-lg border border-brand-blue/20 bg-brand-blue/8 px-4 py-3 text-[13px] font-bold text-brand-blue transition hover:border-brand-blue hover:bg-brand-blue hover:text-white"
+        href="/form-six"
+      >
+        Check eligible courses from your Form Six index number
+        <ArrowRightIcon className="size-3.5" />
+      </Link>
 
       <div className="mt-7 flex flex-wrap items-center gap-2.5 text-[13px]">
         <span className="font-semibold text-brand-ink">Trending:</span>

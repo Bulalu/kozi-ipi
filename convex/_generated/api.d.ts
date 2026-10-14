@@ -8,10 +8,15 @@
  * @module
  */
 
+import type * as acseeResults from "../acseeResults.js";
+import type * as applicantPathwayValidators from "../applicantPathwayValidators.js";
+import type * as applicantPathways from "../applicantPathways.js";
 import type * as corrections from "../corrections.js";
 import type * as entryRequirements from "../entryRequirements.js";
 import type * as http from "../http.js";
 import type * as institutions from "../institutions.js";
+import type * as programmeEligibility_search from "../programmeEligibility/search.js";
+import type * as programmeSearch_candidates from "../programmeSearch/candidates.js";
 import type * as programmeSearch_display from "../programmeSearch/display.js";
 import type * as programmeSearch_filters from "../programmeSearch/filters.js";
 import type * as programmeSearch_interpret from "../programmeSearch/interpret.js";
@@ -30,10 +35,15 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  acseeResults: typeof acseeResults;
+  applicantPathwayValidators: typeof applicantPathwayValidators;
+  applicantPathways: typeof applicantPathways;
   corrections: typeof corrections;
   entryRequirements: typeof entryRequirements;
   http: typeof http;
   institutions: typeof institutions;
+  "programmeEligibility/search": typeof programmeEligibility_search;
+  "programmeSearch/candidates": typeof programmeSearch_candidates;
   "programmeSearch/display": typeof programmeSearch_display;
   "programmeSearch/filters": typeof programmeSearch_filters;
   "programmeSearch/interpret": typeof programmeSearch_interpret;
