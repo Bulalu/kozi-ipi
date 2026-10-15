@@ -11,7 +11,8 @@ import {
   universityHref,
   type PathwayTone,
 } from "@/components/home/home-content"
-import { ArrowRightIcon, InfoIcon } from "@/components/home/home-icons"
+import { ArrowRightIcon } from "@/components/home/home-icons"
+import { IndexCheckForm } from "@/components/home/index-check-form"
 
 const container = "mx-auto w-full max-w-[1440px] px-5 sm:px-10 lg:px-14"
 const sectionTitle =
@@ -234,37 +235,7 @@ export function IndexCheckSection() {
           </p>
         </div>
 
-        <form
-          action="/form-six"
-          method="get"
-          className="flex w-full max-w-[520px] shrink-0 flex-col gap-5 rounded-[20px] border-[3px] border-kozi-ink bg-white p-6 shadow-[10px_10px_0_var(--kozi-ink)] lg:rotate-[1.5deg] lg:p-9"
-        >
-          <label
-            htmlFor="home-index"
-            className="font-poster text-[15px] font-bold text-kozi-ink"
-          >
-            Namba ya mtihani (ACSEE)
-          </label>
-          <input
-            id="home-index"
-            name="index"
-            inputMode="text"
-            autoComplete="off"
-            placeholder="S0123/0045/2025"
-            className="h-16 rounded-[14px] border-[3px] border-kozi-ink bg-[#fff8d6] px-5 font-tag text-[22px] font-semibold tracking-[0.04em] text-kozi-ink placeholder:text-kozi-ink/35 focus:outline-none focus-visible:ring-4 focus-visible:ring-kozi-yellow"
-          />
-          <button
-            type="submit"
-            className="flex h-16 items-center justify-center gap-2.5 rounded-full border-[3px] border-kozi-ink bg-kozi-cobalt font-display text-[15px] text-white shadow-[4px_4px_0_var(--kozi-ink)] transition-transform hover:-translate-y-0.5 sm:text-[17px]"
-          >
-            NIONYESHE KOZI ZANGU
-            <ArrowRightIcon className="size-[18px]" />
-          </button>
-          <p className="flex items-start gap-2 font-poster text-[13px] leading-[1.45] text-kozi-graphite">
-            <InfoIcon className="mt-0.5 size-3.5 shrink-0" />
-            Ni mwongozo, si barua ya udahili — thibitisha na TCU au NACTVET.
-          </p>
-        </form>
+        <IndexCheckForm />
       </div>
     </section>
   )
