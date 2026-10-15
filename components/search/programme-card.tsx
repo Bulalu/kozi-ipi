@@ -70,99 +70,109 @@ export function ProgrammeCard({
     window.setTimeout(() => setShareStatus("idle"), 1800)
   }
 
+  const metaParts = [
+    programme.programmeCode,
+    programme.awardLevel,
+    programme.regulator,
+    programme.ownershipType?.toLowerCase() === "unknown"
+      ? undefined
+      : programme.ownershipType,
+  ].filter(Boolean)
+
   return (
     <article
-      className={`group max-w-full scroll-mt-6 overflow-hidden rounded-2xl border bg-white p-4 transition hover:border-brand-blue/35 hover:shadow-[0_22px_50px_-32px_rgba(29,78,216,0.45)] sm:p-5 ${
+      className={`group max-w-full scroll-mt-6 overflow-hidden rounded-[20px] border-[3px] border-kozi-ink bg-white transition-transform ${
         isSelected
-          ? "border-brand-blue shadow-[0_22px_50px_-32px_rgba(29,78,216,0.45)]"
-          : "border-brand-ink/10"
+          ? "shadow-[8px_8px_0_var(--kozi-cobalt)]"
+          : "shadow-[5px_5px_0_var(--kozi-ink)] hover:-translate-y-0.5"
       }`}
       ref={cardRef}
     >
-      <div className="flex min-w-0 items-start justify-between gap-3 sm:gap-4">
-        <div className="flex min-w-0 flex-1 items-start gap-3">
+      <div className="flex min-w-0 flex-col gap-4 p-5 sm:p-6">
+        <div className="flex min-w-0 items-start gap-4">
           <InstitutionLogo
             fallback={meta.mark}
             institutionName={programme.institutionName}
             logoUrl={programme.institutionLogoUrl}
           />
-          <div className="min-w-0 flex-1">
-            <div className="flex min-w-0 flex-wrap items-center gap-1.5 text-[10.5px] font-semibold tracking-[0.11em] text-brand-ink/45 uppercase sm:gap-2 sm:text-[11.5px] sm:tracking-[0.14em]">
-              <span className="max-w-full min-w-0 break-words">
-                {programme.awardLevel}
-              </span>
-              <span className="size-1 rounded-full bg-brand-ink/30" />
-              <span className="max-w-full min-w-0 break-words">
-                {programme.regulator}
-              </span>
-              {programme.ownershipType ? (
-                <>
-                  <span className="size-1 rounded-full bg-brand-ink/30" />
-                  <span className="max-w-full min-w-0 break-words">
-                    {programme.ownershipType}
-                  </span>
-                </>
-              ) : null}
-            </div>
-            <h3 className="mt-1.5 line-clamp-2 text-[17px] font-bold tracking-tight break-words">
+          <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+            <p className="font-tag text-[11px] font-semibold tracking-[0.1em] break-words text-kozi-graphite uppercase sm:text-xs">
+              {metaParts.join(" · ")}
+            </p>
+            <h3 className="line-clamp-3 font-display text-xl leading-[1.15] tracking-[-0.02em] break-words text-kozi-ink sm:line-clamp-2 sm:text-[24px]">
               {programme.programmeName}
             </h3>
-            <p className="mt-0.5 line-clamp-2 text-[13.5px] font-medium break-words text-brand-ink/65">
+            <p className="line-clamp-2 font-poster text-[15px] font-semibold break-words text-kozi-ink/80">
               {programme.institutionName}
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="mt-4 flex min-w-0 flex-wrap gap-1.5 text-[12px] text-brand-ink/70">
-        {programme.region ? (
-          <Tag icon={<PinIcon className="size-3.5 shrink-0" />}>
-            {programme.region}
-          </Tag>
-        ) : null}
-        {programme.duration ? (
-          <Tag icon={<ClockIcon className="size-3.5 shrink-0" />}>
-            {programme.duration} years
-          </Tag>
-        ) : null}
-        {programme.feesIfAvailable ? (
-          <Tag>{programme.feesIfAvailable}</Tag>
-        ) : null}
+        <div className="flex min-w-0 flex-wrap gap-2">
+          {programme.region ? (
+            <Tag icon={<PinIcon className="size-3.5 shrink-0" />}>
+              {programme.region}
+            </Tag>
+          ) : null}
+          {programme.duration ? (
+            <Tag icon={<ClockIcon className="size-3.5 shrink-0" />}>
+              Miaka {programme.duration}
+            </Tag>
+          ) : null}
+          {programme.studyMode &&
+          programme.studyMode.toLowerCase() !== "unknown" ? (
+            <Tag>{programme.studyMode}</Tag>
+          ) : null}
+          {programme.feesIfAvailable ? (
+            <Tag>{programme.feesIfAvailable}</Tag>
+          ) : null}
+        </div>
       </div>
 
       {programme.minimumEntryRequirements ? (
-        <div className="mt-4 rounded-xl bg-[#fafafa] p-3.5">
-          <p className="text-[10.5px] font-semibold tracking-[0.18em] text-brand-ink/40 uppercase">
-            Entry requirements
+        <div className="border-t-[3px] border-kozi-ink bg-[#eef2ff] px-5 py-4 sm:px-6">
+          <p className="font-display text-[13px] tracking-[0.04em] text-kozi-ink">
+            SIFA ZA KUINGIA
           </p>
-          <p className="mt-1.5 line-clamp-2 text-[13px] leading-6 break-words text-brand-ink/70">
+          <p
+            className={`mt-1.5 font-poster text-sm leading-6 break-words text-kozi-ink/80 ${
+              detailsVisible ? "" : "line-clamp-2"
+            }`}
+          >
             {programme.minimumEntryRequirements}
           </p>
         </div>
       ) : null}
 
-      <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[11.5px] break-words text-brand-ink/45">
-          Verified {programme.lastVerifiedDate}
-          {programme.needsReview ? " · Needs review" : ""}
+      <div
+        className={`flex flex-col items-start gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 ${
+          programme.minimumEntryRequirements
+            ? "bg-[#eef2ff]"
+            : "border-t-[3px] border-kozi-ink"
+        }`}
+      >
+        <p className="font-poster text-xs break-words text-kozi-graphite">
+          Imehakikiwa {programme.lastVerifiedDate}
+          {programme.needsReview ? " · Inahitaji uhakiki" : ""}
         </p>
-        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+        <div className="flex w-full gap-2 sm:w-auto">
           <button
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-brand-ink/15 px-4 py-2 text-[13px] font-semibold text-brand-ink transition hover:border-brand-blue hover:text-brand-blue sm:w-auto"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border-[2.5px] border-kozi-ink bg-white px-4 py-2.5 font-poster text-sm font-bold text-kozi-ink transition hover:bg-kozi-yellow sm:flex-none"
             onClick={shareProgramme}
             type="button"
           >
-            <ShareIcon className="size-3.5" />
-            {shareStatus === "copied" ? "Link copied" : "Share"}
+            <ShareIcon className="size-4" />
+            {shareStatus === "copied" ? "Link imenakiliwa" : "Shiriki"}
           </button>
           <button
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-brand-ink px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-blue sm:w-auto"
+            aria-expanded={detailsVisible}
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-kozi-ink px-5 py-2.5 font-display text-sm text-kozi-yellow transition hover:bg-kozi-cobalt hover:text-white sm:flex-none"
             onClick={() => setShowDetails((visible) => !visible)}
             type="button"
           >
-            {detailsVisible ? "Hide details" : "View details"}
+            {detailsVisible ? "FICHA" : "MAELEZO"}
             <ArrowRightIcon
-              className={`size-3.5 transition ${detailsVisible ? "rotate-90" : ""}`}
+              className={`size-4 transition ${detailsVisible ? "rotate-90" : ""}`}
             />
           </button>
         </div>
@@ -197,17 +207,17 @@ function ProgrammeDetails({ programme }: { programme: ProgrammeSearchResult }) {
   ].filter((row) => row.value)
 
   return (
-    <div className="mt-4 border-t border-brand-ink/8 pt-4">
+    <div className="border-t-[3px] border-kozi-ink px-5 py-5 sm:px-6">
       <dl className="grid gap-3 sm:grid-cols-2">
         {detailRows.map((row) => (
           <div
-            className="min-w-0 rounded-xl bg-brand-ink/[0.035] p-3"
+            className="min-w-0 rounded-xl border-2 border-kozi-ink/15 p-3"
             key={row.label}
           >
-            <dt className="text-[10.5px] font-semibold tracking-[0.16em] text-brand-ink/40 uppercase">
+            <dt className="font-tag text-[11px] font-semibold tracking-[0.1em] text-kozi-graphite uppercase">
               {row.label}
             </dt>
-            <dd className="mt-1 text-[13px] leading-5 break-words text-brand-ink/75">
+            <dd className="mt-1 font-poster text-sm leading-5 font-medium break-words text-kozi-ink">
               {row.value}
             </dd>
           </div>
@@ -217,11 +227,11 @@ function ProgrammeDetails({ programme }: { programme: ProgrammeSearchResult }) {
       {officialSourceHref || institutionWebsiteHref ? (
         <div className="mt-4 flex flex-wrap gap-2">
           {officialSourceHref ? (
-            <DetailLink href={officialSourceHref}>Official source</DetailLink>
+            <DetailLink href={officialSourceHref}>Chanzo rasmi ↗</DetailLink>
           ) : null}
           {institutionWebsiteHref ? (
             <DetailLink href={institutionWebsiteHref}>
-              Institution website
+              Tovuti ya chuo ↗
             </DetailLink>
           ) : null}
         </div>
@@ -266,7 +276,7 @@ async function copyToClipboard(value: string) {
 function DetailLink({ children, href }: { children: ReactNode; href: string }) {
   return (
     <a
-      className="rounded-full border border-brand-ink/15 px-3 py-1.5 text-[12px] font-semibold text-brand-ink transition hover:border-brand-blue hover:text-brand-blue"
+      className="rounded-full border-[2.5px] border-kozi-ink px-4 py-2 font-poster text-sm font-bold text-kozi-ink transition hover:bg-kozi-yellow"
       href={href}
       rel="noreferrer"
       target="_blank"
@@ -289,23 +299,23 @@ function InstitutionLogo({
 
   if (logoUrl && !failed) {
     return (
-      <div className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-brand-ink/10 bg-white p-1.5 sm:size-11">
+      <div className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-[14px] border-[3px] border-kozi-ink bg-white p-1.5 sm:size-16">
         <Image
           alt={`${institutionName} logo`}
           className="max-h-full max-w-full object-contain"
-          height={44}
+          height={64}
           loading="lazy"
           onError={() => setFailed(true)}
           src={logoUrl}
           unoptimized
-          width={44}
+          width={64}
         />
       </div>
     )
   }
 
   return (
-    <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-blue/10 font-mono text-[14px] font-semibold text-brand-blue sm:size-11">
+    <div className="grid size-14 shrink-0 place-items-center rounded-[14px] border-[3px] border-kozi-ink bg-kozi-yellow font-display text-lg text-kozi-ink sm:size-16">
       {fallback}
     </div>
   )
@@ -321,14 +331,14 @@ function Tag({
   tone?: "neutral" | "green" | "ink"
 }) {
   const tones = {
-    neutral: "bg-brand-ink/[0.05] text-brand-ink/70",
+    neutral: "bg-[#f3f4f6] text-kozi-ink",
     green: "bg-emerald-50 text-emerald-700",
-    ink: "bg-brand-ink text-white",
+    ink: "bg-kozi-ink text-white",
   }
 
   return (
     <span
-      className={`inline-flex max-w-full min-w-0 items-center gap-1 truncate rounded-full px-2.5 py-1 font-medium ${tones[tone]}`}
+      className={`inline-flex max-w-full min-w-0 items-center gap-1.5 truncate rounded-full px-3 py-1.5 font-poster text-[13px] font-semibold ${tones[tone]}`}
     >
       {icon}
       <span className="min-w-0 truncate">{children}</span>
