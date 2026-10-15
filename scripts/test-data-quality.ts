@@ -4,6 +4,24 @@ import { fileURLToPath } from "node:url"
 
 import { interpretProgrammeQuery } from "../convex/programmeSearch/interpret"
 import { rankProgrammes } from "../convex/programmeSearch/ranking"
+import {
+  processedApplicantPathwayFields,
+  processedFileSpecs,
+} from "../lib/data/processed-data-contract"
+import {
+  classifyManualReviewReason,
+  summarizeManualReviewQueues,
+} from "../lib/data/manual-review-queue"
+import {
+  applicantPathwayFlagFields,
+  summarizeApplicantPathwayCoverage,
+  type Suitability,
+} from "../lib/domain/applicant-pathways"
+import {
+  compatibleInstitutionIdentityKeys,
+  hasCampusMarker,
+} from "../lib/domain/institution-identity"
+import { programmeNameContainsRequirementLeak } from "../lib/domain/programme-offering-identity"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
@@ -18,7 +36,11 @@ type Programme = {
   courseFamily?: string
   searchText: string
   sourceDatasets: string[]
-  acceptsDiploma?: string
+  acceptsFormFourDirect?: Suitability
+  acceptsFormSix?: Suitability
+  acceptsCertificate?: Suitability
+  acceptsDiploma?: Suitability
+  acceptsEquivalent?: Suitability
   entryRouteTypes?: string
   minimumEntryRequirements?: string
   needsReview?: boolean
@@ -44,19 +66,6 @@ function assert(condition: unknown, message: string): asserts condition {
   }
 }
 
-function programmeNameContainsRequirementLeak(value: string) {
-  const text = value.replace(/\s+/g, " ").trim()
-
-  return (
-    /\b[A-Z]{2,4}\d{2,3}\b\s+(Diploma|Certificate|Foundation|Holder|Holders|One principal|Two principal|Three principal)/i.test(
-      text
-    ) ||
-    /\b(applicant must|principal passes|minimum GPA|average of ["'“”]?B|minimum of ["'“”]?D["'“”]? grade)\b/i.test(
-      text
-    )
-  )
-}
-
 function inferredCourseFamily(query: string) {
   return interpretProgrammeQuery(query).inferredCourseFamily
 }
@@ -77,9 +86,67 @@ const programmes = readJsonl<Programme>(
 const entryRequirements = readJsonl<EntryRequirement>(
   join(root, "data/processed/entry-requirements.jsonl")
 )
+const packageJson = JSON.parse(
+  readFileSync(join(root, "package.json"), "utf8")
+) as {
+  scripts?: Record<string, string>
+}
+
+assert(
+  classifyManualReviewReason(
+    "programme_name_contains_entry_requirement_fragment"
+  ).queue === "programme_offering_identity",
+  "Manual Review Queue should route programme title leaks to Programme Offering identity review."
+)
+assert(
+  JSON.stringify(processedApplicantPathwayFields) ===
+    JSON.stringify(applicantPathwayFlagFields),
+  "Processed-Data Contract Applicant Pathway fields should match the domain model."
+)
+assert(
+  packageJson.scripts?.["data:import"] ===
+    "bun scripts/import-processed-data.ts",
+  "Convex import command should go through the Processed-Data Contract Adapter."
+)
+assert(
+  hasCampusMarker("College of Business Education Dodoma Campus"),
+  "Institution Identity should expose campus-sensitive markers."
+)
+assert(
+  compatibleInstitutionIdentityKeys("Ardhi University (ARU)", "Ardhi ARU"),
+  "Institution Identity compatibility should cover safe loose rule matching."
+)
+
+for (const spec of processedFileSpecs.filter((file) => file.kind === "jsonl")) {
+  const records = readJsonl<Record<string, unknown>>(
+    join(root, "data/processed", spec.name)
+  )
+  assert(records.length > 0, `${spec.name} should contain processed rows.`)
+  for (const keyField of spec.keyFields) {
+    const blankCount = records.filter(
+      (record) => !String(record[keyField] ?? "").trim()
+    ).length
+    assert(
+      blankCount === 0,
+      `${spec.name} has ${blankCount} row(s) with blank ${keyField}.`
+    )
+  }
+}
 
 const titleLeaks = programmes.filter((programme) =>
   programmeNameContainsRequirementLeak(programme.programmeName)
+)
+
+const programmePathwayCoverage = summarizeApplicantPathwayCoverage(programmes)
+assert(
+  programmePathwayCoverage.form_six.yes > 0 &&
+    programmePathwayCoverage.diploma.yes > 0,
+  "Applicant Pathway coverage summary should count accepted programme routes."
+)
+assert(
+  summarizeManualReviewQueues(programmes).needsReview ===
+    programmes.filter((programme) => programme.needsReview).length,
+  "Manual Review Queue summary should preserve needsReview totals."
 )
 assert(
   titleLeaks.length === 0,

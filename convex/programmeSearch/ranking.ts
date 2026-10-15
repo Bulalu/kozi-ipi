@@ -1,3 +1,6 @@
+import { programmeNameFingerprint } from "../../lib/domain/programme-offering-identity"
+import { isNursingIntentText } from "../../lib/domain/search-vocabulary"
+
 export type RankableProgramme = {
   programmeName: string
   normalizedProgrammeName: string
@@ -80,25 +83,8 @@ function programmeIdentityKey(programme: RankableProgramme) {
   ].join("|")
 }
 
-function programmeNameFingerprint(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(
-      /^(ordinary diploma|basic technician certificate|technician certificate|certificate|diploma|bachelor degree|bachelor|degree)\s+/,
-      ""
-    )
-    .replace(/^(of|in)\s+/, "")
-    .replace(/\s+in\s+/g, " ")
-    .replace(/\s+and\s+/g, " ")
-    .replace(/\s+with\s+/g, " ")
-    .trim()
-}
-
 export function isNursingIntent(query: string) {
-  return /\b(nurse|nursing|nesi|midwife|midwifery)\b/i.test(query)
+  return isNursingIntentText(query)
 }
 
 function nursingScore(programme: RankableProgramme) {

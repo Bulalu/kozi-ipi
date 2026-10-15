@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 const NAV = [
   { label: "Kozi", href: "/search" },
   { label: "Vyuo", href: "/vyuo" },
+  { label: "Sifa", href: "/eligibility" },
 ]
 
 const FEATURED_INSTITUTIONS: Array<{

@@ -25,6 +25,7 @@ pathways programmes
 pathways entry requirements
 -> preserve route rows as the canonical eligibility source
 -> processed entry requirements
+-> parsed requirement rules for deterministic eligibility evaluation
 ```
 
 Matching uses normalized institution names and programme tuples:
@@ -52,6 +53,8 @@ data/processed/programmes.json
 data/processed/programmes.jsonl
 data/processed/entry-requirements.json
 data/processed/entry-requirements.jsonl
+data/processed/requirement-rules.json
+data/processed/requirement-rules.jsonl
 data/processed/data-quality-report.json
 ```
 

@@ -30,7 +30,11 @@ export function SearchHeader({
     <>
       <header className="border-b border-brand-ink/8">
         <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
-          <Link href="/" className="inline-flex items-center gap-3" aria-label="Kozi Ipi home">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-3"
+            aria-label="Kozi Ipi home"
+          >
             <Image
               src="/kozi-ipi-logo.png"
               alt="Kozi Ipi"
@@ -39,8 +43,10 @@ export function SearchHeader({
               priority
               className="size-9"
             />
-            <span className="text-[15px] font-semibold tracking-tight">Kozi Ipi</span>
-            <span className="rounded-full bg-brand-blue/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-blue">
+            <span className="text-[15px] font-semibold tracking-tight">
+              Kozi Ipi
+            </span>
+            <span className="rounded-full bg-brand-blue/10 px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] text-brand-blue uppercase">
               Beta
             </span>
           </Link>
@@ -51,6 +57,12 @@ export function SearchHeader({
             </Link>
             <Link href="/vyuo" className="transition hover:text-brand-blue">
               Vyuo
+            </Link>
+            <Link
+              href="/eligibility"
+              className="transition hover:text-brand-blue"
+            >
+              Sifa
             </Link>
           </nav>
 
@@ -66,12 +78,12 @@ export function SearchHeader({
 
       <section className="border-b border-brand-ink/8 bg-[#fbfbfb]">
         <div className="mx-auto max-w-[1280px] px-6 py-7 sm:px-8">
-          <div className="flex items-center gap-3 text-[12px] uppercase tracking-[0.18em] text-brand-blue">
+          <div className="flex items-center gap-3 text-[12px] tracking-[0.18em] text-brand-blue uppercase">
             <span className="font-semibold">Search</span>
             <span className="h-px flex-1 bg-brand-blue/20" />
           </div>
 
-          <h1 className="mt-3 max-w-3xl text-[34px] font-bold leading-[1.1] tracking-tight">
+          <h1 className="mt-3 max-w-3xl text-[34px] leading-[1.1] font-bold tracking-tight">
             Tafuta kozi na njia inayokufaa.
           </h1>
           <p className="mt-2 max-w-2xl text-[15px] leading-7 text-brand-ink/65">

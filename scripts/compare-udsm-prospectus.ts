@@ -4,13 +4,25 @@ import { fileURLToPath } from "node:url"
 
 import { parse } from "csv-parse/sync"
 
+import { normalizeIdentityName } from "../lib/domain/institution-identity"
+import { programmeNameFingerprint } from "../lib/domain/programme-offering-identity"
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
-const prospectusCsvPath = join(root, "data/enrichment/udsm-undergraduate-prospectus-2024-2025-programmes.csv")
-const tcuGuidebookCsvPath = join(root, "data/extracted/tcu-secondary-guidebook-2025-2026-programmes.csv")
+const prospectusCsvPath = join(
+  root,
+  "data/enrichment/udsm-undergraduate-prospectus-2024-2025-programmes.csv"
+)
+const tcuGuidebookCsvPath = join(
+  root,
+  "data/extracted/tcu-secondary-guidebook-2025-2026-programmes.csv"
+)
 const processedProgrammesPath = join(root, "data/processed/programmes.jsonl")
 const outputDir = join(root, "data/extracted")
-const outputPath = join(outputDir, "udsm-undergraduate-prospectus-2024-2025-comparison.json")
+const outputPath = join(
+  outputDir,
+  "udsm-undergraduate-prospectus-2024-2025-comparison.json"
+)
 
 type Row = Record<string, string>
 
@@ -37,22 +49,23 @@ function clean(value: string | undefined) {
 }
 
 function normalizeName(value: string | undefined) {
-  return clean(value)
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim()
+  return normalizeIdentityName(clean(value).replace(/&/g, " and "))
 }
 
 function normalizeInstitutionName(value: string | undefined) {
   return normalizeName(value)
-    .replace(/^(the\s+)?(university|college|institute|school|academy|centre|center)\s+of\s+/, "")
-    .replace(/^(the\s+)?(university|college|institute|school|academy|centre|center)\s+/, "")
+    .replace(
+      /^(the\s+)?(university|college|institute|school|academy|centre|center)\s+of\s+/,
+      ""
+    )
+    .replace(
+      /^(the\s+)?(university|college|institute|school|academy|centre|center)\s+/,
+      ""
+    )
     .replace(/\s+campus$/, "")
     .replace(
       /\b(dar\s+es\s+salaam|dodoma|mwanza|zanzibar|mbeya|arusha|morogoro|tabora|kilimanjaro|iringa|pemba|simiyu|geita|mtwara|rukwa|shinyanga|bagamoyo|tanga|singida|mara|musoma|lindi|pwani|kigoma|kagera|njombe|songwe|manyara|katavi|ruvuma|bukoba|songea|moshi|chato)\s*$/,
-      "",
+      ""
     )
     .replace(/\s+/g, " ")
     .trim()
@@ -68,33 +81,59 @@ function formalProgrammeName(value: string | undefined) {
     .replace(/\bTelecommunications\b/gi, "Telecommunication")
     .replace(/^Bachelor of Arts of Social Work$/i, "Bachelor of Social Work")
     .replace(/^Bachelor of Arts in Social Work$/i, "Bachelor of Social Work")
-    .replace(/^Bachelor of Arts of Library and Information Studies$/i, "Bachelor of Library and Information Studies")
-    .replace(/^Bachelor of Arts in Library and Information Studies$/i, "Bachelor of Library and Information Studies")
+    .replace(
+      /^Bachelor of Arts of Library and Information Studies$/i,
+      "Bachelor of Library and Information Studies"
+    )
+    .replace(
+      /^Bachelor of Arts in Library and Information Studies$/i,
+      "Bachelor of Library and Information Studies"
+    )
     .replace(/^Bachelor of Arts of\b/i, "Bachelor of Arts in")
-    .replace(/^Bachelor of Science with Geology$/i, "Bachelor of Science in Geology")
-    .replace(/^Bachelor of Science in Chemistry and Physics$/i, "Bachelor of Science in Physics and Chemistry")
-    .replace(/^Bachelor of Commerce in Tourism and Hospitality Management$/i, "Bachelor of Commerce in Tourism Management")
-    .replace(/^Bachelor of Commerce in Human Resources Management$/i, "Bachelor of Commerce in Human Resource Management")
-    .replace(/^Bachelor of Business Administration \(Evening Programme\)$/i, "Bachelor of Business Administration (Evening)")
-    .replace(/^Bachelor of Education in Physical Education and Sport Sciences$/i, "Bachelor of Education in Physical Education and Sports Sciences")
-    .replace(/^Bachelor of Arts in Film and Television Studies$/i, "Bachelor of Arts in Film and Television Arts")
-    .replace(/^Bachelor of Arts with Education \((CoHU|CoSS)\)$/i, "Bachelor of Arts with Education")
-    .replace(/^Technician Certificate Land and Mine Surveying$/i, "Technician Certificate in Land and Mine Surveying")
-    .replace(/^Basic Certificate Land and Mine Surveying$/i, "Basic Certificate in Land and Mine Surveying")
+    .replace(
+      /^Bachelor of Science with Geology$/i,
+      "Bachelor of Science in Geology"
+    )
+    .replace(
+      /^Bachelor of Science in Chemistry and Physics$/i,
+      "Bachelor of Science in Physics and Chemistry"
+    )
+    .replace(
+      /^Bachelor of Commerce in Tourism and Hospitality Management$/i,
+      "Bachelor of Commerce in Tourism Management"
+    )
+    .replace(
+      /^Bachelor of Commerce in Human Resources Management$/i,
+      "Bachelor of Commerce in Human Resource Management"
+    )
+    .replace(
+      /^Bachelor of Business Administration \(Evening Programme\)$/i,
+      "Bachelor of Business Administration (Evening)"
+    )
+    .replace(
+      /^Bachelor of Education in Physical Education and Sport Sciences$/i,
+      "Bachelor of Education in Physical Education and Sports Sciences"
+    )
+    .replace(
+      /^Bachelor of Arts in Film and Television Studies$/i,
+      "Bachelor of Arts in Film and Television Arts"
+    )
+    .replace(
+      /^Bachelor of Arts with Education \((CoHU|CoSS)\)$/i,
+      "Bachelor of Arts with Education"
+    )
+    .replace(
+      /^Technician Certificate Land and Mine Surveying$/i,
+      "Technician Certificate in Land and Mine Surveying"
+    )
+    .replace(
+      /^Basic Certificate Land and Mine Surveying$/i,
+      "Basic Certificate in Land and Mine Surveying"
+    )
 }
 
 function programmeFingerprint(value: string | undefined) {
-  return normalizeName(formalProgrammeName(value))
-    .replace(
-      /^(ordinary diploma|basic technician certificate|technician certificate|certificate|diploma|bachelor degree|bachelor|degree)\s+/,
-      "",
-    )
-    .replace(/^of\s+/, "")
-    .replace(/^in\s+/, "")
-    .replace(/\s+in\s+/g, " ")
-    .replace(/\s+and\s+/g, " ")
-    .replace(/\s+with\s+/g, " ")
-    .trim()
+  return programmeNameFingerprint(formalProgrammeName(value))
 }
 
 function normalizedAwardLevel(value: string | undefined) {
@@ -125,7 +164,8 @@ const mainCampusUnits = new Set([
 function prospectusInstitutionName(row: Row) {
   const academicUnit = clean(row.academic_unit)
 
-  if (mainCampusUnits.has(academicUnit)) return "University of Dar es Salaam (UDSM)"
+  if (mainCampusUnits.has(academicUnit))
+    return "University of Dar es Salaam (UDSM)"
   if (/Dar es Salaam University College of Education/i.test(academicUnit)) {
     return "Dar es Salaam University College of Education (DUCE)"
   }
@@ -142,15 +182,23 @@ function prospectusInstitutionName(row: Row) {
   return academicUnit
 }
 
-function key(programme: string | undefined, institution: string | undefined, awardLevel: string | undefined) {
-  return [programmeFingerprint(programme), normalizeInstitutionName(institution), normalizedAwardLevel(awardLevel)].join("|")
+function key(
+  programme: string | undefined,
+  institution: string | undefined,
+  awardLevel: string | undefined
+) {
+  return [
+    programmeFingerprint(programme),
+    normalizeInstitutionName(institution),
+    normalizedAwardLevel(awardLevel),
+  ].join("|")
 }
 
 function findMatches(
   row: Row,
   indexedRows: Map<string, Row[]>,
   nameField: string,
-  institutionField: string,
+  institutionField: string
 ) {
   const institutionName = prospectusInstitutionName(row)
   const exactKey = key(row.programme_name, institutionName, row.award_level)
@@ -164,8 +212,13 @@ function findMatches(
     .flat()
     .filter((candidate) => {
       const candidateProgramme = programmeFingerprint(candidate[nameField])
-      const candidateInstitution = normalizeInstitutionName(candidate[institutionField])
-      return candidateProgramme === looseProgramme && candidateInstitution === looseInstitution
+      const candidateInstitution = normalizeInstitutionName(
+        candidate[institutionField]
+      )
+      return (
+        candidateProgramme === looseProgramme &&
+        candidateInstitution === looseInstitution
+      )
     })
     .slice(0, 5)
 }
@@ -175,7 +228,9 @@ if (!existsSync(prospectusCsvPath)) {
 }
 
 const prospectusRows = readCsv(prospectusCsvPath)
-const tcuRows = existsSync(tcuGuidebookCsvPath) ? readCsv(tcuGuidebookCsvPath) : []
+const tcuRows = existsSync(tcuGuidebookCsvPath)
+  ? readCsv(tcuGuidebookCsvPath)
+  : []
 const processedRows = readJsonl(processedProgrammesPath)
 
 const tcuByKey = new Map<string, Row[]>()
@@ -191,8 +246,18 @@ for (const row of processedRows) {
 }
 
 const rows = prospectusRows.map((row) => {
-  const tcuMatches = findMatches(row, tcuByKey, "programmeName", "institutionName")
-  const processedMatches = findMatches(row, processedByKey, "programmeName", "institutionName")
+  const tcuMatches = findMatches(
+    row,
+    tcuByKey,
+    "programmeName",
+    "institutionName"
+  )
+  const processedMatches = findMatches(
+    row,
+    processedByKey,
+    "programmeName",
+    "institutionName"
+  )
   return {
     programmeName: clean(row.programme_name),
     formalProgrammeName: formalProgrammeName(row.programme_name),
@@ -220,8 +285,12 @@ const missingFromProcessed = rows.filter((row) => !row.existsInProcessedDb)
 const report = {
   generatedAt: new Date().toISOString(),
   sourceFile: basename(prospectusCsvPath),
-  tcuGuidebookFile: existsSync(tcuGuidebookCsvPath) ? basename(tcuGuidebookCsvPath) : null,
-  processedProgrammesFile: existsSync(processedProgrammesPath) ? basename(processedProgrammesPath) : null,
+  tcuGuidebookFile: existsSync(tcuGuidebookCsvPath)
+    ? basename(tcuGuidebookCsvPath)
+    : null,
+  processedProgrammesFile: existsSync(processedProgrammesPath)
+    ? basename(processedProgrammesPath)
+    : null,
   prospectusProgrammeCount: prospectusRows.length,
   missingFromTcuGuidebookCount: missingFromTcu.length,
   missingFromProcessedDbCount: missingFromProcessed.length,

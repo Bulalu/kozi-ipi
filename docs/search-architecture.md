@@ -231,6 +231,9 @@ Do not always reverse it.
 
 Eligibility should be a separate deterministic layer.
 
+Detailed profile, rule, evaluator, and rollout design lives in
+[`docs/eligibility-architecture.md`](./eligibility-architecture.md).
+
 Recommended states:
 
 ```text

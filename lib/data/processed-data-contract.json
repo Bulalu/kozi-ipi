@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "name": "institutions.jsonl",
+      "kind": "jsonl",
+      "convexTable": "institutions",
+      "keyFields": ["normalizedInstitutionName"]
+    },
+    {
+      "name": "programmes.jsonl",
+      "kind": "jsonl",
+      "convexTable": "programmes",
+      "keyFields": ["normalizedInstitutionName", "normalizedProgrammeName"]
+    },
+    {
+      "name": "entry-requirements.jsonl",
+      "kind": "jsonl",
+      "convexTable": "entryRequirements",
+      "keyFields": ["normalizedInstitutionName", "normalizedProgrammeName"]
+    },
+    {
+      "name": "requirement-rules.jsonl",
+      "kind": "jsonl",
+      "convexTable": "requirementRules",
+      "keyFields": ["institutionKey", "programmeKey"]
+    },
+    {
+      "name": "data-quality-report.json",
+      "kind": "json",
+      "keyFields": []
+    }
+  ],
+  "applicantPathwayFields": [
+    "acceptsFormFourDirect",
+    "acceptsFormSix",
+    "acceptsCertificate",
+    "acceptsDiploma",
+    "acceptsEquivalent"
+  ]
+}

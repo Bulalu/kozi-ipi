@@ -13,6 +13,14 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "convex/_generated/**",
+    "analysis/.venv/**",
+    "analysis/.pytest_cache/**",
+    "analysis/.ruff_cache/**",
+    "analysis/build/**",
+    "analysis/reports/latest/**",
+    "analysis/src/*.egg-info/**",
+    "analysis/notebooks/layouts/**",
+    "analysis/notebooks/__marimo__/**",
   ]),
 ]);
 

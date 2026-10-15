@@ -14,6 +14,10 @@ The platform is no longer limited to Form Four leavers. Treat Form Four, Form Si
 - Bun package manager
 - TypeScript
 
+## Deployment
+
+Read `CLOUDFLARE_DEPLOYMENT.md` before changing hosting or deploying. Production moved to Cloudflare Pages using Next.js static export on 14 October 2026. The published recovery branch is `codex/cloudflare-recovery`; existing Vercel artifacts in other checkouts are stale. Preserve any ongoing frontend redesign when integrating the hosting changes.
+
 ## Root
 
 Work from the repository root. Do not create another nested `kozi-ipi` app folder.
@@ -46,6 +50,7 @@ Processed import files:
 data/processed/institutions.jsonl
 data/processed/programmes.jsonl
 data/processed/entry-requirements.jsonl
+data/processed/requirement-rules.jsonl
 ```
 
 Import processed data into Convex with:
@@ -75,6 +80,7 @@ MVP search should use full-text search, structured filters, synonym/intent mappi
 ```text
 docs/search-queries.md
 docs/search-architecture.md
+docs/eligibility-architecture.md
 docs/data-integration.md
 docs/admin-api.md
 data/README.md
