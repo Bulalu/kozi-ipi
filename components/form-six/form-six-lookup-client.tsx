@@ -2,7 +2,13 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { type FormEvent, type ReactNode, useMemo, useState } from "react"
+import {
+  type FormEvent,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import {
   ArrowDown01Icon,
   ArrowRight01Icon,
@@ -24,6 +30,11 @@ import {
 } from "@/components/eligibility/eligibility-result-groups"
 import { awardLevels, regions } from "@/components/search/search-config"
 import { api } from "@/convex/_generated/api"
+import {
+  clearIndexHandoff,
+  readIndexHandoff,
+  stripExamYear,
+} from "@/lib/necta/index-handoff"
 import {
   calculateAcseePoints,
   countAcseePrincipalPasses,
@@ -183,11 +194,12 @@ export function FormSixLookupClient() {
   const visibleStatuses =
     selectedStatus === "all" ? statusOrder : [selectedStatus]
 
-  function submitIndex(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const normalized = normalizeAcseeIndexNumber(indexInput)
+  function lookUpIndex(value: string) {
+    const candidate = stripExamYear(value)
+    const normalized = normalizeAcseeIndexNumber(candidate)
 
     if (!isPlausibleAcseeIndexNumber(normalized)) {
+      setIndexInput(candidate)
       setIndexError("Use the full index number, for example S0101/0505.")
       setSubmittedIndex("")
       return
@@ -195,8 +207,26 @@ export function FormSixLookupClient() {
 
     setIndexError("")
     setSelectedStatus("all")
-    setSubmittedIndex(formatAcseeIndexNumber(indexInput))
+    setIndexInput(formatAcseeIndexNumber(candidate))
+    setSubmittedIndex(formatAcseeIndexNumber(candidate))
   }
+
+  function submitIndex(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    lookUpIndex(indexInput)
+  }
+
+  // Pick up an index handed over from the home page and look it up right away.
+  // The fragment only exists in the browser, so it can't be read during the
+  // static prerender; reading it after mount avoids a hydration mismatch.
+  useEffect(() => {
+    const handedOver = readIndexHandoff()
+    if (!handedOver) return
+
+    clearIndexHandoff()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL
+    lookUpIndex(handedOver)
+  }, [])
 
   function resetLookup() {
     setSubmittedIndex("")
