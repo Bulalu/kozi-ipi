@@ -28,32 +28,7 @@ Update 15 October 2026: the hosting changes listed below are now integrated on `
 
 ## Latest production deploy
 
-- 15 October 2026: production deployment `https://8b547601.kozi-ipi.pages.dev`, built from `redesign/home-poster` at `adf917e` (home redesign, Cloudflare hosting, Form Six lookup, ACSEE analytics pages). Verified on www.koziipi.com, koziipi.com and kozi-ipi.pages.dev.
-- Built with `.env.production.local` pointing at `hushed-sandpiper-727` (production Convex). The checkout's `.env.local` still points at the old `first-mammoth` deployment; never build for production without `.env.production.local`.
-- Production Convex functions were not redeployed. The frontend only calls functions already live there. Local `institutions.browsePaginated`/`browseSummary` exist in Git but are not deployed or used.
-- GitHub `master` does not include this yet; merge `redesign/home-poster` to bring `master` in line with production.
-
-Wrangler's `--branch master` argument marks a Pages deployment as production. It does not push Git commits or change GitHub's `master` branch. This site was published by CLI direct upload, not an automatic GitHub build.
-
-## Hosting changes to integrate with ongoing frontend work
-
-Inspect the recovery branch for these changes:
-
-- `next.config.mjs`: `output: "export"`, `images.unoptimized: true`; security headers moved to Pages.
-- `public/_headers`: security headers and immutable cache policy for Next.js assets.
-- `wrangler.jsonc`: Pages project and `out` build directory.
-- `app/search/page.tsx`: browser URL parameters inside Suspense, compatible with static export.
-- `app/layout.tsx`: remove Vercel Analytics and Speed Insights components. Preserve current fonts and redesign changes when adapting this file.
-- `package.json`: `pages:deploy` command using Wrangler 4.151.0.
-- `.env.production.local`: the public production Convex URLs above. This local file is intentionally not in Git. Configure these variables before building in a different checkout.
-
-Preserve the current redesign and uncommitted work. Do not replace its hero or blindly cherry-pick the entire recovery commit. That commit also contains pre-existing Form Six runtime files and schema needed to restore the live product. Review backend changes against the recovered production schema before deployment. Existing old Convex URLs in local environment files need checking.
-
-From the recovery checkout, frontend deployment is:
-
-```sh
-bun run build
-bun run pages:deploy
-```
-
-Further verification, dataset counts, original DNS backups and recovery details are documented at https://github.com/Bulalu/kozi-ipi/blob/codex/cloudflare-recovery/docs/cloudflare-recovery.md.
+- 15 October 2026 (second deploy): Pages deployment `https://ff8cf48c.kozi-ipi.pages.dev`, built from GitHub `master` at `b69a852` (PR #32 merged: home redesign, Cloudflare hosting, Form Six lookup, ACSEE analytics, plus #27–#30 search synonyms, filter a11y and Vyuo pagination). Production now matches `master`.
+- Convex production `hushed-sandpiper-727` was redeployed from the same commit to add `institutions.browsePaginated` and `institutions.browseSummary` (no schema or index changes). Tested on dev `wooden-mule-219` first.
+- This checkout's `.env.local` is now linked to the recovered project (`dev:wooden-mule-219`). Production builds still need `.env.production.local` with the `hushed-sandpiper-727` URLs.
+- Deploy order when the frontend needs new Convex functions: `npx convex deploy` first, verify, then `bun run build` and `bun run pages:deploy`.
