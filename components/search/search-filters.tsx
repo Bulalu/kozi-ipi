@@ -26,12 +26,13 @@ export function SearchFilters({
   setFilter,
 }: SearchFiltersProps) {
   return (
-    <aside className="h-fit lg:sticky lg:top-6">
+    <aside className="h-fit lg:sticky lg:top-6" aria-label="Search filters">
       <div className="rounded-2xl border border-brand-ink/10 bg-white">
         <div className="flex items-center justify-between border-b border-brand-ink/8 px-5 py-4">
           <p className="text-[13px] font-semibold tracking-tight">Filters</p>
           {activeFilters.length > 0 ? (
             <button
+              aria-label="Clear all filters"
               className="text-[12px] font-medium text-brand-blue hover:underline"
               onClick={clearAllFilters}
               type="button"
@@ -42,7 +43,7 @@ export function SearchFilters({
         </div>
 
         <FilterSection title="Field of study" hint="Eneo la masomo">
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5" role="group" aria-label="Field of study options">
             {courseFamilies.map((courseFamily) => (
               <button
                 aria-pressed={family === courseFamily.key}
@@ -65,7 +66,7 @@ export function SearchFilters({
         </FilterSection>
 
         <FilterSection title="Level" hint="Ngazi ya kozi">
-          <div className="grid grid-cols-1 gap-1">
+          <div className="grid grid-cols-1 gap-1" role="group" aria-label="Award level options">
             {awardLevels.map((level) => (
               <button
                 aria-pressed={awardLevel === level.value}
