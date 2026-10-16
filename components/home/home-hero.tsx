@@ -8,7 +8,9 @@ import { HomeNav } from "@/components/home/home-nav"
 export function HomeHero() {
   return (
     <section className="relative overflow-hidden bg-kozi-yellow lg:min-h-[900px]">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col px-5 pt-5 sm:px-10 lg:px-14 lg:pt-7">
+      {/* Absolute stickers, cutout and search anchor to this centred container
+          (not the full-bleed section) so they stay aligned on screens >1440px. */}
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-5 pt-5 sm:px-10 lg:min-h-[900px] lg:px-14 lg:pt-7">
         <HomeNav />
 
         <h1 className="relative z-10 mt-6 flex flex-col text-kozi-ink lg:mt-4">
@@ -24,7 +26,8 @@ export function HomeHero() {
           <span className="sr-only">Unachukua kozi ipi?</span>
         </h1>
 
-        <Sticker className="absolute top-[190px] right-5 z-20 size-24 text-[17px] sm:top-[150px] sm:right-10 sm:size-32 sm:text-2xl lg:top-[150px] lg:right-auto lg:left-[690px] lg:size-[150px] lg:text-[30px] xl:top-[390px] xl:left-[545px]" />
+        {/* Below lg the sticker sits in the free space right of "IPI?". */}
+        <Sticker className="absolute top-[244px] right-2 z-20 size-[84px] text-[15px] sm:top-[280px] sm:right-10 sm:size-32 sm:text-2xl lg:top-[150px] lg:right-auto lg:left-[690px] lg:size-[150px] lg:text-[30px] xl:top-[390px] xl:left-[545px]" />
 
         <Link
           href="/form-six"
