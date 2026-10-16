@@ -20,7 +20,9 @@ import type { QueryCtx } from "../_generated/server"
 import { formatProgrammeSearchResults } from "../programmeSearch/display"
 import { getProgrammeRequirementRuleSets } from "./search"
 
-type FormattedProgramme = ReturnType<typeof formatProgrammeSearchResults>[number]
+type FormattedProgramme = ReturnType<
+  typeof formatProgrammeSearchResults
+>[number]
 
 // How the status was reached: parsed rules for the student's route (fully
 // or partly), a rule the parser could not read, or only the route flag.
@@ -59,6 +61,8 @@ export type EligibilityOverviewRow = {
   needsCsee: boolean
   // First lines the student does not meet, for programmes they miss.
   missing: string[]
+  // Within-status fit, so rows from several award levels can be merged.
+  fit: number
 }
 
 export function emptyStatusCounts(): EligibilityStatusCounts {
@@ -82,7 +86,7 @@ export async function evaluateEligibilityOverview(
 ) {
   const normalizedProfile = normalizeStudentProfile(args.profile)
   const counts = emptyStatusCounts()
-  const scored: Array<{ row: EligibilityOverviewRow; fit: number }> = []
+  const rows: EligibilityOverviewRow[] = []
 
   for (const programme of formatProgrammeSearchResults(args.programmes)) {
     const ruleSets = await getProgrammeRequirementRuleSets(ctx, programme)
@@ -92,18 +96,23 @@ export async function evaluateEligibilityOverview(
       ruleSets
     )
     counts[detail.status] += 1
-    scored.push({ row: toOverviewRow(programme, detail), fit: detail.fit })
+    rows.push(toOverviewRow(programme, detail))
   }
 
-  scored.sort(
-    (left, right) =>
-      eligibilityStatusRank(right.row.status) -
-        eligibilityStatusRank(left.row.status) ||
-      right.fit - left.fit ||
-      left.row.programmeName.localeCompare(right.row.programmeName)
-  )
+  rows.sort(compareOverviewRows)
 
-  return { counts, rows: scored.map(({ row }) => row) }
+  return { counts, rows }
+}
+
+export function compareOverviewRows(
+  left: Pick<EligibilityOverviewRow, "status" | "fit" | "programmeName">,
+  right: Pick<EligibilityOverviewRow, "status" | "fit" | "programmeName">
+) {
+  return (
+    eligibilityStatusRank(right.status) - eligibilityStatusRank(left.status) ||
+    right.fit - left.fit ||
+    left.programmeName.localeCompare(right.programmeName)
+  )
 }
 
 export async function getProgrammeEligibilityDetail(
@@ -142,6 +151,7 @@ function toOverviewRow(
             .slice(0, 2)
             .map((line) => line.text)
         : [],
+    fit: detail.fit,
   }
 }
 
