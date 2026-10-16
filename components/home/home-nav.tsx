@@ -16,12 +16,21 @@ const pill =
 export function HomeNav({ active }: { active?: string } = {}) {
   return (
     <header className="relative z-30 flex items-center justify-between gap-6">
+      {/* Star mark only: every page already carries the name in its
+          headline or footer, so a full wordmark here was redundant. */}
       <Link
         href="/"
         aria-label="Kozi Ipi home"
-        className="font-display text-[22px] tracking-[-0.02em] text-kozi-ink sm:text-[26px]"
+        className="grid size-11 shrink-0 place-items-center rounded-full bg-kozi-ink text-kozi-yellow transition-transform hover:-rotate-12 sm:size-12"
       >
-        KOZI IPI★
+        <svg
+          aria-hidden
+          viewBox="0 0 24 24"
+          className="size-6"
+          fill="currentColor"
+        >
+          <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
+        </svg>
       </Link>
 
       <nav className="hidden items-center gap-2 font-poster md:flex">
