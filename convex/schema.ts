@@ -193,6 +193,7 @@ export default defineSchema({
     .index("by_suitableForFormFourLeaver", ["suitableForFormFourLeaver"])
     .index("by_acceptsFormFourDirect", ["acceptsFormFourDirect"])
     .index("by_acceptsFormSix", ["acceptsFormSix"])
+    .index("by_acceptsFormSix_and_awardLevel", ["acceptsFormSix", "awardLevel"])
     .index("by_acceptsCertificate", ["acceptsCertificate"])
     .index("by_acceptsDiploma", ["acceptsDiploma"])
     .index("by_acceptsEquivalent", ["acceptsEquivalent"])
