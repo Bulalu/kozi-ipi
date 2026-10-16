@@ -22,6 +22,10 @@ import {
   hasCampusMarker,
 } from "../lib/domain/institution-identity"
 import { programmeNameContainsRequirementLeak } from "../lib/domain/programme-offering-identity"
+import {
+  isProseInstitutionName,
+  programmeTitleQualityIssues,
+} from "../lib/data/tcu-guidebook"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = join(__dirname, "..")
@@ -30,6 +34,7 @@ type Programme = {
   programmeName: string
   normalizedProgrammeName: string
   programmeCode?: string
+  regulator?: string
   institutionName: string
   normalizedInstitutionName: string
   awardLevel: string
@@ -86,6 +91,14 @@ const programmes = readJsonl<Programme>(
 const entryRequirements = readJsonl<EntryRequirement>(
   join(root, "data/processed/entry-requirements.jsonl")
 )
+const institutions = readJsonl<{ institutionName: string }>(
+  join(root, "data/processed/institutions.jsonl")
+)
+const tcuCoverageReport = JSON.parse(
+  readFileSync(join(root, "data/processed/tcu-coverage-report.json"), "utf8")
+) as {
+  summary: { guidebookCodesMissing: string[] }
+}
 const packageJson = JSON.parse(
   readFileSync(join(root, "package.json"), "utf8")
 ) as {
@@ -159,6 +172,95 @@ assert(
           `- ${programme.programmeName} | ${programme.institutionName}`
       ),
   ].join("\n")
+)
+
+const dirtyTitles = programmes
+  .map((programme) => ({
+    programme,
+    issues: programmeTitleQualityIssues(programme.programmeName).filter(
+      (issue) =>
+        issue === "contains_programme_code" ||
+        issue === "contains_requirement_prose"
+    ),
+  }))
+  .filter(({ issues }) => issues.length > 0)
+assert(
+  dirtyTitles.length === 0,
+  [
+    `Found ${dirtyTitles.length} programme title(s) containing a programme code or requirement prose.`,
+    ...dirtyTitles
+      .slice(0, 10)
+      .map(
+        ({ programme, issues }) =>
+          `- ${programme.programmeName} | ${programme.institutionName} (${issues.join(", ")})`
+      ),
+  ].join("\n")
+)
+
+const tcuDegrees = programmes.filter(
+  (programme) =>
+    programme.regulator === "TCU" && programme.awardLevel === "degree"
+)
+const uncodedTcuDegrees = tcuDegrees.filter(
+  (programme) => !programme.programmeCode?.trim()
+)
+assert(
+  uncodedTcuDegrees.length === 0,
+  [
+    `Found ${uncodedTcuDegrees.length} TCU degree programme(s) without a programmeCode.`,
+    ...uncodedTcuDegrees
+      .slice(0, 10)
+      .map(
+        (programme) =>
+          `- ${programme.programmeName} | ${programme.institutionName}`
+      ),
+  ].join("\n")
+)
+const tcuCodeCounts = new Map<string, number>()
+for (const programme of tcuDegrees) {
+  tcuCodeCounts.set(
+    programme.programmeCode!,
+    (tcuCodeCounts.get(programme.programmeCode!) ?? 0) + 1
+  )
+}
+const duplicateTcuCodes = [...tcuCodeCounts].filter(([, count]) => count > 1)
+assert(
+  duplicateTcuCodes.length === 0,
+  `TCU programme codes should identify one programme each; duplicated: ${duplicateTcuCodes
+    .map(([code]) => code)
+    .join(", ")}`
+)
+assert(
+  tcuCoverageReport.summary.guidebookCodesMissing.length === 0,
+  `TCU guidebook codes missing from processed programmes: ${tcuCoverageReport.summary.guidebookCodesMissing.join(", ")}`
+)
+
+const proseInstitutions = institutions.filter((institution) =>
+  isProseInstitutionName(institution.institutionName)
+)
+assert(
+  proseInstitutions.length === 0,
+  [
+    `Found ${proseInstitutions.length} institution name(s) that are prose fragments.`,
+    ...proseInstitutions
+      .slice(0, 10)
+      .map((institution) => `- ${institution.institutionName}`),
+  ].join("\n")
+)
+assert(
+  isProseInstitutionName(
+    "Open University of Tanzania (OUT) are advised not to apply"
+  ) && isProseInstitutionName("university qualifications"),
+  "Prose-fragment institution detection should catch guidebook sentence fragments."
+)
+assert(
+  programmeTitleQualityIssues(
+    "Bachelor of Science in Environmental Sciences DM079 Two principal passes in the following subjects:"
+  ).includes("contains_programme_code") &&
+    programmeTitleQualityIssues(
+      "Bachelor Degree in Accountancy CBMZ1"
+    ).includes("contains_programme_code"),
+  "Programme title checks should catch leaked TCU programme codes."
 )
 
 const dirtyMuhasTitle =

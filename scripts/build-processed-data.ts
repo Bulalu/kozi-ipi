@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, isAbsolute, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -11,10 +11,18 @@ import {
 } from "../lib/data/manual-review-queue"
 import { writeProcessedDataOutputs } from "../lib/data/processed-output"
 import {
+  createSplitWordRepairer,
+  isProseInstitutionName,
+  parseGuidebookHeading,
+  programmeTitleQualityIssues,
+  resolveGuidebookInstitutions,
+} from "../lib/data/tcu-guidebook"
+import {
   acceptedApplicantPathwayLabels,
   summarizeApplicantPathwayCoverage,
 } from "../lib/domain/applicant-pathways"
 import {
+  compatibleInstitutionIdentityKeys,
   institutionAliases,
   institutionNameCandidates,
   normalizeIdentityName as normalizeName,
@@ -25,6 +33,10 @@ import {
   requirementIdentityKey,
 } from "../lib/domain/programme-offering-identity"
 import { buildProgrammeKeywordPack } from "../lib/domain/search-vocabulary"
+import {
+  findEmbeddedTcuProgrammeCodes,
+  normalizeTcuProgrammeCode,
+} from "../lib/domain/tcu-programme-code"
 import { parseRequirementRuleSet } from "../lib/eligibility/parse-requirements"
 import type { RequirementRuleSet } from "../lib/eligibility/types"
 
@@ -47,6 +59,7 @@ const udsmProspectusProgrammesPath = join(
   "data/enrichment/udsm-undergraduate-prospectus-2024-2025-programmes.csv"
 )
 const outputDir = resolveOutputDir()
+const tcuCoverageReportPath = join(outputDir, "tcu-coverage-report.json")
 const tcuSecondaryGuidebookUrl =
   "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf"
 const udsmUndergraduateProspectusSource =
@@ -140,6 +153,8 @@ type ProcessedProgramme = {
   studyMode?: string
   campusLocation?: string
   admissionCapacity?: string
+  minimumAdmissionPoints?: number
+  minimumAdmissionPointsSubjectCount?: number
   entryRouteTypes?: string
   acceptsFormFourDirect: Suitability
   accreditationStatusIfAvailable?: string
@@ -155,6 +170,9 @@ type ProcessedProgramme = {
   careerKeywords: string[]
   swahiliKeywords: string[]
   searchText: string
+  // Build-only: requirement keys of every source row merged into this
+  // programme. Stripped before the processed files are written.
+  sourceRequirementKeys?: string[]
 }
 
 type ProcessedEntryRequirement = {
@@ -186,6 +204,9 @@ type ProcessedRequirementRule = RequirementRuleSet & {
   normalizedProgrammeName: string
   institutionName: string
   normalizedInstitutionName: string
+  programmeCode?: string
+  minimumAdmissionPoints?: number
+  minimumAdmissionPointsSubjectCount?: number
   searchText: string
 }
 
@@ -604,57 +625,70 @@ function requirementRouteSummary(requirements: ProcessedEntryRequirement[]) {
   }
 }
 
-function normalizeTcuExtractedInstitutionName(value: string | undefined) {
-  return normalizeName(value)
+// One programme row from the TCU secondary-qualifications guidebook, with its
+// institution heading resolved to a processed institution record.
+type GuidebookProgramme = {
+  row: Row
+  programmeCode?: string
+  programmeCodeSource: "guidebook" | "pathways_dataset" | "missing"
+  programmeName: string
+  normalizedProgrammeName: string
+  heading: string
+  institutionName: string
+  normalizedInstitutionName: string
+  campusLocation?: string
+  rawRequirementText: string
+  minimumAdmissionPoints?: number
+  minimumAdmissionPointsSubjectCount?: number
 }
 
-function normalizeTcuExtractedInstitutionLookupName(value: string | undefined) {
-  return normalizeName(value)
-    .replace(
-      /^(the\s+)?(university|college|institute|school|academy|centre|center)\s+of\s+/,
-      ""
-    )
-    .replace(
-      /^(the\s+)?(university|college|institute|school|academy|centre|center)\s+/,
-      ""
-    )
-    .replace(/\s+campus$/, "")
-    .replace(
-      /\b(dar\s+es\s+salaam|dodoma|mwanza|zanzibar|mbeya|arusha|morogoro|tabora|kilimanjaro|iringa|pemba|simiyu|geita|mtwara|rukwa|shinyanga|bagamoyo|tanga|singida|mara|musoma|lindi|pwani|kigoma|kagera|njombe|songwe|manyara|katavi|ruvuma|bukoba|songea|moshi|chato)\s*$/,
-      ""
-    )
-    .replace(/\s+/g, " ")
-    .trim()
+function parseOptionalNumber(value: string | undefined) {
+  const text = blankToUndefined(value)
+  if (!text) return undefined
+  const parsed = Number(text)
+  return Number.isFinite(parsed) ? parsed : undefined
 }
 
-function buildTcuExtractedProgrammeRow(row: Row): Row {
-  const programmeName = cleanDataArtifactText(row.programmeName)
-  const institutionName = cleanDataArtifactText(row.institutionName)
-  const normalizedInstitutionName =
-    normalizeTcuExtractedInstitutionName(institutionName)
+function guidebookPointsNote(guidebook: GuidebookProgramme) {
+  if (guidebook.minimumAdmissionPoints === undefined) return undefined
+  return guidebook.minimumAdmissionPointsSubjectCount
+    ? `TCU minimum admission points: ${guidebook.minimumAdmissionPoints} from ${guidebook.minimumAdmissionPointsSubjectCount} subjects.`
+    : `TCU minimum admission points: ${guidebook.minimumAdmissionPoints}.`
+}
+
+function buildTcuExtractedProgrammeRow(guidebook: GuidebookProgramme): Row {
+  const { row } = guidebook
   const reviewReasons = mergeReviewReasons([
     row.reviewReasons,
     row.needsReview === "yes" ? "pdf_extraction_needs_review" : undefined,
+    guidebook.programmeCodeSource === "pathways_dataset"
+      ? "tcu_programme_code_from_pathways_dataset"
+      : undefined,
   ])
 
   return {
-    programme_name: programmeName,
-    normalized_programme_name:
-      blankToUndefined(row.normalizedProgrammeName) ??
-      normalizeName(programmeName),
-    programme_code: cleanDataArtifactText(row.programmeCode),
+    programme_name: guidebook.programmeName,
+    normalized_programme_name: guidebook.normalizedProgrammeName,
+    programme_code: guidebook.programmeCode ?? "",
     award_level: "Bachelor Degree",
     qualification_level: "Bachelor Degree",
     pathway_type: "degree",
-    field_category: inferFieldCategoryFromProgrammeName(programmeName),
+    field_category: inferFieldCategoryFromProgrammeName(
+      guidebook.programmeName
+    ),
     course_family: "",
-    institution_name: institutionName,
-    normalized_institution_name: normalizedInstitutionName,
+    institution_name: guidebook.institutionName,
+    normalized_institution_name: guidebook.normalizedInstitutionName,
     regulator: "TCU",
     institution_type: "Higher Education Institution",
     duration: cleanDataArtifactText(row.durationYears),
     study_mode: "full-time",
+    campus_location: guidebook.campusLocation ?? "",
     admission_capacity: cleanDataArtifactText(row.admissionCapacity),
+    minimum_admission_points: cleanDataArtifactText(row.minimumAdmissionPoints),
+    minimum_admission_points_subjects: cleanDataArtifactText(
+      row.minimumAdmissionPointsSubjects
+    ),
     application_method:
       "Apply through TCU or the institution admissions system.",
     official_source_url: tcuSecondaryGuidebookUrl,
@@ -663,39 +697,29 @@ function buildTcuExtractedProgrammeRow(row: Row): Row {
     confidence_level: row.needsReview === "yes" ? "medium" : "high",
     last_verified_date: "2026-04-28",
     notes: uniqueValues([
-      `Direct PDF extraction from page ${row.page}.`,
-      blankToUndefined(row.minimumAdmissionPoints)
-        ? `TCU minimum admission points: ${row.minimumAdmissionPoints}.`
-        : undefined,
+      `Direct PDF extraction from page ${row.page} (${guidebook.heading}).`,
+      guidebookPointsNote(guidebook),
     ]).join(" "),
-    needs_review: row.needsReview,
+    needs_review: reviewReasons.length > 0 ? "yes" : "no",
     review_reasons: reviewReasons.join("; "),
-    minimum_entry_requirements: cleanDataArtifactText(
-      row.admissionRequirements
-    ),
+    minimum_entry_requirements: guidebook.rawRequirementText,
   }
 }
 
 function buildTcuExtractedEntryRequirement(
-  row: Row
+  guidebook: GuidebookProgramme
 ): ProcessedEntryRequirement {
-  const programmeName = cleanDataArtifactText(row.programmeName)
-  const normalizedProgrammeName =
-    blankToUndefined(row.normalizedProgrammeName) ??
-    normalizeName(programmeName)
-  const institutionName = cleanDataArtifactText(row.institutionName)
-  const normalizedInstitutionName =
-    normalizeTcuExtractedInstitutionName(institutionName)
-  const rawRequirementText = cleanDataArtifactText(row.admissionRequirements)
+  const { row } = guidebook
+  const rawRequirementText = guidebook.rawRequirementText
   const principalPassMatch = rawRequirementText.match(
     /\b(One|Two|Three|\d+)\s+principal\s+passes?/i
   )
 
   return {
-    programmeName,
-    normalizedProgrammeName,
-    institutionName,
-    normalizedInstitutionName,
+    programmeName: guidebook.programmeName,
+    normalizedProgrammeName: guidebook.normalizedProgrammeName,
+    institutionName: guidebook.institutionName,
+    normalizedInstitutionName: guidebook.normalizedInstitutionName,
     rawRequirementText,
     acceptsFormFourDirect: "no",
     acceptsFormSix: "yes",
@@ -708,18 +732,19 @@ function buildTcuExtractedEntryRequirement(
     eligibilityConfidence: row.needsReview === "yes" ? "medium" : "high",
     officialSourceUrl: tcuSecondaryGuidebookUrl,
     notes: uniqueValues([
-      `Direct PDF extraction from page ${row.page}.`,
-      blankToUndefined(row.programmeCode)
-        ? `Programme code: ${row.programmeCode}.`
+      `Direct PDF extraction from page ${row.page} (${guidebook.heading}).`,
+      guidebook.programmeCode
+        ? `Programme code: ${guidebook.programmeCode}.`
         : undefined,
+      guidebookPointsNote(guidebook),
     ]).join(" "),
     searchText: [
-      programmeName,
-      normalizedProgrammeName,
-      institutionName,
-      normalizedInstitutionName,
+      guidebook.programmeName,
+      guidebook.normalizedProgrammeName,
+      guidebook.institutionName,
+      guidebook.normalizedInstitutionName,
       rawRequirementText,
-      row.programmeCode,
+      guidebook.programmeCode,
     ]
       .filter(Boolean)
       .join(" "),
@@ -876,14 +901,10 @@ const tcuSecondaryExtractedProgrammes = readCsvIfExists(
   tcuSecondaryExtractedProgrammesPath
 )
 const udsmProspectusProgrammes = readCsvIfExists(udsmProspectusProgrammesPath)
-const cleanTcuSecondaryExtractedProgrammes =
-  tcuSecondaryExtractedProgrammes.filter(
-    (row) =>
-      blankToUndefined(row.programmeCode) &&
-      blankToUndefined(row.programmeName) &&
-      blankToUndefined(row.institutionName) &&
-      blankToUndefined(row.admissionRequirements)
-  )
+const tcuGuidebookRows = tcuSecondaryExtractedProgrammes.filter(
+  (row) =>
+    blankToUndefined(row.programmeName) && blankToUndefined(row.institutionName)
+)
 const udsmProspectusSupplementRows = udsmProspectusProgrammes.filter(
   isUdsmProspectusSupplementRow
 )
@@ -943,8 +964,8 @@ function findVerifiedLogo(
   )
 }
 
-const processedEntryRequirements: ProcessedEntryRequirement[] = [
-  ...pathwayEntryRequirements.map((row) => {
+const pathwayProcessedEntryRequirements: ProcessedEntryRequirement[] =
+  pathwayEntryRequirements.map((row) => {
     const programmeName = cleanProgrammeNameForRow(row)
     const institutionName = cleanDataArtifactText(row.institution_name)
     const normalizedProgrammeName = normalizedProgrammeNameForRow(
@@ -1000,16 +1021,7 @@ const processedEntryRequirements: ProcessedEntryRequirement[] = [
         .filter(Boolean)
         .join(" "),
     }
-  }),
-  ...cleanTcuSecondaryExtractedProgrammes.map(
-    buildTcuExtractedEntryRequirement
-  ),
-]
-
-const processedRequirementRules: ProcessedRequirementRule[] =
-  processedEntryRequirements.map((requirement) =>
-    buildRequirementRuleFromEntryRequirement(requirement)
-  )
+  })
 
 function requirementRuleKey(
   normalizedProgrammeName: string | undefined,
@@ -1166,18 +1178,6 @@ function inferProgrammeRequirementRouteFlags(programme: ProcessedProgramme) {
       /\b(equivalent|foundation certificate|full technician certificate|ftc)\b/
     ),
   }
-}
-
-const requirementsByProgramme = new Map<string, ProcessedEntryRequirement[]>()
-for (const requirement of processedEntryRequirements) {
-  const key = makeRequirementKey(
-    requirement.normalizedProgrammeName,
-    requirement.normalizedInstitutionName
-  )
-  requirementsByProgramme.set(key, [
-    ...(requirementsByProgramme.get(key) ?? []),
-    requirement,
-  ])
 }
 
 function buildInstitution(
@@ -1410,20 +1410,104 @@ function registerInstitutionCandidates(institution: ProcessedInstitution) {
   }
 }
 
+// Institution rows whose "name" is a fragment of guidebook prose, e.g.
+// "Open University of Tanzania (OUT) are advised not to apply".
+const droppedProseInstitutions = [
+  ...pathwayInstitutions,
+  ...legacyInstitutions,
+].filter((row) => isProseInstitutionName(row.institution_name))
+// Alias names of duplicate institution records that were merged into a
+// primary record, so programmes that still use the alias resolve to it.
+const institutionAliasNames = new Map<string, Set<string>>()
+const mergedDuplicateInstitutions: Array<{
+  duplicate: string
+  mergedInto: string
+}> = []
+
+function institutionAbbreviation(name: string) {
+  return normalizeName(name.match(/\(([^)]+)\)/)?.[1])
+}
+
+function significantInstitutionTokens(name: string) {
+  return new Set(
+    normalizeName(name.replace(/\([^)]*\)/g, " ").replace(/(\w)-(\w)/g, "$1$2"))
+      .split(" ")
+      .filter(
+        (token) =>
+          token.length > 2 &&
+          !/^(the|and|for|university|college|institute|centre|center|tanzania)$/.test(
+            token
+          )
+      )
+  )
+}
+
+// Legacy rows sometimes repeat a TCU institution under a variant name
+// ("College of African Wildlife Management Mweka (CAWM)", "Center for
+// Foreign Relations (CFR)"). Merge them into the record that carries the same
+// abbreviation when neither name is a campus/branch.
+function findAbbreviationDuplicate(institution: ProcessedInstitution) {
+  const abbreviation = institutionAbbreviation(institution.institutionName)
+  if (abbreviation.length < 2) return undefined
+  if (institution.regulator !== "TCU") return undefined
+  if (/\bcampus\b|\)\s*[-–]|\s-\s/i.test(institution.institutionName))
+    return undefined
+
+  const tokens = significantInstitutionTokens(institution.institutionName)
+  const candidates = [...institutionsByName.entries()].sort(
+    ([, a], [, b]) =>
+      Number(b.regulator === "TCU") - Number(a.regulator === "TCU")
+  )
+  return candidates.find(([, existing]) => {
+    if (
+      existing.normalizedInstitutionName ===
+      institution.normalizedInstitutionName
+    )
+      return false
+    if (institutionAbbreviation(existing.institutionName) !== abbreviation)
+      return false
+    if (/\bcampus\b|\)\s*[-–]|\s-\s/i.test(existing.institutionName))
+      return false
+    const shared = [
+      ...significantInstitutionTokens(existing.institutionName),
+    ].filter((token) => tokens.has(token)).length
+    const compatible = compatibleInstitutionIdentityKeys(
+      existing.institutionName.replace(/\([^)]*\)/g, " "),
+      institution.institutionName.replace(/\([^)]*\)/g, " ")
+    )
+    return compatible || (existing.regulator === "TCU" && shared >= 2)
+  })?.[0]
+}
+
 for (const institution of [
-  ...pathwayInstitutions.map((row) =>
-    buildInstitution(row, "education_pathways")
-  ),
-  ...legacyInstitutions.map((row) => buildInstitution(row, "post_form_four")),
+  ...pathwayInstitutions
+    .filter((row) => !isProseInstitutionName(row.institution_name))
+    .map((row) => buildInstitution(row, "education_pathways")),
+  ...legacyInstitutions
+    .filter((row) => !isProseInstitutionName(row.institution_name))
+    .map((row) => buildInstitution(row, "post_form_four")),
 ]) {
-  const existingKey =
+  const candidateKey =
     institutionCandidateToPrimaryName.get(
       institution.normalizedInstitutionName
     ) ??
     institutionNameCandidates(institution.institutionName)
       .map((candidate) => institutionCandidateToPrimaryName.get(candidate))
-      .find(Boolean) ??
-    institution.normalizedInstitutionName
+      .find(Boolean)
+  const duplicateKey = candidateKey
+    ? undefined
+    : findAbbreviationDuplicate(institution)
+  if (duplicateKey) {
+    mergedDuplicateInstitutions.push({
+      duplicate: institution.institutionName,
+      mergedInto: institutionsByName.get(duplicateKey)!.institutionName,
+    })
+    const aliases = institutionAliasNames.get(duplicateKey) ?? new Set()
+    aliases.add(institution.institutionName)
+    institutionAliasNames.set(duplicateKey, aliases)
+  }
+  const existingKey =
+    candidateKey ?? duplicateKey ?? institution.normalizedInstitutionName
   const existing = institutionsByName.get(existingKey)
   institutionsByName.set(
     existingKey,
@@ -1433,6 +1517,78 @@ for (const institution of [
 }
 
 const processedInstitutions = [...institutionsByName.values()]
+
+// Resolve every guidebook institution heading to a processed institution.
+// Branch campuses without their own record get one built from the heading.
+const guidebookHeadings = uniqueValues(
+  tcuGuidebookRows.map((row) => row.institutionName)
+)
+const guidebookInstitutionResolutions = resolveGuidebookInstitutions(
+  guidebookHeadings,
+  processedInstitutions
+)
+const createdGuidebookInstitutions: ProcessedInstitution[] = []
+
+function buildGuidebookCampusInstitution(
+  heading: string,
+  sibling: ProcessedInstitution | undefined
+): ProcessedInstitution {
+  const parsed = parseGuidebookHeading(heading)
+  const institutionName = heading
+  const normalizedInstitutionName = normalizeName(institutionName)
+  const region = cleanDataArtifactValue(
+    parsed.location?.replace(/\b(campus|centre|center|college)\b/gi, " ")
+  )
+  const reviewReasons = [
+    "institution_created_from_tcu_guidebook_heading",
+    "missing_registration_number",
+  ]
+
+  return {
+    institutionName,
+    normalizedInstitutionName,
+    regulator: "TCU",
+    ownershipType: sibling?.ownershipType ?? "unknown",
+    institutionType: "Higher Education Institution",
+    region,
+    physicalLocation: parsed.location,
+    mainlandOrZanzibar: sibling?.mainlandOrZanzibar,
+    website: sibling?.website,
+    hasFormFourDirectProgramme: "unknown",
+    officialSourceUrl: tcuSecondaryGuidebookUrl,
+    sourceType:
+      "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications",
+    sourceDatasets: ["tcu_secondary_guidebook_pdf_extraction"],
+    confidenceLevel: "medium",
+    lastVerifiedDate: "2026-04-28",
+    needsReview: true,
+    reviewReasons,
+    searchText: [
+      institutionName,
+      normalizedInstitutionName,
+      parsed.abbreviation,
+      "TCU",
+      region,
+    ]
+      .filter(Boolean)
+      .join(" "),
+  }
+}
+
+for (const [heading, resolution] of guidebookInstitutionResolutions) {
+  if (resolution.institution) continue
+  const sibling = [...guidebookInstitutionResolutions.values()].find(
+    (other) =>
+      other.institution &&
+      !other.isBranch &&
+      normalizeName(other.heading.baseName) ===
+        normalizeName(resolution.heading.baseName)
+  )?.institution
+  const created = buildGuidebookCampusInstitution(heading, sibling)
+  createdGuidebookInstitutions.push(created)
+  processedInstitutions.push(created)
+  resolution.institution = created
+}
 
 const institutionByName = new Map<string, ProcessedInstitution>()
 for (const institution of processedInstitutions) {
@@ -1447,6 +1603,167 @@ for (const institution of processedInstitutions) {
     }
   }
 }
+for (const [primaryKey, aliases] of institutionAliasNames) {
+  const institution = institutionsByName.get(primaryKey)
+  if (!institution) continue
+  for (const alias of aliases) {
+    for (const candidate of [
+      normalizeName(alias),
+      ...institutionNameCandidates(alias),
+    ]) {
+      if (!institutionByName.has(candidate)) {
+        institutionByName.set(candidate, institution)
+      }
+    }
+  }
+}
+
+function resolveInstitutionForRow(row: Row) {
+  return uniqueValues([
+    firstValue(row.normalized_institution_name, row.institution_name),
+    row.institution_name,
+  ])
+    .flatMap((name) => institutionNameCandidates(name))
+    .map((candidate) => institutionByName.get(candidate))
+    .find(Boolean)
+}
+
+function isTcuDegreeRow(row: Row) {
+  return (
+    /TCU/i.test(row.regulator ?? "") &&
+    normalizeAwardLevel(row.award_level) === "degree"
+  )
+}
+
+// Pathway rows carry TCU programme codes for some programmes whose guidebook
+// row prints no code (e.g. MWECAU "Bachelor of Arts in Social Work and Human
+// Rights", MW015).
+const guidebookPrintedCodes = new Set(
+  tcuGuidebookRows
+    .map((row) => normalizeTcuProgrammeCode(row.programmeCode))
+    .filter(Boolean) as string[]
+)
+const pathwayCodesByIdentity = new Map<string, Set<string>>()
+for (const row of pathwayProgrammes) {
+  const code = normalizeTcuProgrammeCode(row.programme_code)
+  if (!code || guidebookPrintedCodes.has(code) || !isTcuDegreeRow(row)) continue
+  const institution = resolveInstitutionForRow(row)
+  if (!institution) continue
+  const key = makeRequirementKey(
+    cleanProgrammeNameForRow(row),
+    institution.normalizedInstitutionName
+  )
+  pathwayCodesByIdentity.set(
+    key,
+    (pathwayCodesByIdentity.get(key) ?? new Set()).add(code)
+  )
+}
+
+const guidebookTitleRepair = createSplitWordRepairer(
+  tcuGuidebookRows.flatMap((row) => [
+    row.programmeName,
+    row.admissionRequirements,
+  ])
+)
+
+// Titles of TCU degree rows from other datasets: rejoin split words using the
+// guidebook vocabulary and drop dangling punctuation ("... Forwarding.").
+function tidyTcuProgrammeTitle(name: string) {
+  return guidebookTitleRepair(name)
+    .replace(/[\s.,;:'’"]+$/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
+const guidebookProgrammes: GuidebookProgramme[] = tcuGuidebookRows.map(
+  (row) => {
+    const resolution = guidebookInstitutionResolutions.get(row.institutionName)!
+    const institution = resolution.institution!
+    const programmeName = cleanDataArtifactText(row.programmeName)
+    const printedCode = normalizeTcuProgrammeCode(row.programmeCode)
+    const pathwayCodes = printedCode
+      ? undefined
+      : pathwayCodesByIdentity.get(
+          makeRequirementKey(
+            programmeName,
+            institution.normalizedInstitutionName
+          )
+        )
+    const pathwayCode =
+      pathwayCodes && pathwayCodes.size === 1 ? [...pathwayCodes][0] : undefined
+
+    return {
+      row,
+      programmeCode: printedCode ?? pathwayCode,
+      programmeCodeSource: printedCode
+        ? "guidebook"
+        : pathwayCode
+          ? "pathways_dataset"
+          : "missing",
+      programmeName,
+      normalizedProgrammeName: normalizeName(programmeName),
+      heading: row.institutionName,
+      institutionName: institution.institutionName,
+      normalizedInstitutionName: institution.normalizedInstitutionName,
+      campusLocation: resolution.isBranch
+        ? resolution.heading.location
+        : undefined,
+      rawRequirementText: cleanDataArtifactText(row.admissionRequirements),
+      minimumAdmissionPoints: parseOptionalNumber(row.minimumAdmissionPoints),
+      minimumAdmissionPointsSubjectCount: parseOptionalNumber(
+        row.minimumAdmissionPointsSubjects
+      ),
+    }
+  }
+)
+const titleLeakRecoveries: Array<{
+  programmeCode: string
+  sourceTitle: string
+}> = []
+const guidebookProgrammesByCode = new Map(
+  guidebookProgrammes
+    .filter((programme) => programme.programmeCode)
+    .map((programme) => [programme.programmeCode!, programme])
+)
+// Coded guidebook rows indexed by programme identity, used to give uncoded
+// TCU degree rows from other sources their guidebook code.
+const guidebookCodesByIdentity = new Map<string, Set<string>>()
+for (const programme of guidebookProgrammes) {
+  if (!programme.programmeCode) continue
+  const key = makeRequirementKey(
+    programme.programmeName,
+    programme.normalizedInstitutionName
+  )
+  guidebookCodesByIdentity.set(
+    key,
+    (guidebookCodesByIdentity.get(key) ?? new Set()).add(
+      programme.programmeCode
+    )
+  )
+}
+
+const guidebookEntryRequirements = guidebookProgrammes
+  .filter(
+    (programme) => programme.programmeCode && programme.rawRequirementText
+  )
+  .map(buildTcuExtractedEntryRequirement)
+const guidebookEntryRequirementSet = new Set(guidebookEntryRequirements)
+let processedEntryRequirements: ProcessedEntryRequirement[] = [
+  ...pathwayProcessedEntryRequirements,
+  ...guidebookEntryRequirements,
+]
+
+const requirementsByProgramme = new Map<string, ProcessedEntryRequirement[]>()
+for (const requirement of processedEntryRequirements) {
+  const key = makeRequirementKey(
+    requirement.normalizedProgrammeName,
+    requirement.normalizedInstitutionName
+  )
+  requirementsByProgramme.set(key, [
+    ...(requirementsByProgramme.get(key) ?? []),
+    requirement,
+  ])
+}
 
 function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
   const awardLevel = normalizeAwardLevel(row.award_level)
@@ -1457,33 +1774,45 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
       row.award_level
     )
   )
-  const institutionLookupNames = uniqueValues([
-    firstValue(row.normalized_institution_name, row.institution_name),
-    sourceDataset === "tcu_secondary_guidebook_pdf_extraction"
-      ? normalizeTcuExtractedInstitutionLookupName(row.institution_name)
-      : undefined,
-  ])
-  const institution = institutionLookupNames
-    .flatMap((name) => institutionNameCandidates(name))
-    .map((candidate) => institutionByName.get(candidate))
-    .find(Boolean)
+  const institution = resolveInstitutionForRow(row)
   const rawNormalizedInstitutionName =
     blankToUndefined(row.normalized_institution_name) ??
     normalizeName(row.institution_name)
   const normalizedInstitutionName =
     institution?.normalizedInstitutionName ?? rawNormalizedInstitutionName
-  const programmeName = cleanProgrammeNameForRow(row)
-  const normalizedProgrammeName = normalizedProgrammeNameForRow(
+  const rawProgrammeName = cleanProgrammeNameForRow(row)
+  const rawNormalizedProgrammeName = normalizedProgrammeNameForRow(
     row,
-    programmeName
+    rawProgrammeName
   )
+  const tcuCode = tcuProgrammeCodeForRow(
+    row,
+    rawProgrammeName,
+    normalizedInstitutionName
+  )
+  // A title that leaked its code and requirement prose ("... DM079 Two
+  // principal passes ...") is replaced by the guidebook title for that code.
+  const leakRepairName =
+    tcuCode?.source === "title_leak"
+      ? guidebookProgrammesByCode.get(tcuCode.code)?.programmeName
+      : undefined
+  const tidiedTcuName =
+    !leakRepairName && isTcuDegreeRow(row)
+      ? tidyTcuProgrammeTitle(rawProgrammeName)
+      : undefined
+  const programmeName = leakRepairName ?? tidiedTcuName ?? rawProgrammeName
+  const normalizedProgrammeName =
+    programmeName === rawProgrammeName
+      ? rawNormalizedProgrammeName
+      : normalizeName(programmeName)
   const fieldCategory = normalizeFieldCategory(row.field_category)
   const institutionLogo =
     institution?.logoStatus === "verified" ? institution : undefined
-  const requirements =
-    requirementsByProgramme.get(
-      makeRequirementKey(normalizedProgrammeName, rawNormalizedInstitutionName)
-    ) ?? []
+  const requirementKey = makeRequirementKey(
+    rawNormalizedProgrammeName,
+    rawNormalizedInstitutionName
+  )
+  const requirements = requirementsByProgramme.get(requirementKey) ?? []
   const routeSummary = requirementRouteSummary(requirements)
   const legacyFormFourSuitability = normalizeSuitability(
     row.suitable_for_form_four_leaver
@@ -1527,7 +1856,7 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
   return {
     programmeName,
     normalizedProgrammeName,
-    programmeCode: programmeCodeForRow(row),
+    programmeCode: tcuCode?.code ?? programmeCodeForRow(row),
     awardLevel,
     qualificationLevel: blankToUndefined(row.qualification_level),
     pathwayType: blankToUndefined(row.pathway_type),
@@ -1585,6 +1914,10 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
       row.admission_capacity,
       nactvetEnrichment?.admission_capacity
     ),
+    minimumAdmissionPoints: parseOptionalNumber(row.minimum_admission_points),
+    minimumAdmissionPointsSubjectCount: parseOptionalNumber(
+      row.minimum_admission_points_subjects
+    ),
     entryRouteTypes: firstValue(
       routeSummary.entryRouteTypes,
       nactvetEnrichment?.entry_route_types
@@ -1610,10 +1943,11 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
     reviewReasons,
     careerKeywords: keywordData.careerKeywords,
     swahiliKeywords: keywordData.swahiliKeywords,
+    sourceRequirementKeys: [requirementKey],
     searchText: [
       programmeName,
       normalizedProgrammeName,
-      row.programme_code,
+      tcuCode?.code ?? row.programme_code,
       cleanDataArtifactText(row.institution_name),
       awardLevel,
       cleanDataArtifactText(row.qualification_level),
@@ -1637,6 +1971,47 @@ function buildProgramme(row: Row, sourceDataset: string): ProcessedProgramme {
       .filter(Boolean)
       .join(" "),
   }
+}
+
+// TCU programme code for a TCU degree row: the dataset's own code, a code
+// embedded in a leaked title that the guidebook knows, or the guidebook code
+// of the programme with the same title at the same institution.
+function tcuProgrammeCodeForRow(
+  row: Row,
+  programmeName: string,
+  normalizedInstitutionName: string
+):
+  | {
+      code: string
+      source: "dataset" | "title_leak" | "guidebook_identity_match"
+    }
+  | undefined {
+  const datasetCode = normalizeTcuProgrammeCode(programmeCodeForRow(row))
+  if (datasetCode) return { code: datasetCode, source: "dataset" }
+  if (!isTcuDegreeRow(row)) return undefined
+
+  const leakedCode = findEmbeddedTcuProgrammeCodes(row.programme_name).find(
+    (code) => guidebookProgrammesByCode.has(code)
+  )
+  if (leakedCode) {
+    titleLeakRecoveries.push({
+      programmeCode: leakedCode,
+      sourceTitle: cleanDataArtifactText(row.programme_name),
+    })
+    return { code: leakedCode, source: "title_leak" }
+  }
+
+  const identityCodes = guidebookCodesByIdentity.get(
+    makeRequirementKey(programmeName, normalizedInstitutionName)
+  )
+  if (identityCodes && identityCodes.size === 1) {
+    return {
+      code: [...identityCodes][0],
+      source: "guidebook_identity_match",
+    }
+  }
+
+  return undefined
 }
 
 function mergeProgramme(
@@ -1712,6 +2087,12 @@ function mergeProgramme(
       left.admissionCapacity,
       right.admissionCapacity
     ),
+    minimumAdmissionPoints:
+      left.minimumAdmissionPoints ?? right.minimumAdmissionPoints,
+    minimumAdmissionPointsSubjectCount:
+      left.minimumAdmissionPoints !== undefined
+        ? left.minimumAdmissionPointsSubjectCount
+        : right.minimumAdmissionPointsSubjectCount,
     entryRouteTypes: firstValue(left.entryRouteTypes, right.entryRouteTypes),
     acceptsFormFourDirect: mergeSuitability(
       left.acceptsFormFourDirect,
@@ -1753,6 +2134,12 @@ function mergeProgramme(
       ...left.swahiliKeywords,
       ...right.swahiliKeywords,
     ]),
+    fieldCategory:
+      left.fieldCategory !== "other" ? left.fieldCategory : right.fieldCategory,
+    sourceRequirementKeys: uniqueValues([
+      ...(left.sourceRequirementKeys ?? []),
+      ...(right.sourceRequirementKeys ?? []),
+    ]),
     searchText: sameInstitution
       ? uniqueValues([left.searchText, right.searchText]).join(" ")
       : left.searchText,
@@ -1760,14 +2147,18 @@ function mergeProgramme(
 }
 
 const programmesByKey = new Map<string, ProcessedProgramme>()
+// Guidebook rows go first so that, for a shared TCU programme code, the
+// guidebook title, institution, capacity and points win the merge.
 for (const programme of [
+  ...guidebookProgrammes
+    .filter((guidebook) => guidebook.programmeCode)
+    .map((guidebook) =>
+      buildProgramme(
+        buildTcuExtractedProgrammeRow(guidebook),
+        "tcu_secondary_guidebook_pdf_extraction"
+      )
+    ),
   ...pathwayProgrammes.map((row) => buildProgramme(row, "education_pathways")),
-  ...cleanTcuSecondaryExtractedProgrammes.map((row) =>
-    buildProgramme(
-      buildTcuExtractedProgrammeRow(row),
-      "tcu_secondary_guidebook_pdf_extraction"
-    )
-  ),
   ...udsmProspectusSupplementRows.map((row) =>
     buildProgramme(
       buildUdsmProspectusProgrammeRow(row),
@@ -1786,11 +2177,21 @@ for (const programme of [
 
 const programmesByNaturalKey = new Map<string, ProcessedProgramme>()
 for (const programme of programmesByKey.values()) {
-  const key = makeProgrammeKey(
+  let key = makeProgrammeKey(
     programme.normalizedProgrammeName,
     programme.normalizedInstitutionName,
     programme.awardLevel
   )
+  const naturalKeyOwner = programmesByNaturalKey.get(key)
+  // Two different TCU codes are two different offerings even when the title
+  // and institution match; never merge them away.
+  if (
+    naturalKeyOwner?.programmeCode &&
+    programme.programmeCode &&
+    naturalKeyOwner.programmeCode !== programme.programmeCode
+  ) {
+    key = `${key}|${programme.programmeCode}`
+  }
   const existing = programmesByNaturalKey.get(key)
   programmesByNaturalKey.set(
     key,
@@ -1798,13 +2199,317 @@ for (const programme of programmesByKey.values()) {
   )
 }
 
+function isTcuDegreeProgramme(programme: ProcessedProgramme) {
+  return programme.regulator === "TCU" && programme.awardLevel === "degree"
+}
+
 const allProcessedProgrammes = [...programmesByNaturalKey.values()]
-const quarantinedProgrammes = allProcessedProgrammes.filter((programme) =>
-  programmeNameContainsRequirementLeak(programme.programmeName)
+// Coded TCU rows that the guidebook does not list keep their dataset title;
+// when that title is still broken ("Bachelor of Science in") the record
+// cannot be shown and is reported instead.
+const droppedBrokenTitleTcuProgrammes = allProcessedProgrammes.filter(
+  (programme) =>
+    isTcuDegreeProgramme(programme) &&
+    programme.programmeCode &&
+    !guidebookProgrammesByCode.has(programme.programmeCode) &&
+    programmeTitleQualityIssues(programme.programmeName).length > 0
+)
+// The TCU degree layer is keyed by guidebook programme code. Uncoded TCU
+// degree rows are records the 2025/26 guidebook does not list (older
+// guidebook parses, prospectus supplements); they are reported in
+// tcu-coverage-report.json instead of being published.
+const droppedUncodedTcuProgrammes = allProcessedProgrammes.filter(
+  (programme) => isTcuDegreeProgramme(programme) && !programme.programmeCode
+)
+// Titles that still carry a programme code or entry-requirement prose are
+// quarantined (and listed in the data-quality report) rather than published.
+function programmeTitleHasLeak(name: string) {
+  return (
+    programmeNameContainsRequirementLeak(name) ||
+    programmeTitleQualityIssues(name).some(
+      (issue) =>
+        issue === "contains_programme_code" ||
+        issue === "contains_requirement_prose"
+    )
+  )
+}
+const quarantinedProgrammes = allProcessedProgrammes.filter(
+  (programme) =>
+    !(isTcuDegreeProgramme(programme) && !programme.programmeCode) &&
+    programmeTitleHasLeak(programme.programmeName)
 )
 const processedProgrammes = allProcessedProgrammes.filter(
-  (programme) => !programmeNameContainsRequirementLeak(programme.programmeName)
+  (programme) =>
+    !(isTcuDegreeProgramme(programme) && !programme.programmeCode) &&
+    !droppedBrokenTitleTcuProgrammes.includes(programme) &&
+    !programmeTitleHasLeak(programme.programmeName)
 )
+
+// Re-point entry requirements of every source row merged into a coded TCU
+// programme at that programme's final title and institution, so the
+// eligibility lookup (by normalized programme + institution name) finds them.
+const tcuProgrammesByRequirementKey = new Map<string, ProcessedProgramme[]>()
+const otherProgrammeRequirementKeys = new Set<string>()
+for (const programme of processedProgrammes) {
+  const keys = uniqueValues([
+    ...(programme.sourceRequirementKeys ?? []),
+    makeRequirementKey(
+      programme.normalizedProgrammeName,
+      programme.normalizedInstitutionName
+    ),
+  ])
+  for (const key of keys) {
+    if (isTcuDegreeProgramme(programme) && programme.programmeCode) {
+      tcuProgrammesByRequirementKey.set(key, [
+        ...(tcuProgrammesByRequirementKey.get(key) ?? []),
+        programme,
+      ])
+    } else {
+      otherProgrammeRequirementKeys.add(key)
+    }
+  }
+}
+const droppedTcuRequirementKeys = new Set(
+  [...droppedUncodedTcuProgrammes, ...droppedBrokenTitleTcuProgrammes]
+    .flatMap((programme) => programme.sourceRequirementKeys ?? [])
+    .filter(
+      (key) =>
+        !tcuProgrammesByRequirementKey.has(key) &&
+        !otherProgrammeRequirementKeys.has(key)
+    )
+)
+let remappedTcuEntryRequirementCount = 0
+let droppedTcuEntryRequirementCount = 0
+processedEntryRequirements = processedEntryRequirements.flatMap(
+  (requirement) => {
+    const key = makeRequirementKey(
+      requirement.normalizedProgrammeName,
+      requirement.normalizedInstitutionName
+    )
+    if (droppedTcuRequirementKeys.has(key)) {
+      droppedTcuEntryRequirementCount += 1
+      return []
+    }
+    const owners = tcuProgrammesByRequirementKey.get(key)
+    if (
+      !owners ||
+      owners.length !== 1 ||
+      otherProgrammeRequirementKeys.has(key) ||
+      /^(ordinary diploma|diploma|basic technician certificate|technician certificate|certificate)\b/i.test(
+        requirement.programmeName
+      )
+    ) {
+      return [requirement]
+    }
+    const [owner] = owners
+    if (
+      owner.normalizedProgrammeName === requirement.normalizedProgrammeName &&
+      owner.normalizedInstitutionName === requirement.normalizedInstitutionName
+    ) {
+      return [requirement]
+    }
+    remappedTcuEntryRequirementCount += 1
+    return [
+      {
+        ...requirement,
+        programmeName: owner.programmeName,
+        normalizedProgrammeName: owner.normalizedProgrammeName,
+        institutionName: owner.institutionName,
+        normalizedInstitutionName: owner.normalizedInstitutionName,
+        searchText: uniqueValues([
+          owner.programmeName,
+          owner.normalizedProgrammeName,
+          owner.institutionName,
+          owner.normalizedInstitutionName,
+          owner.programmeCode,
+          requirement.searchText,
+        ]).join(" "),
+      },
+    ]
+  }
+)
+
+// For a coded TCU programme with a guidebook requirement, older Form Six-only
+// requirement rows from other datasets (earlier extractions of the same or an
+// older guidebook) are superseded: keeping them would let a stale, looser
+// variant win the "best variant" eligibility evaluation.
+const identitiesWithGuidebookRequirement = new Set(
+  guidebookEntryRequirements.map((requirement) =>
+    requirementRuleKey(
+      requirement.normalizedProgrammeName,
+      requirement.normalizedInstitutionName
+    )
+  )
+)
+let supersededFormSixRequirementCount = 0
+processedEntryRequirements = processedEntryRequirements.filter(
+  (requirement) => {
+    if (guidebookEntryRequirementSet.has(requirement)) return true
+    const formSixOnly =
+      requirement.acceptsFormSix === "yes" &&
+      requirement.acceptsFormFourDirect !== "yes" &&
+      requirement.acceptsCertificate !== "yes" &&
+      requirement.acceptsDiploma !== "yes" &&
+      requirement.acceptsEquivalent !== "yes"
+    if (
+      formSixOnly &&
+      identitiesWithGuidebookRequirement.has(
+        requirementRuleKey(
+          requirement.normalizedProgrammeName,
+          requirement.normalizedInstitutionName
+        )
+      )
+    ) {
+      supersededFormSixRequirementCount += 1
+      return false
+    }
+    return true
+  }
+)
+
+// Drop exact duplicate requirement rows created by the remap (the same route
+// text attached by both the guidebook and the pathways dataset).
+const entryRequirementFingerprints = new Set<string>()
+processedEntryRequirements = processedEntryRequirements.filter(
+  (requirement) => {
+    const fingerprint = [
+      requirement.normalizedProgrammeName,
+      requirement.normalizedInstitutionName,
+      normalizeName(requirement.rawRequirementText),
+      requirement.acceptsFormFourDirect,
+      requirement.acceptsFormSix,
+      requirement.acceptsCertificate,
+      requirement.acceptsDiploma,
+      requirement.acceptsEquivalent,
+    ].join("|")
+    if (entryRequirementFingerprints.has(fingerprint)) return false
+    entryRequirementFingerprints.add(fingerprint)
+    return true
+  }
+)
+
+// Recompute route flags and requirement text of coded TCU programmes from
+// the requirement rows now attached to their final identity.
+const finalRequirementsByIdentity = new Map<
+  string,
+  ProcessedEntryRequirement[]
+>()
+for (const requirement of processedEntryRequirements) {
+  const key = requirementRuleKey(
+    requirement.normalizedProgrammeName,
+    requirement.normalizedInstitutionName
+  )
+  finalRequirementsByIdentity.set(key, [
+    ...(finalRequirementsByIdentity.get(key) ?? []),
+    requirement,
+  ])
+}
+for (const programme of processedProgrammes) {
+  if (!isTcuDegreeProgramme(programme) || !programme.programmeCode) continue
+  const requirements =
+    finalRequirementsByIdentity.get(
+      requirementRuleKey(
+        programme.normalizedProgrammeName,
+        programme.normalizedInstitutionName
+      )
+    ) ?? []
+  if (requirements.length === 0) continue
+  const guidebookFirst = [...requirements].sort(
+    (a, b) =>
+      Number(b.officialSourceUrl === tcuSecondaryGuidebookUrl) -
+      Number(a.officialSourceUrl === tcuSecondaryGuidebookUrl)
+  )
+  const summary = requirementRouteSummary(guidebookFirst)
+  const guidebook = guidebookProgrammesByCode.get(programme.programmeCode)
+  // Review reasons that the guidebook row for this code resolves.
+  const resolvedByGuidebook = new Set(
+    guidebook
+      ? [
+          "programme code not confidently parsed",
+          "programme name appears truncated by PDF extraction",
+          "programme_name_looks_incomplete",
+          "programme_name_contains_entry_requirement_fragment",
+          "missing_entry_requirements",
+          ...(blankToUndefined(guidebook.row.durationYears)
+            ? ["missing_duration"]
+            : []),
+          ...(blankToUndefined(guidebook.row.admissionCapacity) &&
+          blankToUndefined(guidebook.row.durationYears)
+            ? [
+                "capacity/duration not confidently parsed",
+                "admission_capacity differs across official source rows",
+              ]
+            : []),
+        ]
+      : []
+  )
+  const reviewReasons = programme.reviewReasons.filter(
+    (reason) => !resolvedByGuidebook.has(reason)
+  )
+  Object.assign(programme, {
+    reviewReasons,
+    needsReview: guidebook
+      ? needsManualReview(reviewReasons)
+      : programme.needsReview,
+    minimumEntryRequirements:
+      cleanDataArtifactValue(summary.rawRequirementText) ??
+      programme.minimumEntryRequirements,
+    requiredSubjects: firstValue(
+      summary.requiredSubjects,
+      programme.requiredSubjects
+    ),
+    acceptsFormSix: mergeSuitability(
+      programme.acceptsFormSix,
+      summary.acceptsFormSix
+    ),
+    acceptsCertificate: mergeSuitability(
+      programme.acceptsCertificate,
+      summary.acceptsCertificate
+    ),
+    acceptsDiploma: mergeSuitability(
+      programme.acceptsDiploma,
+      summary.acceptsDiploma
+    ),
+    acceptsEquivalent: mergeSuitability(
+      programme.acceptsEquivalent,
+      summary.acceptsEquivalent
+    ),
+    acceptsFormFourDirect: mergeSuitability(
+      programme.acceptsFormFourDirect,
+      summary.acceptsFormFourDirect
+    ),
+    entryRouteTypes: firstValue(
+      acceptedApplicantPathwayLabels({
+        acceptsFormFourDirect: mergeSuitability(
+          programme.acceptsFormFourDirect,
+          summary.acceptsFormFourDirect
+        ),
+        acceptsFormSix: mergeSuitability(
+          programme.acceptsFormSix,
+          summary.acceptsFormSix
+        ),
+        acceptsCertificate: mergeSuitability(
+          programme.acceptsCertificate,
+          summary.acceptsCertificate
+        ),
+        acceptsDiploma: mergeSuitability(
+          programme.acceptsDiploma,
+          summary.acceptsDiploma
+        ),
+        acceptsEquivalent: mergeSuitability(
+          programme.acceptsEquivalent,
+          summary.acceptsEquivalent
+        ),
+      }).join("; "),
+      programme.entryRouteTypes
+    ),
+  })
+}
+
+const processedRequirementRules: ProcessedRequirementRule[] =
+  processedEntryRequirements.map((requirement) =>
+    buildRequirementRuleFromEntryRequirement(requirement)
+  )
 const requirementRuleKeys = new Set(
   processedRequirementRules.map((rule) =>
     requirementRuleKey(
@@ -1828,6 +2533,39 @@ for (const programme of processedProgrammes) {
   processedRequirementRules.push(fallbackRule)
   programmeFallbackRequirementRules.push(fallbackRule)
   requirementRuleKeys.add(key)
+}
+
+// Carry the TCU programme code and guidebook points onto the rules of coded
+// TCU programmes (only when the title + institution identity is unambiguous).
+const tcuProgrammesByRuleKey = new Map<string, ProcessedProgramme[]>()
+for (const programme of processedProgrammes) {
+  if (!isTcuDegreeProgramme(programme) || !programme.programmeCode) continue
+  const key = requirementRuleKey(
+    programme.normalizedProgrammeName,
+    programme.normalizedInstitutionName
+  )
+  tcuProgrammesByRuleKey.set(key, [
+    ...(tcuProgrammesByRuleKey.get(key) ?? []),
+    programme,
+  ])
+}
+for (const rule of processedRequirementRules) {
+  const owners = tcuProgrammesByRuleKey.get(
+    requirementRuleKey(
+      rule.normalizedProgrammeName,
+      rule.normalizedInstitutionName
+    )
+  )
+  if (!owners || owners.length !== 1) continue
+  const [owner] = owners
+  rule.programmeCode = owner.programmeCode
+  if (owner.minimumAdmissionPoints !== undefined) {
+    rule.minimumAdmissionPoints = owner.minimumAdmissionPoints
+  }
+  if (owner.minimumAdmissionPointsSubjectCount !== undefined) {
+    rule.minimumAdmissionPointsSubjectCount =
+      owner.minimumAdmissionPointsSubjectCount
+  }
 }
 const programmesWithoutExactRequirementRule = processedProgrammes.filter(
   (programme) =>
@@ -1960,8 +2698,8 @@ const report = {
   programmes: {
     rawPathwayCount: pathwayProgrammes.length,
     rawLegacyCount: legacyProgrammes.length,
-    extractedTcuSecondaryGuidebookCount:
-      cleanTcuSecondaryExtractedProgrammes.length,
+    extractedTcuSecondaryGuidebookCount: guidebookProgrammes.length,
+    droppedUncodedTcuDegreeCount: droppedUncodedTcuProgrammes.length,
     udsmProspectusSupplementCount: udsmProspectusSupplementRows.length,
     nactvetEnrichmentCount: nactvetProgrammes.length,
     processedCount: processedProgrammes.length,
@@ -2007,8 +2745,12 @@ const report = {
   },
   entryRequirements: {
     rawPathwayCount: pathwayEntryRequirements.length,
-    extractedTcuSecondaryGuidebookCount:
-      cleanTcuSecondaryExtractedProgrammes.length,
+    extractedTcuSecondaryGuidebookCount: guidebookProgrammes.filter(
+      (programme) => programme.programmeCode && programme.rawRequirementText
+    ).length,
+    remappedToTcuProgrammeCount: remappedTcuEntryRequirementCount,
+    droppedWithUncodedTcuProgrammeCount: droppedTcuEntryRequirementCount,
+    supersededByTcuGuidebookFormSixCount: supersededFormSixRequirementCount,
     processedCount: processedEntryRequirements.length,
     formFourRouteCount: processedEntryRequirements.filter(
       (row) => row.acceptsFormFourDirect === "yes"
@@ -2045,12 +2787,260 @@ const report = {
   },
 }
 
+const tcuCoverageReport = buildTcuCoverageReport()
+
 writeProcessedDataOutputs(outputDir, {
   institutions: processedInstitutions,
-  programmes: processedProgrammes,
+  programmes: processedProgrammes.map((programme) => {
+    const output = { ...programme }
+    delete output.sourceRequirementKeys
+    return output
+  }),
   entryRequirements: processedEntryRequirements,
   requirementRules: processedRequirementRules,
   dataQualityReport: report,
 })
 
+writeFileSync(
+  tcuCoverageReportPath,
+  `${JSON.stringify(tcuCoverageReport, null, 2)}\n`
+)
+
 console.log(JSON.stringify(report, null, 2))
+console.log(JSON.stringify(tcuCoverageReport.summary, null, 2))
+
+// Per-institution comparison of the TCU guidebook against the published TCU
+// degree layer. Written to data/processed/tcu-coverage-report.json.
+function buildTcuCoverageReport() {
+  const tcuProgrammes = processedProgrammes.filter(isTcuDegreeProgramme)
+  const publishedCodes = new Set(
+    tcuProgrammes
+      .map((programme) => programme.programmeCode)
+      .filter(Boolean) as string[]
+  )
+  const guidebookCodes = new Set(guidebookProgrammesByCode.keys())
+  const tcuRuleStatus = summarizeTcuFormSixParseStatus(tcuProgrammes)
+  const sourceTitlesByCode = new Map<string, Set<string>>()
+  for (const row of pathwayProgrammes) {
+    const code = normalizeTcuProgrammeCode(programmeCodeForRow(row))
+    if (!code) continue
+    sourceTitlesByCode.set(
+      code,
+      (sourceTitlesByCode.get(code) ?? new Set()).add(
+        cleanDataArtifactText(row.programme_name)
+      )
+    )
+  }
+  const repairedTitles = tcuProgrammes
+    .filter((programme) => programme.programmeCode)
+    .flatMap((programme) =>
+      [...(sourceTitlesByCode.get(programme.programmeCode!) ?? [])]
+        .filter(
+          (title) =>
+            title !== programme.programmeName &&
+            (programmeTitleQualityIssues(title).length > 0 ||
+              guidebookTitleRepair(title) !== title)
+        )
+        .map((title) => ({
+          programmeCode: programme.programmeCode!,
+          sourceTitle: title,
+          publishedTitle: programme.programmeName,
+        }))
+    )
+
+  const institutions = [...guidebookInstitutionResolutions.entries()].map(
+    ([heading, resolution]) => {
+      const institution = resolution.institution!
+      const guidebookRows = guidebookProgrammes.filter(
+        (programme) => programme.heading === heading
+      )
+      const headingCodes = new Set(
+        guidebookRows
+          .map((programme) => programme.programmeCode)
+          .filter(Boolean) as string[]
+      )
+      const published = tcuProgrammes.filter(
+        (programme) =>
+          programme.normalizedInstitutionName ===
+          institution.normalizedInstitutionName
+      )
+      const missingCodes = [...headingCodes].filter(
+        (code) =>
+          !published.some((programme) => programme.programmeCode === code)
+      )
+      const extraRecords = published
+        .filter(
+          (programme) =>
+            !programme.programmeCode ||
+            !headingCodes.has(programme.programmeCode)
+        )
+        .map((programme) => ({
+          programmeCode: programme.programmeCode,
+          programmeName: programme.programmeName,
+          inGuidebookUnderAnotherInstitution: programme.programmeCode
+            ? guidebookCodes.has(programme.programmeCode)
+            : false,
+          sourceDatasets: programme.sourceDatasets,
+        }))
+
+      return {
+        guidebookHeading: heading,
+        institutionName: institution.institutionName,
+        normalizedInstitutionName: institution.normalizedInstitutionName,
+        isBranchCampus: resolution.isBranch,
+        institutionCreatedFromGuidebook:
+          createdGuidebookInstitutions.includes(institution),
+        guidebookProgrammeCount: guidebookRows.length,
+        guidebookRowsWithoutCode: guidebookRows
+          .filter((programme) => programme.programmeCodeSource === "missing")
+          .map((programme) => programme.programmeName),
+        processedTcuDegreeCount: published.length,
+        processedGuidebookCodeCount: published.filter(
+          (programme) =>
+            programme.programmeCode && headingCodes.has(programme.programmeCode)
+        ).length,
+        missingCodes,
+        extraRecords,
+      }
+    }
+  )
+
+  const guidebookInstitutionKeys = new Set(
+    institutions.map((institution) => institution.normalizedInstitutionName)
+  )
+  const tcuDegreesOutsideGuidebookInstitutions = tcuProgrammes
+    .filter(
+      (programme) =>
+        !guidebookInstitutionKeys.has(programme.normalizedInstitutionName)
+    )
+    .map((programme) => ({
+      programmeCode: programme.programmeCode,
+      programmeName: programme.programmeName,
+      institutionName: programme.institutionName,
+      inGuidebook: programme.programmeCode
+        ? guidebookCodes.has(programme.programmeCode)
+        : false,
+      sourceDatasets: programme.sourceDatasets,
+    }))
+  const codedCount = tcuProgrammes.filter(
+    (programme) => programme.programmeCode
+  ).length
+
+  return {
+    source: {
+      guidebook:
+        "TCU Bachelor's Degree Admission Guidebook 2025/2026 (holders of secondary school qualifications), 6 October 2025 edition",
+      guidebookUrl: tcuSecondaryGuidebookUrl,
+      extractedCsv:
+        "data/extracted/tcu-secondary-guidebook-2025-2026-programmes.csv",
+    },
+    summary: {
+      guidebookInstitutionHeadings: guidebookInstitutionResolutions.size,
+      guidebookProgrammeRows: guidebookProgrammes.length,
+      guidebookProgrammeCodes: guidebookCodes.size,
+      guidebookRowsWithoutPrintedCode: guidebookProgrammes.filter(
+        (programme) => programme.programmeCodeSource !== "guidebook"
+      ).length,
+      guidebookCodesPublished: [...guidebookCodes].filter((code) =>
+        publishedCodes.has(code)
+      ).length,
+      guidebookCodesMissing: [...guidebookCodes].filter(
+        (code) => !publishedCodes.has(code)
+      ),
+      processedTcuDegreeProgrammes: tcuProgrammes.length,
+      processedTcuDegreeProgrammesWithCode: codedCount,
+      processedTcuDegreeCodedPercent:
+        tcuProgrammes.length > 0
+          ? Math.round((codedCount / tcuProgrammes.length) * 1000) / 10
+          : 0,
+      processedTcuCodesNotInGuidebook: [...publishedCodes].filter(
+        (code) => !guidebookCodes.has(code)
+      ).length,
+      tcuDegreesWithCapacity: tcuProgrammes.filter(
+        (programme) => programme.admissionCapacity
+      ).length,
+      tcuDegreesWithMinimumAdmissionPoints: tcuProgrammes.filter(
+        (programme) => programme.minimumAdmissionPoints !== undefined
+      ).length,
+      tcuDegreesWithFees: tcuProgrammes.filter(
+        (programme) => programme.feesIfAvailable
+      ).length,
+      droppedUncodedTcuDegreeRecords: droppedUncodedTcuProgrammes.length,
+      droppedBrokenTitleTcuDegreeRecords:
+        droppedBrokenTitleTcuProgrammes.length,
+      titleLeakRecordsRecoveredByCode: titleLeakRecoveries.length,
+      sourceTitlesRepairedByCode: repairedTitles.length,
+      formSixRequirementParseStatus: tcuRuleStatus,
+    },
+    institutionFixes: {
+      droppedProseInstitutionNames: droppedProseInstitutions.map(
+        (row) => row.institution_name
+      ),
+      mergedDuplicateInstitutions,
+      createdFromGuidebookHeadings: createdGuidebookInstitutions.map(
+        (institution) => institution.institutionName
+      ),
+    },
+    institutions,
+    tcuDegreesOutsideGuidebookInstitutions,
+    droppedBrokenTitleTcuDegreeRecords: droppedBrokenTitleTcuProgrammes.map(
+      (programme) => ({
+        programmeCode: programme.programmeCode,
+        programmeName: programme.programmeName,
+        institutionName: programme.institutionName,
+        sourceDatasets: programme.sourceDatasets,
+      })
+    ),
+    droppedUncodedTcuDegreeRecords: droppedUncodedTcuProgrammes.map(
+      (programme) => ({
+        programmeName: programme.programmeName,
+        institutionName: programme.institutionName,
+        sourceDatasets: programme.sourceDatasets,
+      })
+    ),
+    titleLeakRecoveries,
+    repairedTitles,
+  }
+}
+
+function summarizeTcuFormSixParseStatus(tcuProgrammes: ProcessedProgramme[]) {
+  const rulesByKey = new Map<string, ProcessedRequirementRule[]>()
+  for (const rule of processedRequirementRules) {
+    const key = requirementRuleKey(
+      rule.normalizedProgrammeName,
+      rule.normalizedInstitutionName
+    )
+    rulesByKey.set(key, [...(rulesByKey.get(key) ?? []), rule])
+  }
+  const status = {
+    structured: 0,
+    partial: 0,
+    unparsed: 0,
+    programmesWithoutFormSixVariant: 0,
+    programmesWithoutRule: 0,
+  }
+  const seen = new Set<string>()
+  for (const programme of tcuProgrammes) {
+    const key = requirementRuleKey(
+      programme.normalizedProgrammeName,
+      programme.normalizedInstitutionName
+    )
+    if (seen.has(key)) continue
+    seen.add(key)
+    const rules = rulesByKey.get(key)
+    if (!rules) {
+      status.programmesWithoutRule += 1
+      continue
+    }
+    const formSixVariants = rules
+      .flatMap((rule) => rule.variants)
+      .filter((variant) => variant.route === "form_six")
+    if (formSixVariants.length === 0) {
+      status.programmesWithoutFormSixVariant += 1
+    }
+    for (const variant of formSixVariants) {
+      status[variant.parseStatus] += 1
+    }
+  }
+  return status
+}
