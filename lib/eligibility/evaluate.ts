@@ -1,4 +1,7 @@
-import { normalizeSubjectName } from "./subjects"
+import {
+  normalizeSubjectName,
+  resolveAcseeRequirementSubjects,
+} from "./subjects"
 import { compareEligibilityEvaluations } from "./evidence"
 import type {
   AcseeDivision,
@@ -320,7 +323,18 @@ function evaluateAcseeSubjectGradeClause(
   clause: Extract<RequirementClause, { kind: "acsee_subject_grade" }>,
   profile: NormalizedStudentProfile
 ): ClauseEvaluation {
-  const subject = normalizeSubjectName(clause.subject)
+  const [subject] = resolveAcseeRequirementSubjects([clause.subject]).subjects
+  if (!subject) {
+    return {
+      passed: false,
+      unknown: true,
+      matchedClauses: [],
+      missingClauses: [
+        `ACSEE subject could not be read: ${normalizeSubjectName(clause.subject)}.`,
+      ],
+      warnings: [],
+    }
+  }
   const grade = profile.acseeSummary?.subjectGrades[subject]
   if (!grade) {
     return missing(`ACSEE ${subject} grade is required.`)
@@ -348,47 +362,104 @@ function evaluateSubjectGroupClause(
     )
   }
 
-  // A subject group without an explicit grade comes from wording such as
-  // "principal passes in ...", so it needs at least a principal pass (E) at
-  // A-Level or a pass (D) at O-Level. Sitting the subject is not enough.
-  const minGrade = clause.minGrade ?? (clause.level === "acsee" ? "E" : "D")
-  const subjectResults = clause.subjects.map((subject) => {
-    const normalizedSubject = normalizeSubjectName(subject)
-    const grade = gradeMap[normalizedSubject]
-    const passed =
-      grade !== undefined && gradeMeetsMinimum(grade, minGrade, clause.level)
+  const assessment = assessSubjectGroup(clause, gradeMap)
 
-    return {
-      subject: normalizedSubject,
-      grade,
-      passed,
-    }
-  })
-
-  const passedSubjects = subjectResults.filter((result) => result.passed)
-  const requiredCount =
-    clause.mode === "all_of"
-      ? subjectResults.length
-      : clause.mode === "one_of"
-        ? 1
-        : (clause.count ?? subjectResults.length)
-
-  const passed = passedSubjects.length >= requiredCount
-
-  if (passed) {
+  if (assessment.outcome === "pass") {
     return matched(
-      `Matched ${passedSubjects.length} of ${subjectResults.length} required ${clause.level.toUpperCase()} subjects.`
+      `Matched ${assessment.passedCount} of ${assessment.subjects.length} required ${clause.level.toUpperCase()} subjects.`
     )
   }
 
-  const missingSubjects = subjectResults
+  if (assessment.outcome === "unknown") {
+    return {
+      passed: false,
+      unknown: true,
+      matchedClauses: [],
+      missingClauses: [
+        `Part of the ${clause.level.toUpperCase()} subject list could not be read: ${assessment.unresolved.join(", ")}.`,
+      ],
+      warnings: [],
+    }
+  }
+
+  const missingSubjects = assessment.subjects
     .filter((result) => !result.passed)
     .map((result) => result.subject)
     .join(", ")
 
   return missing(
-    `Needs ${requiredCount} matching ${clause.level.toUpperCase()} subject(s); missing or below grade: ${missingSubjects}.`
+    `Needs ${assessment.requiredCount} matching ${clause.level.toUpperCase()} subject(s); missing or below grade: ${missingSubjects}.`
   )
+}
+
+export type SubjectGroupAssessment = {
+  outcome: "pass" | "fail" | "unknown"
+  minGrade: CseeGrade | AcseeGrade
+  requiredCount: number
+  passedCount: number
+  subjects: Array<{
+    subject: string
+    grade?: CseeGrade | AcseeGrade
+    passed: boolean
+  }>
+  unresolved: string[]
+}
+
+// Checks a subject group against one level's grades. Requirement subjects
+// the parser could not read are kept apart: they never count as passed, but
+// they also never turn a result into a failure on their own.
+export function assessSubjectGroup(
+  clause: Extract<RequirementClause, { kind: "subject_group" }>,
+  gradeMap: Record<string, CseeGrade | AcseeGrade>
+): SubjectGroupAssessment {
+  // A subject group without an explicit grade comes from wording such as
+  // "principal passes in ...", so it needs at least a principal pass (E) at
+  // A-Level or a pass (D) at O-Level. Sitting the subject is not enough.
+  const minGrade = clause.minGrade ?? (clause.level === "acsee" ? "E" : "D")
+  const { subjects, unresolved } =
+    clause.level === "acsee"
+      ? resolveAcseeRequirementSubjects(clause.subjects)
+      : { subjects: clause.subjects.map(normalizeSubjectName), unresolved: [] }
+  const subjectResults = subjects.map((subject) => {
+    const grade = gradeMap[subject]
+    return {
+      subject,
+      grade,
+      passed:
+        grade !== undefined && gradeMeetsMinimum(grade, minGrade, clause.level),
+    }
+  })
+  const passedCount = subjectResults.filter((result) => result.passed).length
+  const listedCount = subjects.length + unresolved.length
+  const requiredCount =
+    clause.mode === "all_of"
+      ? listedCount
+      : clause.mode === "one_of"
+        ? 1
+        : Math.min(clause.count ?? listedCount, listedCount)
+
+  let outcome: SubjectGroupAssessment["outcome"]
+  if (passedCount >= requiredCount) {
+    outcome = "pass"
+  } else if (unresolved.length === 0) {
+    outcome = "fail"
+  } else if (clause.mode === "all_of") {
+    outcome = subjectResults.every((result) => result.passed)
+      ? "unknown"
+      : "fail"
+  } else {
+    outcome =
+      passedCount + unresolved.length >= requiredCount ? "unknown" : "fail"
+  }
+
+  return {
+    outcome,
+    minGrade,
+    requiredCount,
+    passedCount,
+    subjects: subjectResults,
+    unresolved,
+  }
 }
 
 function evaluatePriorAwardClause(

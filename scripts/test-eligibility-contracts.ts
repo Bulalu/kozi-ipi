@@ -17,6 +17,7 @@ import {
   normalizeStudentProfile,
   normalizeSubjectName,
   parseRequirementRuleSet,
+  resolveAcseeRequirementSubjects,
   summarizeAcseeSubjectGrades,
   summarizeEligibilityEvaluation,
 } from "../lib/eligibility"
@@ -702,6 +703,80 @@ assert.equal(
   }).status,
   "not_eligible",
   "One principal pass without an S grade should miss a subsidiary minimum."
+)
+
+// Parsed A-Level subject names can be joined or carry filler words.
+assert.deepEqual(
+  resolveAcseeRequirementSubjects([
+    "physics_chemistry",
+    "in_one_of_geography",
+    "mathematics",
+    "fine_art",
+    "the_following",
+  ]),
+  {
+    subjects: [
+      "physics",
+      "chemistry",
+      "geography",
+      "advanced_mathematics",
+      "fine_arts",
+    ],
+    unresolved: ["the_following"],
+  },
+  "A-Level requirement subjects should be split, aliased, and unreadable ones kept apart."
+)
+
+const historyGeographyProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "History", grade: "C" },
+      { subject: "Geography", grade: "D" },
+    ],
+  },
+})
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["arts", "science", "business_related"],
+    },
+    historyGeographyProfile
+  ).unknown,
+  true,
+  "An unreadable subject list should be unknown, not a failure."
+)
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["history", "the_following", "physics"],
+    },
+    historyGeographyProfile
+  ).unknown,
+  true,
+  "One readable pass plus an unreadable option should stay unknown."
+)
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["history", "geography", "the_following"],
+    },
+    historyGeographyProfile
+  ).passed,
+  true,
+  "Readable passes that meet the count should pass despite noise."
 )
 
 console.log(

@@ -3,12 +3,16 @@
 // English admission terms students see on their result slip and guidebooks.
 
 import {
+  assessSubjectGroup,
   clauseContextForVariant,
   evaluateRequirementClause,
   subsidiaryOrBetterPassCount,
   type ClauseContext,
 } from "./evaluate"
-import { normalizeSubjectName } from "./subjects"
+import {
+  normalizeSubjectName,
+  resolveAcseeRequirementSubjects,
+} from "./subjects"
 import type {
   AcseeGrade,
   NormalizedStudentProfile,
@@ -126,8 +130,17 @@ function describeClause(
       ]
     }
     case "acsee_subject_grade": {
-      const subject = acseeSubjectLabel(clause.subject)
-      const grade = acsee?.subjectGrades[normalizeSubjectName(clause.subject)]
+      const [key] = resolveAcseeRequirementSubjects([clause.subject]).subjects
+      if (!key) {
+        return [
+          {
+            state: "unknown",
+            text: "Somo moja la sharti halikusomeka — soma sharti rasmi",
+          },
+        ]
+      }
+      const subject = acseeSubjectLabel(key)
+      const grade = acsee?.subjectGrades[key]
       return [
         {
           state,
@@ -187,45 +200,56 @@ function describeAcseeSubjectGroup(
   clause: Extract<RequirementClause, { kind: "subject_group" }>,
   profile: NormalizedStudentProfile
 ): ClauseEvidence[] {
-  const grades = profile.acseeSummary?.subjectGrades ?? {}
-  const minGrade = (clause.minGrade ?? "E") as AcseeGrade
-  const evaluated = clause.subjects.map((subject) => {
-    const key = normalizeSubjectName(subject)
-    const grade = grades[key]
-    const single = evaluateRequirementClause(
-      {
-        kind: "subject_group",
-        level: "acsee",
-        mode: "all_of",
-        subjects: [key],
-        minGrade,
-      },
-      profile
-    )
-    return { label: acseeSubjectLabel(key), grade, passed: single.passed }
-  })
-  const requirement = gradeRequirementLabel(minGrade)
+  const assessment = assessSubjectGroup(
+    clause,
+    profile.acseeSummary?.subjectGrades ?? {}
+  )
+  const requirement = gradeRequirementLabel(assessment.minGrade as AcseeGrade)
+  const subjects = assessment.subjects.map((subject) => ({
+    ...subject,
+    label: acseeSubjectLabel(subject.subject),
+  }))
+  const unreadable: ClauseEvidence[] =
+    assessment.unresolved.length > 0 && assessment.outcome !== "pass"
+      ? [
+          {
+            state: "unknown",
+            text: "Sehemu ya orodha ya masomo haikusomeka — soma sharti rasmi",
+          },
+        ]
+      : []
 
   if (clause.mode === "all_of") {
-    return evaluated.map((subject) => ({
-      state: subject.passed ? "pass" : "fail",
-      text: subject.passed
-        ? `${subject.label} ${subject.grade} (${requirement})`
-        : subject.grade
-          ? `${subject.label} ${subject.grade} — inahitaji ${requirement}`
-          : `Inahitaji ${subject.label} (${requirement})`,
-    }))
+    return [
+      ...subjects.map(
+        (subject): ClauseEvidence => ({
+          state: subject.passed ? "pass" : "fail",
+          text: subject.passed
+            ? `${subject.label} ${subject.grade} (${requirement})`
+            : subject.grade
+              ? `${subject.label} ${subject.grade} — inahitaji ${requirement}`
+              : `Inahitaji ${subject.label} (${requirement})`,
+        })
+      ),
+      ...unreadable,
+    ]
   }
 
-  const needed = clause.mode === "one_of" ? 1 : (clause.count ?? 1)
-  const matched = evaluated.filter((subject) => subject.passed)
-  const passed = matched.length >= needed
+  const needed = assessment.requiredCount
+  // Best grades first, so the same subjects always read the same way.
+  const matched = subjects
+    .filter((subject) => subject.passed)
+    .sort(
+      (left, right) =>
+        (left.grade ?? "").localeCompare(right.grade ?? "") ||
+        left.label.localeCompare(right.label)
+    )
   const matchedText = matched
     .map((subject) => `${subject.label} ${subject.grade}`)
     .join(", ")
-  const options = previewList(evaluated.map((subject) => subject.label))
+  const options = previewList(subjects.map((subject) => subject.label))
 
-  if (passed) {
+  if (assessment.outcome === "pass") {
     return [
       {
         state: "pass",
@@ -233,6 +257,15 @@ function describeAcseeSubjectGroup(
           needed === 1
             ? `${matchedText} — moja kati ya masomo yanayokubalika`
             : `${matchedText} — ${needed} kati ya masomo yanayokubalika`,
+      },
+    ]
+  }
+
+  if (assessment.outcome === "unknown") {
+    return [
+      {
+        state: "unknown",
+        text: `Inahitaji ${needed} kati ya masomo yaliyoorodheshwa; una ${matched.length} tunayoweza kukagua${matchedText ? ` (${matchedText})` : ""} — sehemu ya orodha haikusomeka`,
       },
     ]
   }
