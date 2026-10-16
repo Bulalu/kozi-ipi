@@ -1,3 +1,4 @@
+export * from "./clause-evidence"
 export * from "./evaluate"
 export * from "./evidence"
 export * from "./explanations"
