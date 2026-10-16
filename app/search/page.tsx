@@ -1,22 +1,19 @@
-"use client"
-
 import { Suspense } from "react"
-import { useSearchParams } from "next/navigation"
-import { SearchResultsClient } from "@/components/search/search-results-client"
 
-function SearchFromUrl() {
-  const searchParams = useSearchParams()
-  return (
-    <SearchResultsClient
-      initialSearchParams={Array.from(searchParams.entries())}
-    />
-  )
-}
+import { SearchPageClient } from "@/components/search/search-page-client"
+import { pageMetadata } from "@/lib/site-metadata"
+
+export const metadata = pageMetadata({
+  title: "Tafuta kozi",
+  description:
+    "Tafuta kozi kwa jina, career au fani, na chuja kwa ngazi na mkoa. Search Tanzanian degree, diploma and certificate courses.",
+  path: "/search",
+})
 
 export default function SearchPage() {
   return (
     <Suspense fallback={null}>
-      <SearchFromUrl />
+      <SearchPageClient />
     </Suspense>
   )
 }

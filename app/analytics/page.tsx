@@ -9,7 +9,7 @@ import type {
 } from "@/lib/analytics/types"
 
 export const metadata: Metadata = {
-  title: "ACSEE 2026 Analytics | Kozi Ipi",
+  title: "ACSEE 2026 Analytics",
   description:
     "Explore Form Six results across Tanzania by region, subject, sex, grade, and examination centre.",
 }
