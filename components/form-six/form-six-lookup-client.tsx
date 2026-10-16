@@ -1,7 +1,5 @@
 "use client"
 
-import Image from "next/image"
-import Link from "next/link"
 import {
   type FormEvent,
   type ReactNode,
@@ -9,190 +7,59 @@ import {
   useMemo,
   useState,
 } from "react"
-import {
-  ArrowDown01Icon,
-  ArrowRight01Icon,
-  ArrowUpRight01Icon,
-  Cancel01Icon,
-  CheckmarkCircle02Icon,
-  Clock01Icon,
-  FilterHorizontalIcon,
-  InformationCircleIcon,
-  Location01Icon,
-  Search01Icon,
-} from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { usePaginatedQuery, useQuery } from "convex/react"
+import { useQuery } from "convex/react"
 
 import {
-  countOLevelBlockedResults,
-  groupEligibilityResults,
-} from "@/components/eligibility/eligibility-result-groups"
-import { awardLevels, regions } from "@/components/search/search-config"
+  EligibilityResultCard,
+  StatusPill,
+  type OverviewRow,
+} from "@/components/form-six/eligibility-result-card"
+import {
+  awardLevelTabs,
+  qualifyingStatuses,
+  statusCopy,
+} from "@/components/form-six/form-six-copy"
+import { FormSixHeader } from "@/components/form-six/form-six-header"
+import { StudentResultCard } from "@/components/form-six/student-result-card"
+import { fieldCategoryLabel } from "@/components/search/search-config"
+import { SearchIcon, XIcon } from "@/components/search/search-icons"
 import { api } from "@/convex/_generated/api"
 import {
-  clearIndexHandoff,
-  readIndexHandoff,
-  stripExamYear,
-} from "@/lib/necta/index-handoff"
-import {
-  calculateAcseePoints,
-  countAcseePrincipalPasses,
-  eligibilityStatusLabels,
-  type AcseeGrade,
+  eligibilityStatusRank,
   type EligibilityStatus,
+  type StudentEligibilityProfile,
 } from "@/lib/eligibility"
 import {
   formatAcseeIndexNumber,
   isPlausibleAcseeIndexNumber,
   normalizeAcseeIndexNumber,
 } from "@/lib/necta/acsee"
+import {
+  clearIndexHandoff,
+  readIndexHandoff,
+  stripExamYear,
+} from "@/lib/necta/index-handoff"
 
-import styles from "./form-six-lookup-client.module.css"
+const PAGE_SIZE = 12
+const NOT_MATCHED_PAGE_SIZE = 20
+const COURSE_QUERY_DEBOUNCE_MS = 400
 
-const INITIAL_RESULT_LIMIT = 12
-const MAX_CANDIDATE_LIMIT = 1000
-
-type EligibilityResult = {
-  _id: string
-  programmeName: string
-  institutionName: string
-  awardLevel: string
-  regulator: string
-  ownershipType?: string
-  region?: string
-  duration?: string
-  fieldCategory: string
-  courseFamily?: string
-  minimumEntryRequirements?: string
-  requiredSubjects?: string
-  entryRouteTypes?: string
-  officialSourceUrl: string
-  lastVerifiedDate: string
-  needsReview: boolean
-  eligibility: {
-    status: EligibilityStatus
-    confidence: "high" | "medium" | "low"
-    matchedRoute?: string
-    matchedClauses: string[]
-    missingClauses: string[]
-    warnings: string[]
-    rawRequirementText: string
-    sourceUrl: string
-  }
-}
-
-type LookupResult = NonNullable<
-  ReturnType<typeof useQuery<typeof api.acseeResults.lookup>>
+type AwardFilter = "all" | (typeof awardLevelTabs)[number]["value"]
+type StatusFilter = "all" | EligibilityStatus
+type Overview = NonNullable<
+  ReturnType<typeof useQuery<typeof api.programmes.eligibleOverview>>
 >
-
-const statusOrder: EligibilityStatus[] = [
-  "eligible",
-  "likely_eligible_but_verify",
-  "cannot_determine",
-  "interest_match_only",
-  "not_eligible",
-]
-
-const statusCopy: Record<
-  EligibilityStatus,
-  { label: string; description: string }
-> = {
-  eligible: {
-    label: "Eligible",
-    description: "Meets the published ACSEE rule.",
-  },
-  likely_eligible_but_verify: {
-    label: "Likely",
-    description: "A strong match that still needs confirmation.",
-  },
-  cannot_determine: {
-    label: "Check",
-    description: "Relevant, but the requirement needs more detail.",
-  },
-  interest_match_only: {
-    label: "Related",
-    description: "Related to your pathway or course interest.",
-  },
-  not_eligible: {
-    label: "Not matched",
-    description: "A published requirement is missing.",
-  },
-}
-
-const fieldOptions = [
-  { label: "All fields", value: "" },
-  { label: "Health", value: "Health" },
-  { label: "Engineering", value: "Engineering" },
-  { label: "ICT", value: "ICT" },
-  { label: "Business", value: "Business" },
-  { label: "Education", value: "Education" },
-  { label: "Law", value: "Law" },
-]
-
-const quickQueries = [
-  "Medicine",
-  "Computer science",
-  "Engineering",
-  "Education",
-]
 
 export function FormSixLookupClient() {
   const [indexInput, setIndexInput] = useState("")
   const [submittedIndex, setSubmittedIndex] = useState("")
   const [indexError, setIndexError] = useState("")
-  const [awardLevel, setAwardLevel] = useState("degree")
-  const [region, setRegion] = useState("")
-  const [fieldCategory, setFieldCategory] = useState("")
-  const [courseQuery, setCourseQuery] = useState("")
-  const [selectedStatus, setSelectedStatus] = useState<
-    EligibilityStatus | "all"
-  >("all")
-
-  const filters = useMemo(() => {
-    const nextFilters = {
-      ...(awardLevel !== "all" ? { awardLevel } : {}),
-      ...(region ? { region } : {}),
-      ...(fieldCategory ? { fieldCategory } : {}),
-    }
-
-    return Object.keys(nextFilters).length > 0 ? nextFilters : undefined
-  }, [awardLevel, fieldCategory, region])
 
   const lookup = useQuery(
     api.acseeResults.lookup,
     submittedIndex ? { indexNumber: submittedIndex } : "skip"
-  ) as LookupResult | undefined
-
-  const eligibilityArgs = useMemo(() => {
-    if (!lookup?.profile) return "skip" as const
-
-    return {
-      ...(courseQuery.trim() ? { query: courseQuery.trim() } : {}),
-      filters,
-      profile: lookup.profile,
-      maxCount: MAX_CANDIDATE_LIMIT,
-    }
-  }, [courseQuery, filters, lookup])
-
-  const paginatedResults = usePaginatedQuery(
-    api.programmes.eligibleSearchPaginated,
-    eligibilityArgs,
-    { initialNumItems: INITIAL_RESULT_LIMIT }
   )
-
-  const results = paginatedResults.results as EligibilityResult[]
-  const groupedResults = groupEligibilityResults(results)
   const isLookupLoading = Boolean(submittedIndex && lookup === undefined)
-  const isResultsLoading =
-    Boolean(lookup?.profile) && paginatedResults.status === "LoadingFirstPage"
-  const canLoadMore = paginatedResults.status === "CanLoadMore"
-  const oLevelBlockedCount = countOLevelBlockedResults(results)
-  const profileSummary = lookup?.profile
-    ? summarizeProfile(lookup.profile.acsee?.subjects ?? [])
-    : null
-  const visibleStatuses =
-    selectedStatus === "all" ? statusOrder : [selectedStatus]
 
   function lookUpIndex(value: string) {
     const candidate = stripExamYear(value)
@@ -200,20 +67,14 @@ export function FormSixLookupClient() {
 
     if (!isPlausibleAcseeIndexNumber(normalized)) {
       setIndexInput(candidate)
-      setIndexError("Use the full index number, for example S0101/0505.")
+      setIndexError("Weka namba kamili, mfano S0123/0505.")
       setSubmittedIndex("")
       return
     }
 
     setIndexError("")
-    setSelectedStatus("all")
     setIndexInput(formatAcseeIndexNumber(candidate))
     setSubmittedIndex(formatAcseeIndexNumber(candidate))
-  }
-
-  function submitIndex(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    lookUpIndex(indexInput)
   }
 
   // Pick up an index handed over from the home page and look it up right away.
@@ -228,670 +89,776 @@ export function FormSixLookupClient() {
     lookUpIndex(handedOver)
   }, [])
 
-  function resetLookup() {
-    setSubmittedIndex("")
-    setIndexInput("")
-    setIndexError("")
-    setSelectedStatus("all")
-  }
-
-  function resetFilters() {
-    setAwardLevel("degree")
-    setRegion("")
-    setFieldCategory("")
-    setCourseQuery("")
-    setSelectedStatus("all")
-  }
-
   return (
-    <main className={styles.page}>
-      <FormSixHeader />
+    <div className="bg-white font-poster text-kozi-ink">
+      <FormSixHeader
+        indexError={indexError}
+        indexInput={indexInput}
+        isLoading={isLookupLoading}
+        onInput={setIndexInput}
+        onReset={() => {
+          setSubmittedIndex("")
+          setIndexInput("")
+          setIndexError("")
+        }}
+        onSubmit={(event: FormEvent<HTMLFormElement>) => {
+          event.preventDefault()
+          lookUpIndex(indexInput)
+        }}
+        submittedIndex={submittedIndex}
+      />
 
-      <section className={styles.hero}>
-        <Image
-          alt=""
-          className={styles.heroImage}
-          fill
-          priority
-          sizes="100vw"
-          src="/hero-students.png"
-        />
-        <div aria-hidden className={styles.heroWash} />
-        <div className={styles.heroInner}>
-          <div className={styles.heroContent}>
-            <p className={styles.eyebrow}>Form Six / ACSEE 2026</p>
-            <h1>Find courses you qualify for.</h1>
-            <p className={styles.heroCopy}>
-              Your result, matched with published university and college entry
-              requirements.
-            </p>
-            <LookupForm
-              indexError={indexError}
-              indexInput={indexInput}
-              isLoading={isLookupLoading}
-              onInput={setIndexInput}
-              onReset={resetLookup}
-              onSubmit={submitIndex}
-              submittedIndex={submittedIndex}
-            />
-          </div>
-        </div>
-      </section>
-
-      <div aria-live="polite" className={styles.liveRegion}>
-        {!submittedIndex ? null : isLookupLoading ? (
-          <LoadingState title="Finding your ACSEE result" />
+      <div
+        aria-live="polite"
+        className="mx-auto flex w-full max-w-[1440px] flex-col gap-10 px-5 py-10 sm:px-10 lg:px-14 lg:py-12"
+      >
+        {!submittedIndex ? (
+          <HowItWorks />
+        ) : isLookupLoading ? (
+          <LoadingBlock label="Tunatafuta matokeo yako ya ACSEE…" />
         ) : lookup?.status === "invalid_index" ? (
           <ProblemState
-            description="Use the full Form Six format, such as S0101/0505 or P0101/0501."
-            title="Check that index number"
+            title="Angalia namba hiyo"
+            description="Tumia muundo kamili wa Form Six, mfano S0123/0505 au P0123/0501. Use the full index number."
           />
         ) : lookup?.status === "not_found" ? (
           <ProblemState
-            description="Check the centre code and candidate number. This search currently covers NECTA ACSEE 2026."
-            title="No result found"
+            title="Hatukupata matokeo"
+            description="Angalia namba ya kituo na ya mtahiniwa. Huduma hii inatumia matokeo ya NECTA ACSEE 2026 pekee. No ACSEE 2026 result matches this number."
           />
         ) : lookup?.status === "not_released" ? (
           <ProblemState
-            description="The result exists, but it is absent or has no usable ACSEE subject grades."
-            title="This result cannot be matched yet"
+            title="Matokeo haya hayawezi kukaguliwa"
+            description="Matokeo yapo, lakini mtahiniwa hakuhudhuria au hakuna alama za masomo zinazotumika. The result has no usable subject grades."
           />
-        ) : lookup?.result ? (
-          <StudentResultBand lookup={lookup} profileSummary={profileSummary} />
+        ) : lookup?.result && lookup.profile ? (
+          <>
+            <StudentResultCard result={lookup.result} />
+            <EligibilityResults profile={lookup.profile} />
+          </>
         ) : null}
       </div>
-
-      {lookup?.result && lookup.profile ? (
-        <section className={styles.resultsShell}>
-          <FiltersPanel
-            awardLevel={awardLevel}
-            courseQuery={courseQuery}
-            fieldCategory={fieldCategory}
-            onReset={resetFilters}
-            region={region}
-            setAwardLevel={setAwardLevel}
-            setCourseQuery={setCourseQuery}
-            setFieldCategory={setFieldCategory}
-            setRegion={setRegion}
-          />
-
-          <div className={styles.resultsMain}>
-            {isResultsLoading ? (
-              <LoadingState compact title="Checking programme requirements" />
-            ) : results.length === 0 ? (
-              <ProblemState
-                description="Clear one or more course, field, region, or award filters to see more options."
-                title="No programmes match these filters"
-              />
-            ) : (
-              <>
-                <ResultsHeader
-                  canLoadMore={canLoadMore}
-                  oLevelBlockedCount={oLevelBlockedCount}
-                  resultCount={results.length}
-                />
-                <StatusSwitcher
-                  groups={groupedResults}
-                  onChange={setSelectedStatus}
-                  selected={selectedStatus}
-                />
-                <div className={styles.resultGroups}>
-                  {visibleStatuses.map((status) =>
-                    groupedResults[status].length > 0 ? (
-                      <ResultGroup
-                        key={status}
-                        results={groupedResults[status]}
-                        status={status}
-                      />
-                    ) : null
-                  )}
-                </div>
-                {canLoadMore ? (
-                  <div className={styles.loadMoreRow}>
-                    <button
-                      className={styles.secondaryButton}
-                      onClick={() =>
-                        paginatedResults.loadMore(INITIAL_RESULT_LIMIT)
-                      }
-                      type="button"
-                    >
-                      Load more courses
-                    </button>
-                  </div>
-                ) : null}
-              </>
-            )}
-          </div>
-        </section>
-      ) : null}
-    </main>
-  )
-}
-
-function FormSixHeader() {
-  return (
-    <header className={styles.header}>
-      <div className={styles.headerInner}>
-        <Link aria-label="Kozi Ipi home" className={styles.brand} href="/">
-          <Image
-            alt=""
-            className={styles.logo}
-            height={34}
-            priority
-            src="/kozi-ipi-logo.png"
-            width={34}
-          />
-          <span>Kozi Ipi</span>
-        </Link>
-        <nav aria-label="Primary navigation" className={styles.nav}>
-          <Link href="/search">Courses</Link>
-          <Link href="/vyuo">Institutions</Link>
-          <Link aria-current="page" href="/form-six">
-            Form Six
-          </Link>
-          <Link href="/analytics">Analytics</Link>
-        </nav>
-      </div>
-    </header>
-  )
-}
-
-function LookupForm({
-  indexError,
-  indexInput,
-  isLoading,
-  onInput,
-  onReset,
-  onSubmit,
-  submittedIndex,
-}: {
-  indexError: string
-  indexInput: string
-  isLoading: boolean
-  onInput: (value: string) => void
-  onReset: () => void
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void
-  submittedIndex: string
-}) {
-  return (
-    <form
-      aria-busy={isLoading}
-      className={styles.lookupForm}
-      onSubmit={onSubmit}
-    >
-      <div className={styles.lookupControls}>
-        <div className={styles.indexField}>
-          <HugeiconsIcon icon={Search01Icon} size={22} strokeWidth={1.8} />
-          <div className={styles.indexFieldText}>
-            <label htmlFor="form-six-index">Form Six index number</label>
-            <input
-              aria-describedby={indexError ? "form-six-index-error" : undefined}
-              aria-invalid={Boolean(indexError)}
-              autoCapitalize="characters"
-              autoComplete="off"
-              id="form-six-index"
-              inputMode="text"
-              onChange={(event) => onInput(event.target.value)}
-              placeholder="S0101/0505"
-              spellCheck={false}
-              value={indexInput}
-            />
-          </div>
-          {submittedIndex ? (
-            <button
-              aria-label="Clear index number"
-              className={styles.clearButton}
-              onClick={onReset}
-              title="Clear index number"
-              type="button"
-            >
-              <HugeiconsIcon icon={Cancel01Icon} size={19} strokeWidth={2} />
-            </button>
-          ) : null}
-        </div>
-        <button
-          className={styles.primaryButton}
-          disabled={isLoading}
-          type="submit"
-        >
-          {isLoading ? <span aria-hidden className={styles.spinner} /> : null}
-          <span>{isLoading ? "Checking" : "See eligible courses"}</span>
-          {!isLoading ? (
-            <HugeiconsIcon icon={ArrowRight01Icon} size={19} strokeWidth={2} />
-          ) : null}
-        </button>
-      </div>
-      {indexError ? (
-        <p className={styles.formError} id="form-six-index-error" role="alert">
-          <HugeiconsIcon icon={InformationCircleIcon} size={17} />
-          {indexError}
-        </p>
-      ) : (
-        <p className={styles.privacyNote}>Private exact-number lookup</p>
-      )}
-    </form>
-  )
-}
-
-function StudentResultBand({
-  lookup,
-  profileSummary,
-}: {
-  lookup: LookupResult
-  profileSummary: ReturnType<typeof summarizeProfile> | null
-}) {
-  if (!lookup.result) return null
-
-  return (
-    <section className={styles.studentBand}>
-      <div className={styles.studentBandInner}>
-        <div className={styles.studentIdentity}>
-          <div className={styles.resultStatus}>
-            <span aria-hidden /> Result found
-          </div>
-          <h2>{lookup.result.formattedIndexNumber}</h2>
-          <p>{lookup.result.centreName}</p>
-        </div>
-
-        <dl className={styles.resultStats}>
-          <Stat label="Division" value={lookup.result.division} />
-          <Stat label="Aggregate" value={lookup.result.aggregate} />
-          <Stat
-            label="Points"
-            value={profileSummary ? String(profileSummary.points) : "-"}
-          />
-          <Stat
-            label="Principal passes"
-            value={
-              profileSummary ? String(profileSummary.principalPasses) : "-"
-            }
-          />
-        </dl>
-
-        <div className={styles.subjects}>
-          <p>Subjects</p>
-          <div>
-            {lookup.result.subjects.map((subject) => (
-              <span key={`${subject.rawSubject}-${subject.grade}`}>
-                {subject.subject} <strong>{subject.grade}</strong>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function FiltersPanel({
-  awardLevel,
-  courseQuery,
-  fieldCategory,
-  onReset,
-  region,
-  setAwardLevel,
-  setCourseQuery,
-  setFieldCategory,
-  setRegion,
-}: {
-  awardLevel: string
-  courseQuery: string
-  fieldCategory: string
-  onReset: () => void
-  region: string
-  setAwardLevel: (value: string) => void
-  setCourseQuery: (value: string) => void
-  setFieldCategory: (value: string) => void
-  setRegion: (value: string) => void
-}) {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const hasCustomFilters =
-    awardLevel !== "degree" || Boolean(courseQuery || fieldCategory || region)
-
-  return (
-    <aside className={styles.filters}>
-      <div className={styles.desktopFilterHeading}>
-        <span>
-          <HugeiconsIcon icon={FilterHorizontalIcon} size={19} />
-          Refine
-        </span>
-        {hasCustomFilters ? (
-          <button onClick={onReset} type="button">
-            Reset
-          </button>
-        ) : null}
-      </div>
-      <div className={styles.mobileFilterHeading}>
-        <button
-          aria-controls="form-six-filter-controls"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((open) => !open)}
-          type="button"
-        >
-          <span>
-            <HugeiconsIcon icon={FilterHorizontalIcon} size={19} />
-            Refine results
-          </span>
-          <HugeiconsIcon
-            className={mobileOpen ? styles.filterChevronOpen : undefined}
-            icon={ArrowDown01Icon}
-            size={18}
-          />
-        </button>
-        {hasCustomFilters ? (
-          <button onClick={onReset} type="button">
-            Reset
-          </button>
-        ) : null}
-      </div>
-
-      <div
-        className={`${styles.filterBody} ${mobileOpen ? styles.filterBodyOpen : ""}`}
-        id="form-six-filter-controls"
-      >
-        <Field label="Course interest">
-          <div className={styles.filterSearch}>
-            <HugeiconsIcon icon={Search01Icon} size={17} />
-            <input
-              onChange={(event) => setCourseQuery(event.target.value)}
-              placeholder="Search a course"
-              value={courseQuery}
-            />
-          </div>
-          <div className={styles.quickQueries}>
-            {quickQueries.map((query) => (
-              <button
-                aria-pressed={courseQuery === query}
-                key={query}
-                onClick={() =>
-                  setCourseQuery(courseQuery === query ? "" : query)
-                }
-                type="button"
-              >
-                {query}
-              </button>
-            ))}
-          </div>
-        </Field>
-
-        <Field label="Award level">
-          <SelectControl onChange={setAwardLevel} value={awardLevel}>
-            {awardLevels.map((level) => (
-              <option key={level.value} value={level.value}>
-                {level.label}
-              </option>
-            ))}
-          </SelectControl>
-        </Field>
-
-        <Field label="Field">
-          <SelectControl onChange={setFieldCategory} value={fieldCategory}>
-            {fieldOptions.map((field) => (
-              <option key={field.value || "all"} value={field.value}>
-                {field.label}
-              </option>
-            ))}
-          </SelectControl>
-        </Field>
-
-        <Field label="Region">
-          <SelectControl onChange={setRegion} value={region}>
-            <option value="">All regions</option>
-            {regions.map((nextRegion) => (
-              <option key={nextRegion} value={nextRegion}>
-                {nextRegion}
-              </option>
-            ))}
-          </SelectControl>
-        </Field>
-      </div>
-    </aside>
-  )
-}
-
-function ResultsHeader({
-  canLoadMore,
-  oLevelBlockedCount,
-  resultCount,
-}: {
-  canLoadMore: boolean
-  oLevelBlockedCount: number
-  resultCount: number
-}) {
-  return (
-    <div className={styles.resultsHeader}>
-      <div>
-        <p className={styles.sectionLabel}>Programme matches</p>
-        <h2>
-          {resultCount}
-          {canLoadMore ? "+" : ""} options, ranked for your result
-        </h2>
-      </div>
-      {oLevelBlockedCount > 0 ? (
-        <p className={styles.cseeNotice}>
-          <HugeiconsIcon icon={InformationCircleIcon} size={18} />
-          {oLevelBlockedCount}{" "}
-          {oLevelBlockedCount === 1 ? "option needs" : "options need"} Form Four
-          confirmation
-        </p>
-      ) : null}
     </div>
   )
 }
 
-function StatusSwitcher({
-  groups,
+function EligibilityResults({
+  profile,
+}: {
+  profile: StudentEligibilityProfile
+}) {
+  const [courseQueryInput, setCourseQueryInput] = useState("")
+  const [courseQuery, setCourseQuery] = useState("")
+  const [awardFilter, setAwardFilter] = useState<AwardFilter>("all")
+  const [fieldFilter, setFieldFilter] = useState("")
+  const [regionFilter, setRegionFilter] = useState("")
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
+  const [paging, setPaging] = useState({ key: "", count: PAGE_SIZE })
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
+  useEffect(() => {
+    const timeout = window.setTimeout(
+      () => setCourseQuery(courseQueryInput.trim()),
+      COURSE_QUERY_DEBOUNCE_MS
+    )
+    return () => window.clearTimeout(timeout)
+  }, [courseQueryInput])
+
+  const overviewArgs = (awardLevel: string) => ({
+    profile,
+    awardLevel,
+    ...(courseQuery ? { query: courseQuery } : {}),
+  })
+  // One query per award level keeps each Convex read to a single slice.
+  const degree = useQuery(
+    api.programmes.eligibleOverview,
+    overviewArgs("degree")
+  )
+  const diploma = useQuery(
+    api.programmes.eligibleOverview,
+    overviewArgs("ordinary diploma")
+  )
+  const certificate = useQuery(
+    api.programmes.eligibleOverview,
+    overviewArgs("certificate")
+  )
+  const overviews = [degree, diploma, certificate]
+  const isLoading = overviews.some((overview) => overview === undefined)
+  const loaded = overviews.filter(Boolean) as Overview[]
+
+  const allRows = useMemo<OverviewRow[]>(
+    () =>
+      loaded
+        .flatMap((overview) =>
+          overview.rows.map((row) => ({
+            ...row,
+            awardLevel: overview.awardLevel,
+          }))
+        )
+        .sort(
+          (left, right) =>
+            eligibilityStatusRank(right.status) -
+              eligibilityStatusRank(left.status) ||
+            right.fit - left.fit ||
+            left.programmeName.localeCompare(right.programmeName)
+        ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rows change only with the three query results
+    [degree, diploma, certificate]
+  )
+  const capped = loaded.some((overview) => overview.capped)
+
+  const matchesFacets = (
+    row: OverviewRow,
+    skip?: "award" | "field" | "region"
+  ) =>
+    (skip === "award" ||
+      awardFilter === "all" ||
+      row.awardLevel === awardFilter) &&
+    (skip === "field" || !fieldFilter || row.fieldCategory === fieldFilter) &&
+    (skip === "region" || !regionFilter || row.region === regionFilter)
+
+  const facetRows = allRows.filter((row) => matchesFacets(row))
+  const statusCounts = countStatuses(facetRows)
+  const qualifyingRows = facetRows.filter(
+    (row) =>
+      row.status !== "not_eligible" &&
+      (statusFilter === "all" || row.status === statusFilter)
+  )
+  const notMatchedRows = facetRows.filter(
+    (row) => row.status === "not_eligible"
+  )
+
+  const fieldOptions = facetOptions(
+    allRows.filter((row) => matchesFacets(row, "field")),
+    (row) => row.fieldCategory
+  )
+  const regionOptions = facetOptions(
+    allRows.filter((row) => matchesFacets(row, "region")),
+    (row) => row.region
+  )
+  const awardCounts = Object.fromEntries(
+    awardLevelTabs.map((tab) => [
+      tab.value,
+      allRows.filter(
+        (row) =>
+          row.awardLevel === tab.value &&
+          matchesFacets(row, "award") &&
+          row.status !== "not_eligible"
+      ).length,
+    ])
+  )
+
+  const pagingKey = JSON.stringify([
+    courseQuery,
+    awardFilter,
+    fieldFilter,
+    regionFilter,
+    statusFilter,
+  ])
+  const visibleCount = paging.key === pagingKey ? paging.count : PAGE_SIZE
+  const visibleRows = qualifyingRows.slice(0, visibleCount)
+  const activeFilterCount = [
+    awardFilter !== "all",
+    Boolean(fieldFilter),
+    Boolean(regionFilter),
+    Boolean(courseQuery),
+  ].filter(Boolean).length
+
+  function clearFilters() {
+    setAwardFilter("all")
+    setFieldFilter("")
+    setRegionFilter("")
+    setStatusFilter("all")
+    setCourseQueryInput("")
+    setCourseQuery("")
+  }
+
+  return (
+    <>
+      <EligibilitySummary
+        capped={capped}
+        courseQuery={courseQuery}
+        isLoading={isLoading}
+        overviews={loaded}
+      />
+
+      <div className="grid min-w-0 gap-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-12">
+        <aside
+          aria-label="Vichujio"
+          className="flex h-fit min-w-0 flex-col gap-6 lg:sticky lg:top-6"
+        >
+          <button
+            aria-controls="form-six-filters"
+            aria-expanded={filtersOpen}
+            className="flex items-center justify-between rounded-2xl border-[3px] border-kozi-ink bg-white px-5 py-3.5 shadow-[4px_4px_0_var(--kozi-ink)] lg:hidden"
+            onClick={() => setFiltersOpen((open) => !open)}
+            type="button"
+          >
+            <span className="font-display text-base text-kozi-ink">
+              VICHUJIO
+              {activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
+            </span>
+            <span className="font-poster text-sm font-bold text-kozi-cobalt">
+              {filtersOpen ? "Funga" : "Fungua"}
+            </span>
+          </button>
+
+          <div
+            className={`${filtersOpen ? "flex" : "hidden"} min-w-0 flex-col gap-6 lg:flex`}
+            id="form-six-filters"
+          >
+            <div className="flex items-center justify-between">
+              <p className="hidden font-display text-xl tracking-[-0.02em] lg:block">
+                VICHUJIO
+              </p>
+              {activeFilterCount > 0 ? (
+                <button
+                  className="font-poster text-sm font-bold text-kozi-cobalt underline underline-offset-4"
+                  onClick={clearFilters}
+                  type="button"
+                >
+                  Futa zote
+                </button>
+              ) : null}
+            </div>
+
+            <FilterSection hint="Course interest" title="Kozi">
+              <div className="flex items-center gap-2 rounded-xl border-[2.5px] border-kozi-ink bg-white px-3">
+                <SearchIcon className="size-4 shrink-0" />
+                <label className="sr-only" htmlFor="form-six-course">
+                  Tafuta kozi
+                </label>
+                <input
+                  className="h-11 min-w-0 flex-1 bg-transparent font-poster text-[15px] font-semibold placeholder:font-normal placeholder:text-[#6b6b73] focus:outline-none"
+                  id="form-six-course"
+                  onChange={(event) => setCourseQueryInput(event.target.value)}
+                  placeholder="mf. nursing, sheria, ICT"
+                  type="search"
+                  value={courseQueryInput}
+                />
+                {courseQueryInput ? (
+                  <button
+                    aria-label="Futa kozi"
+                    className="grid size-7 place-items-center rounded-full text-kozi-ink/50 hover:text-kozi-ink"
+                    onClick={() => setCourseQueryInput("")}
+                    type="button"
+                  >
+                    <XIcon className="size-3.5" />
+                  </button>
+                ) : null}
+              </div>
+            </FilterSection>
+
+            <FilterSection hint="Award level" title="Ngazi">
+              <div
+                aria-label="Ngazi ya kozi"
+                className="flex flex-wrap gap-2"
+                role="group"
+              >
+                <Chip
+                  onClick={() => setAwardFilter("all")}
+                  selected={awardFilter === "all"}
+                >
+                  Zote
+                </Chip>
+                {awardLevelTabs.map((tab) => (
+                  <Chip
+                    count={awardCounts[tab.value]}
+                    key={tab.value}
+                    onClick={() =>
+                      setAwardFilter(
+                        awardFilter === tab.value ? "all" : tab.value
+                      )
+                    }
+                    selected={awardFilter === tab.value}
+                  >
+                    {tab.label}
+                  </Chip>
+                ))}
+              </div>
+            </FilterSection>
+
+            <FilterSection hint="Field" title="Fani">
+              <FacetSelect
+                allLabel="Fani zote"
+                label="Chagua fani"
+                onChange={setFieldFilter}
+                options={fieldOptions.map((option) => ({
+                  ...option,
+                  label: fieldCategoryLabel(option.value).swahili,
+                }))}
+                value={fieldFilter}
+              />
+            </FilterSection>
+
+            <FilterSection hint="Region" last title="Mkoa">
+              <FacetSelect
+                allLabel="Mikoa yote"
+                label="Chagua mkoa"
+                onChange={setRegionFilter}
+                options={regionOptions.map((option) => ({
+                  ...option,
+                  label: option.value,
+                }))}
+                value={regionFilter}
+              />
+            </FilterSection>
+          </div>
+        </aside>
+
+        <section className="flex min-w-0 flex-col gap-6">
+          <StatusChips
+            counts={statusCounts}
+            onChange={setStatusFilter}
+            selected={statusFilter}
+          />
+
+          {isLoading ? (
+            <LoadingBlock label="Tunakagua masharti ya kozi zote…" />
+          ) : qualifyingRows.length === 0 ? (
+            <ProblemState
+              title="Hakuna kozi hapa"
+              description={
+                activeFilterCount > 0 || statusFilter !== "all"
+                  ? "Ondoa kichujio kimoja au zaidi uone kozi zaidi. Clear a filter to see more courses."
+                  : "Hatukupata kozi unazofuzu kwa matokeo haya. Angalia sehemu ya kozi ambazo bado hazikufai hapa chini."
+              }
+            />
+          ) : (
+            <ResultList
+              profile={profile}
+              rows={visibleRows}
+              total={qualifyingRows.length}
+              onMore={() =>
+                setPaging({ key: pagingKey, count: visibleCount + PAGE_SIZE })
+              }
+            />
+          )}
+
+          {!isLoading && notMatchedRows.length > 0 ? (
+            <NotMatchedSection key={pagingKey} rows={notMatchedRows} />
+          ) : null}
+        </section>
+      </div>
+    </>
+  )
+}
+
+function EligibilitySummary({
+  capped,
+  courseQuery,
+  isLoading,
+  overviews,
+}: {
+  capped: boolean
+  courseQuery: string
+  isLoading: boolean
+  overviews: Overview[]
+}) {
+  if (isLoading) {
+    return (
+      <div
+        aria-hidden
+        className="h-48 animate-pulse rounded-[20px] border-[3px] border-kozi-ink/15 bg-kozi-yellow/20"
+      />
+    )
+  }
+
+  const total = sumCounts(overviews.map((overview) => overview.counts))
+  const plus = capped ? "+" : ""
+  const levels = awardLevelTabs
+    .map((tab) => ({
+      ...tab,
+      overview: overviews.find((overview) => overview.awardLevel === tab.value),
+    }))
+    .filter((level) => level.overview && level.overview.scanned > 0) as Array<
+    (typeof awardLevelTabs)[number] & { overview: Overview }
+  >
+
+  return (
+    <section
+      aria-label="Muhtasari"
+      className="overflow-hidden rounded-[20px] border-[3px] border-kozi-ink bg-kozi-ink text-white shadow-[6px_6px_0_var(--kozi-cobalt)]"
+    >
+      <div className="flex flex-col gap-6 p-6 lg:flex-row lg:items-end lg:justify-between lg:p-8">
+        <div className="flex min-w-0 flex-col gap-2">
+          <p className="font-tag text-[11px] font-semibold tracking-[0.1em] text-kozi-yellow/80">
+            {courseQuery
+              ? `KWA UTAFUTAJI “${courseQuery.toUpperCase()}”`
+              : "KWA MATOKEO YAKO"}
+          </p>
+          <h2 className="font-display text-[44px] leading-[0.92] tracking-[-0.04em] text-kozi-yellow sm:text-[64px]">
+            UNAFUZU KOZI {total.eligible}
+            {plus}
+          </h2>
+          <p className="font-poster text-base font-semibold text-white/85 sm:text-lg">
+            +{total.likely_eligible_but_verify}
+            {plus} huenda unafuzu (thibitisha na chuo) ·{" "}
+            {total.cannot_determine}
+            {plus} zinahitaji uhakiki
+          </p>
+          <p className="font-poster text-sm text-white/60">
+            You meet the published minimum for {total.eligible}
+            {plus} courses; {total.likely_eligible_but_verify}
+            {plus} more look likely but need confirming.
+          </p>
+        </div>
+        <p className="font-poster text-sm text-white/70 lg:max-w-[260px] lg:text-right">
+          {total.not_eligible}
+          {plus} hujafikia sifa bado — tumeziweka mwisho na tunaonyesha
+          kinachokosekana.
+        </p>
+      </div>
+
+      <dl className="grid border-t-2 border-white/15 sm:grid-cols-3">
+        {levels.map((level) => (
+          <div
+            className="flex flex-col gap-1 border-white/15 px-6 py-4 max-sm:border-t-2 max-sm:first:border-t-0 sm:border-l-2 sm:first:border-l-0 lg:px-8"
+            key={level.value}
+          >
+            <dt className="font-display text-[13px] tracking-[0.04em] text-kozi-yellow uppercase">
+              {level.label} · {level.swahili}
+            </dt>
+            <dd className="font-poster text-[15px] text-white">
+              <strong className="font-display text-xl">
+                {level.overview.counts.eligible}
+              </strong>{" "}
+              unafuzu ·{" "}
+              <strong className="font-display text-xl">
+                {level.overview.counts.likely_eligible_but_verify}
+              </strong>{" "}
+              huenda
+            </dd>
+            <dd className="font-tag text-[11px] text-white/55">
+              {level.overview.capped
+                ? `Tumekagua kozi ${level.overview.scanLimit} za kwanza (${level.overview.scanLimit}+)`
+                : `Kati ya kozi ${level.overview.scanned} zilizokaguliwa`}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
+function StatusChips({
+  counts,
   onChange,
   selected,
 }: {
-  groups: ReturnType<typeof groupEligibilityResults>
-  onChange: (status: EligibilityStatus | "all") => void
-  selected: EligibilityStatus | "all"
+  counts: Record<EligibilityStatus, number>
+  onChange: (status: StatusFilter) => void
+  selected: StatusFilter
 }) {
-  const allCount = statusOrder.reduce(
-    (count, status) => count + groups[status].length,
+  const qualifyingTotal = qualifyingStatuses.reduce(
+    (total, status) => total + counts[status],
     0
   )
+  const statuses = qualifyingStatuses.filter(
+    (status) => status !== "interest_match_only" || counts[status] > 0
+  )
 
   return (
     <div
-      aria-label="Filter by eligibility"
-      className={styles.statusSwitcher}
+      aria-label="Chuja kwa hali"
+      className="flex flex-wrap gap-2 border-b-[3px] border-kozi-ink pb-5"
       role="group"
     >
-      <button
-        aria-pressed={selected === "all"}
+      <Chip
+        count={qualifyingTotal}
         onClick={() => onChange("all")}
-        type="button"
+        selected={selected === "all"}
       >
-        <span>All</span>
-        <strong>{allCount}</strong>
-      </button>
-      {statusOrder.map((status) => {
-        const count = groups[status].length
+        Zote zinazofaa
+      </Chip>
+      {statuses.map((status) => (
+        <Chip
+          count={counts[status]}
+          disabled={counts[status] === 0}
+          dotClassName={statusCopy[status].dot}
+          key={status}
+          onClick={() => onChange(selected === status ? "all" : status)}
+          selected={selected === status}
+        >
+          {statusCopy[status].label}
+        </Chip>
+      ))}
+    </div>
+  )
+}
+
+function ResultList({
+  onMore,
+  profile,
+  rows,
+  total,
+}: {
+  onMore: () => void
+  profile: StudentEligibilityProfile
+  rows: OverviewRow[]
+  total: number
+}) {
+  return (
+    <div className="flex min-w-0 flex-col gap-5">
+      {rows.map((row, index) => {
+        const startsGroup = index === 0 || rows[index - 1].status !== row.status
         return (
-          <button
-            aria-pressed={selected === status}
-            disabled={count === 0}
-            key={status}
-            onClick={() => onChange(status)}
-            type="button"
-          >
-            <i aria-hidden className={statusDotClass(status)} />
-            <span>{statusCopy[status].label}</span>
-            <strong>{count}</strong>
-          </button>
+          <div className="flex min-w-0 flex-col gap-5" key={row._id}>
+            {startsGroup ? <GroupHeading status={row.status} /> : null}
+            <EligibilityResultCard profile={profile} row={row} />
+          </div>
         )
       })}
+      <div className="flex flex-col items-center gap-3 pt-2 text-center">
+        {rows.length < total ? (
+          <button
+            className="rounded-full border-[3px] border-kozi-ink bg-kozi-yellow px-8 py-4 font-display text-base text-kozi-ink shadow-[5px_5px_0_var(--kozi-ink)] transition-transform hover:-translate-y-0.5"
+            onClick={onMore}
+            type="button"
+          >
+            ONYESHA ZAIDI
+          </button>
+        ) : null}
+        <p className="font-poster text-sm text-kozi-graphite">
+          Unaona {rows.length} kati ya {total}
+        </p>
+      </div>
     </div>
   )
 }
 
-function ResultGroup({
-  results,
-  status,
-}: {
-  results: EligibilityResult[]
-  status: EligibilityStatus
-}) {
+function GroupHeading({ status }: { status: EligibilityStatus }) {
+  const copy = statusCopy[status]
   return (
-    <section className={styles.resultGroup}>
-      <header>
-        <div>
-          <h3>{eligibilityStatusLabels[status]}</h3>
-          <p>{statusCopy[status].description}</p>
-        </div>
-        <span>{results.length}</span>
-      </header>
-      <div className={styles.programmeList}>
-        {results.map((result) => (
-          <ResultCard key={result._id} result={result} />
-        ))}
+    <div className="flex min-w-0 flex-col gap-1 pt-2">
+      <div className="flex items-center gap-3">
+        <StatusPill status={status} />
+        <p className="font-tag text-[11px] tracking-[0.06em] text-kozi-graphite uppercase">
+          {copy.english}
+        </p>
       </div>
-    </section>
+      <p className="font-poster text-sm leading-5 text-kozi-ink/75">
+        {copy.description}
+      </p>
+    </div>
   )
 }
 
-function ResultCard({ result }: { result: EligibilityResult }) {
-  const officialSourceHref = normalizeExternalHref(result.officialSourceUrl)
-  const missingOLevel = result.eligibility.missingClauses.some((clause) =>
-    /\b(O-Level|CSEE)\b/i.test(clause)
-  )
+function NotMatchedSection({ rows }: { rows: OverviewRow[] }) {
+  const [count, setCount] = useState(NOT_MATCHED_PAGE_SIZE)
+  const visible = rows.slice(0, count)
 
   return (
-    <article className={styles.programmeCard}>
-      <div className={styles.cardTopline}>
-        <p>
-          {result.awardLevel} / {result.regulator}
-          {result.region ? ` / ${result.region}` : ""}
-        </p>
-        <StatusPill status={result.eligibility.status} />
-      </div>
-
-      <h4>{result.programmeName}</h4>
-      <p className={styles.institutionName}>{result.institutionName}</p>
-
-      <div className={styles.courseMeta}>
-        {result.region ? (
-          <Meta icon={<HugeiconsIcon icon={Location01Icon} size={16} />}>
-            {result.region}
-          </Meta>
-        ) : null}
-        {result.duration ? (
-          <Meta icon={<HugeiconsIcon icon={Clock01Icon} size={16} />}>
-            {result.duration} years
-          </Meta>
-        ) : null}
-        <Meta>{result.fieldCategory}</Meta>
-        {missingOLevel ? <Meta tone="warning">Form Four check</Meta> : null}
-      </div>
-
-      {result.minimumEntryRequirements ? (
-        <div className={styles.requirementText}>
-          <span>Published requirement</span>
-          <p>{result.minimumEntryRequirements}</p>
+    <details className="group rounded-[20px] border-[3px] border-kozi-ink bg-[#f6f6f7]">
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-6 [&::-webkit-details-marker]:hidden">
+        <span className="flex min-w-0 flex-col gap-0.5">
+          <span className="font-display text-lg tracking-[-0.01em] text-kozi-ink">
+            HUJAFIKIA SIFA BADO · {rows.length}
+          </span>
+          <span className="font-poster text-sm text-kozi-graphite">
+            Kozi ambazo sharti moja au zaidi halijakidhiwa — na kinachokosekana.
+          </span>
+        </span>
+        <span className="rounded-full border-2 border-kozi-ink bg-white px-3 py-1 font-poster text-sm font-bold">
+          <span className="group-open:hidden">Onyesha</span>
+          <span className="hidden group-open:inline">Ficha</span>
+        </span>
+      </summary>
+      <ul className="flex flex-col border-t-[3px] border-kozi-ink">
+        {visible.map((row) => (
+          <li
+            className="flex min-w-0 flex-col gap-1.5 border-b-2 border-kozi-ink/10 bg-white px-5 py-4 last:border-b-0 sm:px-6"
+            key={row._id}
+          >
+            <p className="font-tag text-[11px] tracking-[0.08em] text-kozi-graphite uppercase">
+              {awardLevelTabs.find((tab) => tab.value === row.awardLevel)
+                ?.label ?? row.awardLevel}{" "}
+              · {row.region ?? "—"}
+            </p>
+            <p className="font-poster text-base font-bold break-words text-kozi-ink">
+              {row.programmeName}
+            </p>
+            <p className="font-poster text-sm break-words text-kozi-ink/70">
+              {row.institutionName}
+            </p>
+            {row.missing.length > 0 ? (
+              <ul className="mt-1 flex flex-col gap-1">
+                {row.missing.map((line) => (
+                  <li
+                    className="flex items-start gap-2 font-poster text-sm leading-5 text-[#9b1c14]"
+                    key={line}
+                  >
+                    <span aria-hidden className="font-display">
+                      ✗
+                    </span>
+                    <span className="min-w-0 break-words">{line}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+      {count < rows.length ? (
+        <div className="border-t-[3px] border-kozi-ink bg-white px-5 py-4 text-center sm:px-6">
+          <button
+            className="font-poster text-sm font-bold text-kozi-cobalt underline underline-offset-4"
+            onClick={() => setCount(count + NOT_MATCHED_PAGE_SIZE)}
+            type="button"
+          >
+            Onyesha {Math.min(NOT_MATCHED_PAGE_SIZE, rows.length - count)} zaidi
+          </button>
         </div>
       ) : null}
-
-      <details className={styles.evidenceDisclosure}>
-        <summary>
-          <span>Eligibility evidence</span>
-          <small>
-            {result.eligibility.matchedClauses.length} matched /{" "}
-            {result.eligibility.missingClauses.length} to confirm
-          </small>
-          <HugeiconsIcon icon={ArrowDown01Icon} size={18} />
-        </summary>
-        <div className={styles.evidenceGrid}>
-          <EvidenceList
-            icon="check"
-            items={result.eligibility.matchedClauses}
-            title="Matched"
-          />
-          <EvidenceList
-            icon="info"
-            items={result.eligibility.missingClauses}
-            title="Still to confirm"
-          />
-        </div>
-      </details>
-
-      <footer className={styles.cardFooter}>
-        <p>
-          Verified {result.lastVerifiedDate}
-          {result.needsReview ? " / review advised" : ""}
-        </p>
-        {officialSourceHref ? (
-          <Link href={officialSourceHref} rel="noreferrer" target="_blank">
-            Official source
-            <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
-          </Link>
-        ) : null}
-      </footer>
-    </article>
+    </details>
   )
 }
 
-function StatusPill({ status }: { status: EligibilityStatus }) {
+function HowItWorks() {
+  const steps = [
+    {
+      title: "Weka namba",
+      text: "Namba ya mtihani wa ACSEE 2026, mfano S0123/0505.",
+    },
+    {
+      title: "Tunakagua masharti",
+      text: "Matokeo yako yanalinganishwa na masharti ya TCU na NACTVET kwa kila kozi.",
+    },
+    {
+      title: "Unaona kwa nini",
+      text: "Kila kozi inaonyesha sharti lililokidhiwa (✓) na lililokosekana (✗).",
+    },
+  ]
   return (
-    <span className={`${styles.statusPill} ${statusPillClass(status)}`}>
-      <i aria-hidden />
-      {statusCopy[status].label}
-    </span>
+    <ol className="grid gap-4 md:grid-cols-3">
+      {steps.map((step, index) => (
+        <li
+          className="flex flex-col gap-2 rounded-[20px] border-[3px] border-kozi-ink bg-white p-6 shadow-[5px_5px_0_var(--kozi-ink)]"
+          key={step.title}
+        >
+          <span className="font-display text-[40px] leading-none text-kozi-cobalt">
+            0{index + 1}
+          </span>
+          <p className="font-display text-lg text-kozi-ink">
+            {step.title.toUpperCase()}
+          </p>
+          <p className="font-poster text-[15px] leading-6 text-kozi-ink/75">
+            {step.text}
+          </p>
+        </li>
+      ))}
+    </ol>
   )
 }
 
-function EvidenceList({
-  icon,
-  items,
+function FilterSection({
+  children,
+  hint,
+  last = false,
   title,
 }: {
-  icon: "check" | "info"
-  items: string[]
-  title: string
-}) {
-  const visibleItems = items.slice(0, 3)
-
-  return (
-    <div className={styles.evidenceList}>
-      <p>
-        <HugeiconsIcon
-          icon={
-            icon === "check" ? CheckmarkCircle02Icon : InformationCircleIcon
-          }
-          size={17}
-        />
-        {title}
-      </p>
-      {visibleItems.length > 0 ? (
-        <ul>
-          {visibleItems.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      ) : (
-        <span>No additional requirement in this group.</span>
-      )}
-    </div>
-  )
-}
-
-function LoadingState({
-  compact = false,
-  title,
-}: {
-  compact?: boolean
+  children: ReactNode
+  hint: string
+  last?: boolean
   title: string
 }) {
   return (
     <div
-      className={`${styles.loadingState} ${compact ? styles.compactState : ""}`}
+      className={`flex min-w-0 flex-col gap-3 ${last ? "" : "border-b-[3px] border-kozi-ink pb-6"}`}
     >
-      <span aria-hidden className={styles.spinner} />
-      <div>
-        <p>{title}</p>
-        <span>One moment</span>
+      <div className="flex items-baseline justify-between">
+        <p className="font-display text-[15px] tracking-[0.04em] uppercase">
+          {title}
+        </p>
+        <p className="font-tag text-[11px] text-kozi-graphite">{hint}</p>
       </div>
+      {children}
+    </div>
+  )
+}
+
+function FacetSelect({
+  allLabel,
+  label,
+  onChange,
+  options,
+  value,
+}: {
+  allLabel: string
+  label: string
+  onChange: (value: string) => void
+  options: Array<{ value: string; label: string; count: number }>
+  value: string
+}) {
+  return (
+    <select
+      aria-label={label}
+      className="h-12 w-full min-w-0 cursor-pointer rounded-xl border-[2.5px] border-kozi-ink bg-white px-3 font-poster text-[15px] font-semibold text-kozi-ink outline-none focus-visible:ring-4 focus-visible:ring-kozi-yellow"
+      onChange={(event) => onChange(event.target.value)}
+      value={value}
+    >
+      <option value="">{allLabel}</option>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label} ({option.count})
+        </option>
+      ))}
+    </select>
+  )
+}
+
+function Chip({
+  children,
+  count,
+  disabled = false,
+  dotClassName,
+  onClick,
+  selected,
+}: {
+  children: ReactNode
+  count?: number
+  disabled?: boolean
+  dotClassName?: string
+  onClick: () => void
+  selected: boolean
+}) {
+  return (
+    <button
+      aria-pressed={selected}
+      className={`inline-flex items-center gap-2 rounded-full border-2 border-kozi-ink px-3.5 py-2 font-poster text-sm font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+        selected
+          ? "bg-kozi-ink text-kozi-yellow"
+          : "bg-white text-kozi-ink hover:bg-kozi-yellow"
+      }`}
+      disabled={disabled}
+      onClick={onClick}
+      type="button"
+    >
+      {dotClassName ? (
+        <span
+          aria-hidden
+          className={`size-2.5 rounded-full border border-kozi-ink ${dotClassName}`}
+        />
+      ) : null}
+      {children}
+      {count !== undefined ? (
+        <span className="font-tag text-xs">{count}</span>
+      ) : null}
+    </button>
+  )
+}
+
+function LoadingBlock({ label }: { label: string }) {
+  return (
+    <div
+      className="flex items-center gap-4 rounded-[20px] border-[3px] border-kozi-ink bg-white p-6"
+      role="status"
+    >
+      <span
+        aria-hidden
+        className="size-6 animate-spin rounded-full border-[3px] border-kozi-ink border-t-kozi-yellow"
+      />
+      <p className="font-poster text-base font-semibold">{label}</p>
     </div>
   )
 }
@@ -904,107 +871,53 @@ function ProblemState({
   title: string
 }) {
   return (
-    <div className={styles.problemState} role="status">
-      <HugeiconsIcon icon={InformationCircleIcon} size={24} />
-      <div>
-        <h2>{title}</h2>
-        <p>{description}</p>
-      </div>
+    <div
+      className="rounded-[20px] border-[3px] border-dashed border-kozi-ink bg-white p-8 text-center"
+      role="status"
+    >
+      <p className="font-display text-xl text-kozi-ink">
+        {title.toUpperCase()}
+      </p>
+      <p className="mx-auto mt-2 max-w-[560px] font-poster text-sm leading-6 text-kozi-graphite">
+        {description}
+      </p>
     </div>
   )
 }
 
-function Field({ children, label }: { children: ReactNode; label: string }) {
-  return (
-    <label className={styles.field}>
-      <span>{label}</span>
-      {children}
-    </label>
-  )
-}
-
-function SelectControl({
-  children,
-  onChange,
-  value,
-}: {
-  children: ReactNode
-  onChange: (value: string) => void
-  value: string
-}) {
-  return (
-    <div className={styles.selectWrap}>
-      <select onChange={(event) => onChange(event.target.value)} value={value}>
-        {children}
-      </select>
-      <HugeiconsIcon icon={ArrowDown01Icon} size={17} />
-    </div>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt>{label}</dt>
-      <dd>{value}</dd>
-    </div>
-  )
-}
-
-function Meta({
-  children,
-  icon,
-  tone = "default",
-}: {
-  children: ReactNode
-  icon?: ReactNode
-  tone?: "default" | "warning"
-}) {
-  return (
-    <span className={tone === "warning" ? styles.warningMeta : undefined}>
-      {icon}
-      {children}
-    </span>
-  )
-}
-
-function statusDotClass(status: EligibilityStatus) {
-  return {
-    eligible: styles.dotEligible,
-    likely_eligible_but_verify: styles.dotLikely,
-    cannot_determine: styles.dotCheck,
-    interest_match_only: styles.dotRelated,
-    not_eligible: styles.dotNotMatched,
-  }[status]
-}
-
-function statusPillClass(status: EligibilityStatus) {
-  return {
-    eligible: styles.pillEligible,
-    likely_eligible_but_verify: styles.pillLikely,
-    cannot_determine: styles.pillCheck,
-    interest_match_only: styles.pillRelated,
-    not_eligible: styles.pillNotMatched,
-  }[status]
-}
-
-function summarizeProfile(subjects: { grade: AcseeGrade }[]) {
-  const grades = subjects.map((subject) => subject.grade)
-
-  return {
-    points: calculateAcseePoints(grades),
-    principalPasses: countAcseePrincipalPasses(grades),
+function countStatuses(rows: OverviewRow[]) {
+  const counts: Record<EligibilityStatus, number> = {
+    eligible: 0,
+    likely_eligible_but_verify: 0,
+    cannot_determine: 0,
+    interest_match_only: 0,
+    not_eligible: 0,
   }
+  for (const row of rows) counts[row.status] += 1
+  return counts
 }
 
-function normalizeExternalHref(href?: string) {
-  const value = href?.trim().split(/[;\s]+/)[0]
-  if (!value) return null
-  if (/^https?:\/\//i.test(value)) return value
-  if (/^\/\//.test(value)) return `https:${value}`
-  if (/^(www\.)?[a-z0-9-]+(\.[a-z0-9-]+)+(\/.*)?$/i.test(value)) {
-    return `https://${value}`
+function sumCounts(list: Array<Record<EligibilityStatus, number>>) {
+  const total = countStatuses([])
+  for (const counts of list) {
+    for (const status of Object.keys(total) as EligibilityStatus[]) {
+      total[status] += counts[status]
+    }
   }
+  return total
+}
 
-  return null
+function facetOptions(
+  rows: OverviewRow[],
+  pick: (row: OverviewRow) => string | undefined
+) {
+  const counts = new Map<string, number>()
+  for (const row of rows) {
+    const value = pick(row)
+    if (value) counts.set(value, (counts.get(value) ?? 0) + 1)
+  }
+  return Array.from(counts, ([value, count]) => ({ value, count })).sort(
+    (left, right) =>
+      right.count - left.count || left.value.localeCompare(right.value)
+  )
 }
