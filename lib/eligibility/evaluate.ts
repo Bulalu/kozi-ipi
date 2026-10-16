@@ -93,8 +93,9 @@ export function evaluateRequirementVariant(
     })
   }
 
+  const context = clauseContextForVariant(variant)
   const clauseResults = variant.clauses.map((clause) =>
-    evaluateClause(clause, profile)
+    evaluateClause(clause, profile, context)
   )
   const matchedClauses = clauseResults.flatMap(
     (result) => result.matchedClauses
@@ -169,16 +170,53 @@ export function evaluateRequirementVariant(
   })
 }
 
+// Other clauses in the same variant that change how a clause reads. Today
+// that is the principal-pass minimum: in "one principal pass and one
+// subsidiary pass", any principal pass beyond the first also covers the
+// subsidiary, because a principal pass is a higher grade than S.
+export type ClauseContext = {
+  requiredPrincipalPasses: number
+}
+
+export function clauseContextForVariant(
+  variant: Pick<RequirementVariant, "clauses">
+): ClauseContext {
+  return {
+    requiredPrincipalPasses: variant.clauses.reduce(
+      (required, clause) =>
+        clause.kind === "min_acsee_principal_passes"
+          ? Math.max(required, clause.count)
+          : required,
+      0
+    ),
+  }
+}
+
 export function evaluateRequirementClause(
   clause: RequirementClause,
-  profile: NormalizedStudentProfile
+  profile: NormalizedStudentProfile,
+  context: ClauseContext = { requiredPrincipalPasses: 0 }
 ): ClauseEvaluation {
-  return evaluateClause(clause, profile)
+  return evaluateClause(clause, profile, context)
+}
+
+// S grades plus principal passes left over after the principal minimum.
+export function subsidiaryOrBetterPassCount(
+  profile: NormalizedStudentProfile,
+  context: ClauseContext = { requiredPrincipalPasses: 0 }
+) {
+  const summary = profile.acseeSummary
+  if (!summary) return undefined
+  return (
+    summary.subsidiaryPassCount +
+    Math.max(0, summary.principalPassCount - context.requiredPrincipalPasses)
+  )
 }
 
 function evaluateClause(
   clause: RequirementClause,
-  profile: NormalizedStudentProfile
+  profile: NormalizedStudentProfile,
+  context: ClauseContext
 ): ClauseEvaluation {
   if (clause.kind === "min_csee_passes") {
     const passCount = profile.cseeSummary?.passCount
@@ -235,7 +273,7 @@ function evaluateClause(
   }
 
   if (clause.kind === "min_acsee_subsidiary_passes") {
-    const passCount = profile.acseeSummary?.subsidiaryPassCount
+    const passCount = subsidiaryOrBetterPassCount(profile, context)
     if (passCount === undefined) {
       return missing("ACSEE subsidiary pass count is required.")
     }

@@ -659,6 +659,51 @@ assert.equal(
   "ACSEE subject groups without a grade should require principal passes."
 )
 
+// "One principal pass and one subsidiary pass": a second principal pass is a
+// higher grade than S, so it covers the subsidiary.
+const twoPrincipalPassProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "History", grade: "C" },
+      { subject: "Geography", grade: "D" },
+      { subject: "General Studies", grade: "C" },
+    ],
+  },
+})
+const principalPlusSubsidiaryRuleSet = {
+  ...engineeringRuleSet,
+  variants: [
+    {
+      route: "form_six" as const,
+      parseStatus: "structured" as const,
+      clauses: [
+        { kind: "min_acsee_principal_passes" as const, count: 1 },
+        { kind: "min_acsee_subsidiary_passes" as const, count: 1 },
+      ],
+    },
+  ],
+}
+assert.equal(
+  evaluateRequirementRuleSet(
+    principalPlusSubsidiaryRuleSet,
+    twoPrincipalPassProfile
+  ).status,
+  "eligible",
+  "Extra principal passes should satisfy a subsidiary-pass minimum."
+)
+assert.equal(
+  evaluateRequirementRuleSet(principalPlusSubsidiaryRuleSet, {
+    ...twoPrincipalPassProfile,
+    acseeSummary: {
+      ...twoPrincipalPassProfile.acseeSummary!,
+      principalPassCount: 1,
+    },
+  }).status,
+  "not_eligible",
+  "One principal pass without an S grade should miss a subsidiary minimum."
+)
+
 console.log(
   `Eligibility contract checks passed for ${sampleRequirementRuleSets.length} gold rule-set fixtures.`
 )
