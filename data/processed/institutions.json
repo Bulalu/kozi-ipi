@@ -34,32 +34,31 @@
       "missing_registration_number"
     ],
     "searchText": "ABDULRAHMAN AL- SUMAIT UNIVERSITY abdulrahman al sumait U/TLF/11 NACTVET University offering NTA programmes Private Zanzibar Urban/West Magharibi District Zanzibar Abdulrahman Al- Sumait University (SUMAIT) abdulrahman al sumait sumait SUMAIT TCU Higher Education Institution unknown Zanzibar Zanzibar SUMAIT ABDULRAHMAN AL- SUMAIT UNIVERSITY abdulrahman al sumait university U/TLF/11 NACTVET ; TCU university private Zanzibar Urban/West Magharibi District Zanzibar",
-    "programmeCount": 24,
+    "programmeCount": 20,
     "awardLevels": [
-      "degree",
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
-      "education",
       "business",
+      "education",
       "ICT",
       "other",
-      "arts",
       "arts media communication",
       "business finance management",
-      "community development"
-    ],
-    "courseFamilies": [
-      "business",
-      "education",
-      "ICT",
-      "other",
-      "social work community development",
-      "arts",
       "community development",
       "law"
     ],
-    "browseSearchText": "ordinary diploma education ICT business social sciences community development social work community development business finance management degree arts media communication arts other unknown community development law"
+    "courseFamilies": [
+      "business",
+      "ICT",
+      "education",
+      "other",
+      "community development",
+      "law",
+      "social work community development"
+    ],
+    "browseSearchText": "degree education arts media communication other ICT ordinary diploma business social sciences community development social work community development business finance management unknown community development law"
   },
   {
     "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA (IAA) - ARUSHA",
@@ -178,9 +177,10 @@
       "missing_registration_number"
     ],
     "searchText": "INSTITUTE OF ACCOUNTANCY ARUSHA (IAA) - DAR ES SALAAM CAMPUS accountancy arusha iaa dar es salaam campus IAA REG/BTP/022 NACTVET Technical Institution Government Dar es Salaam Kinondoni Municipal Council Mainland IAA Institute of Accountancy Arusha (IAA) Dar es Salaam Campus institute of accountancy arusha dar es salaam campus TCU business college public Dar es Salaam Mainland",
-    "programmeCount": 12,
+    "programmeCount": 17,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business finance management",
@@ -192,7 +192,7 @@
       "ICT",
       "arts communication"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT arts media communication arts communication"
+    "browseSearchText": "degree business finance management business ICT ordinary diploma arts media communication arts communication"
   },
   {
     "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA (IAA) - DODOMA CAMPUS",
@@ -2399,23 +2399,27 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "COLLEGE OF BUSINESS EDUCATION - DODOMA business education dodoma REG/BMG/006 NACTVET Technical Institution Government Dodoma Dodoma Municipal Council Mainland COLLEGE OF BUSINESS EDUCATION - DODOMA college of business education dodoma REG/BMG/006 NACTVET ; TCU business college public Dodoma Dodoma Municipal Council Mainland",
-    "programmeCount": 14,
+    "programmeCount": 27,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business finance management",
       "business",
       "arts media communication",
+      "education",
+      "ICT",
       "other needs classification"
     ],
     "courseFamilies": [
       "business",
       "ICT",
-      "other",
-      "tourism_hospitality"
+      "tourism_hospitality",
+      "education",
+      "other"
     ],
-    "browseSearchText": "ordinary diploma business finance management business arts media communication ICT tourism_hospitality other needs classification other"
+    "browseSearchText": "degree business finance management business education ICT tourism_hospitality ordinary diploma arts media communication other needs classification other"
   },
   {
     "institutionName": "COLLEGE OF BUSINESS EDUCATION - MBEYA CAMPUS",
@@ -2458,13 +2462,13 @@
       "degree"
     ],
     "fieldCategories": [
-      "business",
-      "business finance management"
+      "business finance management",
+      "business"
     ],
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business degree"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
@@ -2499,21 +2503,24 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "COLLEGE OF BUSINESS EDUCATION - MWANZA business education mwanza REG/BMG/023 NACTVET Technical Institution Government Mwanza Ilemela Municipal Council Mainland COLLEGE OF BUSINESS EDUCATION - MWANZA college of business education mwanza REG/BMG/023 NACTVET ; TCU business college public Mwanza Ilemela Municipal Council Mainland",
-    "programmeCount": 13,
+    "programmeCount": 23,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business finance management",
       "business",
+      "education",
       "ICT"
     ],
     "courseFamilies": [
       "business",
       "tourism_hospitality",
+      "education",
       "ICT"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT tourism_hospitality"
+    "browseSearchText": "degree business finance management business education tourism_hospitality ordinary diploma ICT"
   },
   {
     "institutionName": "BWIMA INSTITUTE OF HEALTH AND ALLIED SCIENCES",
@@ -2649,6 +2656,7 @@
       "ordinary diploma"
     ],
     "fieldCategories": [
+      "health",
       "health allied sciences",
       "other needs classification"
     ],
@@ -2657,7 +2665,7 @@
       "education",
       "other"
     ],
-    "browseSearchText": "ordinary diploma other needs classification other degree health allied sciences health education"
+    "browseSearchText": "degree health ordinary diploma other needs classification other health allied sciences education"
   },
   {
     "institutionName": "CATHOLIC UNIVERSITY COLLEGE OF MBEYA",
@@ -3510,7 +3518,7 @@
       "missing_registration_number"
     ],
     "searchText": "UNIVERSITY OF DAR ES SALAAM dar es salaam UD NACTVET University offering NTA programmes Government Dar es Salaam Kinondoni Municipal Council Mainland University of Dar es Salaam (UDSM) dar es salaam udsm UDSM TCU Higher Education Institution unknown Dar es Salaam Mainland UDSM University of Dar es Salaam (UDSM) university of dar es salaam TCU university public Dar es Salaam Mainland",
-    "programmeCount": 104,
+    "programmeCount": 95,
     "awardLevels": [
       "degree",
       "ordinary diploma"
@@ -3520,22 +3528,22 @@
       "engineering technology",
       "science",
       "business finance management",
+      "law public administration",
       "education",
       "agriculture fisheries livestock",
-      "ICT",
-      "other"
+      "ICT"
     ],
     "courseFamilies": [
-      "arts communication",
       "other",
       "engineering",
       "business",
       "education",
-      "agriculture",
-      "health",
-      "ICT"
+      "law public administration",
+      "ICT",
+      "arts communication",
+      "health"
     ],
-    "browseSearchText": "ordinary diploma arts media communication arts communication ICT degree engineering technology engineering business finance management business planning built environment land social work community development tourism_hospitality law public administration law education other needs classification science other agriculture fisheries livestock agriculture health allied sciences health social sciences community development unknown community development"
+    "browseSearchText": "degree arts media communication other business finance management business engineering technology engineering law public administration science education ICT agriculture tourism_hospitality other needs classification agriculture fisheries livestock health ordinary diploma arts communication"
   },
   {
     "institutionName": "UNIVERSITY OF DAR ES SALAAM COMPUTING CENTRE - DAR ES SALAAM",
@@ -3691,7 +3699,7 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "DAR ES SALAAM UNIVERSITY COLLEGE OF EDUCATION (DUCE) dar es salaam education duce DUCE U/SAT/42 NACTVET University offering NTA programmes Government Dar es Salaam Temeke Municipal Council Mainland DUCE DAR ES SALAAM UNIVERSITY COLLEGE OF EDUCATION (DUCE) dar es salaam university college of education U/SAT/42 NACTVET ; TCU university college public Dar es Salaam Mainland",
-    "programmeCount": 32,
+    "programmeCount": 30,
     "awardLevels": [
       "ordinary diploma",
       "degree"
@@ -3712,7 +3720,7 @@
       "ICT",
       "tourism_hospitality"
     ],
-    "browseSearchText": "ordinary diploma health allied sciences education degree business finance management business accounting tourism_hospitality health ICT unknown"
+    "browseSearchText": "degree education business finance management business ordinary diploma health allied sciences accounting tourism_hospitality health ICT unknown"
   },
   {
     "institutionName": "DAR ES SALAAM MARITIME INSTITUTE",
@@ -3756,21 +3764,21 @@
       "certificate"
     ],
     "fieldCategories": [
-      "engineering technology",
       "business finance management",
+      "engineering technology",
       "transport",
-      "other needs classification",
       "science",
       "engineering",
+      "other needs classification",
       "procurement"
     ],
     "courseFamilies": [
-      "engineering",
       "business",
+      "engineering",
       "other",
       "transport"
     ],
-    "browseSearchText": "certificate business finance management business other needs classification other ordinary diploma engineering technology engineering science degree transport procurement"
+    "browseSearchText": "degree science other engineering technology engineering business finance management business certificate other needs classification ordinary diploma transport procurement"
   },
   {
     "institutionName": "DAR ES SALAAM POLICE ACADEMY",
@@ -3932,32 +3940,32 @@
       "missing_registration_number"
     ],
     "searchText": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY dar es salaam technology REG/EOS/001 NACTVET Technical Institution Government Dar es Salaam Ilala Municipal Council Mainland Dar es Salaam Institute of Technology (DIT) dar es salaam technology dit DIT TCU Higher Education Institution unknown Dar es Salaam Mainland DIT DAR ES SALAAM INSTITUTE OF TECHNOLOGY dar es salaam institute of technology REG/EOS/001 NACTVET ; TCU technical college public Dar es Salaam Ilala Municipal Council Mainland",
-    "programmeCount": 62,
+    "programmeCount": 28,
     "awardLevels": [
-      "degree",
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "engineering technology",
-      "engineering",
-      "business",
       "ICT",
+      "arts media communication",
+      "health",
       "health allied sciences",
-      "other",
-      "arts",
-      "arts media communication"
+      "agriculture fisheries livestock",
+      "electrical",
+      "media"
     ],
     "courseFamilies": [
       "engineering",
-      "business",
-      "ICT",
-      "other",
       "health",
       "arts communication",
-      "education",
+      "ICT",
+      "other",
+      "agriculture",
+      "electrical",
       "media"
     ],
-    "browseSearchText": "ordinary diploma health allied sciences engineering other needs classification other engineering technology arts media communication arts communication agriculture fisheries livestock agriculture ICT health degree transport business accounting arts media education law religious studies electrical"
+    "browseSearchText": "degree engineering technology engineering ICT health ordinary diploma health allied sciences other needs classification other arts media communication arts communication agriculture fisheries livestock agriculture electrical media"
   },
   {
     "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY - MWANZA CAMPUS",
@@ -3987,15 +3995,16 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY - MWANZA CAMPUS dar es salaam technology mwanza campus REG/SAT/013 NACTVET Technical Institution Government Mwanza Ilemela Municipal Council Mainland DAR ES SALAAM INSTITUTE OF TECHNOLOGY - MWANZA CAMPUS dar es salaam institute of technology mwanza campus REG/SAT/013 NACTVET ; TCU technical college public Dar es Salaam Ilemela Municipal Council - Mwanza Mainland",
-    "programmeCount": 11,
+    "programmeCount": 12,
     "awardLevels": [
       "ordinary diploma",
-      "certificate"
+      "certificate",
+      "degree"
     ],
     "fieldCategories": [
       "other needs classification",
-      "vocational trade",
       "health",
+      "vocational trade",
       "health allied sciences",
       "other"
     ],
@@ -4003,7 +4012,7 @@
       "other",
       "health"
     ],
-    "browseSearchText": "ordinary diploma other needs classification other vocational trade health allied sciences health certificate"
+    "browseSearchText": "degree health ordinary diploma other needs classification other vocational trade health allied sciences certificate"
   },
   {
     "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY - MYUNGA CAMPUS",
@@ -4286,32 +4295,32 @@
       "missing_registration_number"
     ],
     "searchText": "UNIVERSITY OF DODOMA dodoma DM NACTVET University offering NTA programmes Government Dodoma Dodoma Municipal Council Mainland University of Dodoma (UDOM) dodoma udom UDOM TCU Higher Education Institution unknown Dodoma Mainland UDOM University of Dodoma (UDOM) university of dodoma TCU university public Dodoma Mainland",
-    "programmeCount": 147,
+    "programmeCount": 80,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
-      "ICT",
-      "arts",
       "arts media communication",
-      "business",
+      "ICT",
+      "science",
       "engineering technology",
-      "other",
-      "education"
+      "education",
+      "health",
+      "law public administration"
     ],
     "courseFamilies": [
+      "other",
       "business",
       "engineering",
-      "other",
-      "arts",
-      "arts communication",
-      "ICT",
       "education",
-      "health"
+      "ICT",
+      "health",
+      "tourism_hospitality",
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT education arts media communication other science degree arts communication tourism hospitality tourism_hospitality law public administration law health allied sciences health agriculture fisheries livestock agriculture engineering technology engineering planning built environment land arts media"
+    "browseSearchText": "degree health ICT science engineering business finance management business engineering technology other arts media communication tourism hospitality tourism_hospitality law public administration education agriculture fisheries livestock ordinary diploma"
   },
   {
     "institutionName": "DODOMA INSTITUTE OF DEVELOPMENT AND ENTREPRENEURSHIP DODOMA",
@@ -5316,8 +5325,9 @@
       "missing_registration_number"
     ],
     "searchText": "INSTITUTE OF FINANCE MANAGEMENT - DODOMA CAMPUS finance management dodoma campus REG/BTP/118 NACTVET Technical Institution Government Dodoma Dodoma Municipal Council Mainland IFM INSTITUTE OF FINANCE MANAGEMENT - DODOMA CAMPUS institute of finance management dodoma campus REG/BTP/118 NACTVET business college public Dodoma Dodoma Municipal Council Mainland IFM Institute of Finance Management (IFM)- Dodoma institute of finance management dodoma TCU business college public Dodoma Mainland IFM",
-    "programmeCount": 2,
+    "programmeCount": 4,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
@@ -5326,7 +5336,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "INSTITUTE OF FINANCE MANAGEMENT (IFM) - GEITA CAMPUS CHATO",
@@ -5402,9 +5412,10 @@
       "missing_registration_number"
     ],
     "searchText": "INSTITUTE OF FINANCE MANAGEMENT - MWANZA CAMPUS finance management mwanza campus REG/BTP/041 NACTVET Technical Institution Government Mwanza Ilemela Municipal Council Mainland IFM INSTITUTE OF FINANCE MANAGEMENT - MWANZA CAMPUS institute of finance management mwanza campus REG/BTP/041 NACTVET business college public Mwanza Ilemela Municipal Council Mainland IFM Institute of Finance Management (IFM)- Mwanza institute of finance management mwanza TCU business college public Mwanza Mainland IFM",
-    "programmeCount": 5,
+    "programmeCount": 9,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business finance management",
@@ -5413,7 +5424,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "INSTITUTE OF FINANCE MANAGEMENT - SIMIYU CAMPUS",
@@ -5450,8 +5461,9 @@
       "missing_registration_number"
     ],
     "searchText": "INSTITUTE OF FINANCE MANAGEMENT - SIMIYU CAMPUS finance management simiyu campus REG/BTP/119 NACTVET Technical Institution Government Simiyu Bariadi District Council Mainland IFM INSTITUTE OF FINANCE MANAGEMENT - SIMIYU CAMPUS institute of finance management simiyu campus REG/BTP/119 NACTVET business college public Simiyu Bariadi District Council Mainland IFM Institute of Finance Management (IFM)-Simiyu institute of finance management simiyu TCU business college public Simiyu Mainland IFM",
-    "programmeCount": 2,
+    "programmeCount": 4,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
@@ -5460,7 +5472,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "INSTITUTE OF FINANCE MANAGEMENT - ZANZIBAR",
@@ -6793,32 +6805,32 @@
       "missing_registration_number"
     ],
     "searchText": "UNIVERSITY OF IRINGA iringa IU NACTVET University offering NTA programmes Private Iringa Iringa Municipal Council Mainland University of Iringa (UoI) iringa uoi UoI TCU Higher Education Institution unknown Iringa Mainland UoI University of Iringa (UoI) university of iringa TCU university private Iringa Mainland",
-    "programmeCount": 41,
+    "programmeCount": 28,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
-      "business",
       "education",
+      "law public administration",
       "arts media communication",
       "health allied sciences",
-      "law public administration",
-      "planning built environment land",
-      "social sciences community development"
+      "social sciences community development",
+      "other needs classification",
+      "planning built environment land"
     ],
     "courseFamilies": [
       "business",
       "education",
-      "social work community development",
-      "law",
-      "arts communication",
+      "other",
       "health",
-      "tourism_hospitality",
-      "community development"
+      "social work community development",
+      "arts communication",
+      "law",
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma business finance management business education health allied sciences health planning built environment land social work community development social sciences community development arts media communication arts communication law public administration law degree tourism hospitality tourism_hospitality other needs classification other accounting community development tourism media social work religious studies"
+    "browseSearchText": "degree arts media communication other law public administration tourism hospitality tourism_hospitality social sciences community development business finance management business other needs classification education ordinary diploma health allied sciences health planning built environment land social work community development arts communication law"
   },
   {
     "institutionName": "ISIMILA NURSING SCHOOL",
@@ -6991,14 +7003,14 @@
     ],
     "courseFamilies": [
       "business",
-      "arts communication",
+      "other",
       "education",
       "ICT",
       "social work community development",
       "law",
       "tourism_hospitality"
     ],
-    "browseSearchText": "ordinary diploma law public administration law social sciences community development social work community development business finance management business tourism_hospitality planning built environment land ICT education arts media communication degree arts communication"
+    "browseSearchText": "degree education arts media communication other business finance management business law public administration social sciences community development ICT ordinary diploma law social work community development tourism_hospitality planning built environment land"
   },
   {
     "institutionName": "JR INSTITUTE OF INFORMATION TECHNOLOGY",
@@ -7504,8 +7516,8 @@
     "fieldCategories": [
       "business finance management",
       "ICT",
-      "education",
       "law public administration",
+      "education",
       "other needs classification",
       "social sciences community development"
     ],
@@ -7513,11 +7525,12 @@
       "business",
       "ICT",
       "education",
-      "law",
+      "law public administration",
       "other",
+      "law",
       "social work community development"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT other needs classification other law public administration law social sciences community development social work community development degree education"
+    "browseSearchText": "degree ICT business finance management business law public administration other education ordinary diploma other needs classification law social sciences community development social work community development"
   },
   {
     "institutionName": "KANGE COLLEGE OF HEALTH AND ALLIED SCIENCES",
@@ -10712,7 +10725,7 @@
       "health",
       "other"
     ],
-    "browseSearchText": "ordinary diploma health allied sciences health degree business finance management business education science other"
+    "browseSearchText": "degree science other education business finance management business ordinary diploma health allied sciences health"
   },
   {
     "institutionName": "MARY B INSTITUTE OF HEALTH AND ALLIED SCIENCES",
@@ -11080,32 +11093,30 @@
       "missing_registration_number"
     ],
     "searchText": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY mbeya science technology REG/EOS/003 NACTVET University offering NTA programmes Government Mbeya Mbeya City Council Mainland Mbeya University of Science and Technology (MUST) mbeya science technology must MUST TCU Higher Education Institution unknown Mbeya Mainland MUST MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY mbeya university of science and technology REG/EOS/003 NACTVET ; TCU university public Mbeya Mbeya City Council Mainland",
-    "programmeCount": 115,
+    "programmeCount": 78,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "engineering technology",
+      "health",
       "ICT",
+      "education",
       "other",
       "engineering",
-      "health",
-      "education",
       "business",
-      "science"
+      "business finance management"
     ],
     "courseFamilies": [
       "engineering",
       "other",
       "health",
-      "ICT",
       "business",
-      "education",
-      "agriculture",
-      "civil built environment"
+      "ICT",
+      "education"
     ],
-    "browseSearchText": "ordinary diploma engineering technology engineering health allied sciences business finance management business ICT degree science other health agriculture fisheries livestock agriculture planning built environment land arts media communication civil built environment education electrical unknown"
+    "browseSearchText": "degree business finance management business engineering technology engineering ICT education health arts media communication agriculture fisheries livestock other science ordinary diploma health allied sciences unknown"
   },
   {
     "institutionName": "MBONYE TRAINING COLLEGE",
@@ -11666,23 +11677,21 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "MINISTRY OF AGRICULTURE TRAINING INSTITUTE IGURUSI - MBEYA ministry agriculture training igurusi mbeya REG/ANE/009 NACTVET Technical Institution Government Mbeya Mbarali District Council Mainland MINISTRY OF AGRICULTURE TRAINING INSTITUTE IGURUSI - MBEYA ministry of agriculture training institute igurusi mbeya REG/ANE/009 NACTVET agriculture college public Mbeya Mainland",
-    "programmeCount": 4,
+    "programmeCount": 3,
     "awardLevels": [
       "ordinary diploma"
     ],
     "fieldCategories": [
       "agriculture",
       "business finance management",
-      "education",
       "engineering technology"
     ],
     "courseFamilies": [
       "agriculture",
       "business",
-      "education",
       "engineering"
     ],
-    "browseSearchText": "ordinary diploma education business finance management business engineering technology engineering agriculture"
+    "browseSearchText": "ordinary diploma business finance management business engineering technology engineering agriculture"
   },
   {
     "institutionName": "MINISTRY OF AGRICULTURE TRAINING INSTIUTE ILONGA - KILOSA",
@@ -12822,16 +12831,15 @@
       "degree"
     ],
     "fieldCategories": [
-      "arts",
       "law public administration",
       "other"
     ],
     "courseFamilies": [
-      "arts",
       "ICT",
+      "law public administration",
       "other"
     ],
-    "browseSearchText": "ordinary diploma law public administration other degree arts ICT"
+    "browseSearchText": "degree law public administration ordinary diploma other ICT"
   },
   {
     "institutionName": "MSIMBAZI CENTRE TRAINING INSTITUTE",
@@ -13211,13 +13219,14 @@
     ],
     "courseFamilies": [
       "business",
-      "arts communication",
+      "other",
       "education",
       "health",
       "law",
-      "other"
+      "arts communication",
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma business finance management business law public administration law arts media communication arts communication health allied sciences health degree education other unknown accounting procurement"
+    "browseSearchText": "degree education arts media communication other law public administration business finance management business ordinary diploma law arts communication health allied sciences health unknown accounting procurement"
   },
   {
     "institutionName": "MVUMI INSTITUTE OF HEALTH SCIENCES",
@@ -13384,13 +13393,15 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "THE MWALIMU NYERERE MEMORIAL ACADEMY - ZANZIBAR mwalimu nyerere memorial academy zanzibar REG/TLF/106 NACTVET Technical Institution Government Zanzibar Urban/West Magharibi District Zanzibar THE MWALIMU NYERERE MEMORIAL ACADEMY - ZANZIBAR mwalimu nyerere memorial academy zanzibar REG/TLF/106 NACTVET ; TCU mixed public Zanzibar Urban/West Magharibi District Zanzibar",
-    "programmeCount": 16,
+    "programmeCount": 27,
     "awardLevels": [
       "ordinary diploma",
+      "degree",
       "certificate"
     ],
     "fieldCategories": [
       "business finance management",
+      "education",
       "other",
       "social sciences community development",
       "arts media communication",
@@ -13400,11 +13411,12 @@
     ],
     "courseFamilies": [
       "business",
+      "education",
       "other",
       "social work community development",
       "ICT"
     ],
-    "browseSearchText": "certificate law public administration other social sciences community development social work community development ordinary diploma business finance management business planning built environment land arts media communication ICT other needs classification"
+    "browseSearchText": "degree business finance management business social sciences community development other education certificate law public administration social work community development ordinary diploma planning built environment land arts media communication ICT other needs classification"
   },
   {
     "institutionName": "MWAMBANI SCHOOL OF NURSING",
@@ -13608,32 +13620,32 @@
       "missing_registration_number"
     ],
     "searchText": "MWENGE CATHOLIC UNIVERSITY mwenge catholic U/SAT/20 AND U/BTP/20 NACTVET University offering NTA programmes Private Kilimanjaro Moshi District Council Mainland Mwenge Catholic University (MWECAU) mwenge catholic mwecau MWECAU TCU Higher Education Institution unknown Kilimanjaro Mainland MWECAU MWENGE CATHOLIC UNIVERSITY mwenge catholic university U/SAT/20 AND U/BTP/20 NACTVET ; TCU university private Kilimanjaro Moshi District Council Mainland",
-    "programmeCount": 93,
+    "programmeCount": 56,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "business",
-      "other",
+      "business finance management",
       "health",
       "ICT",
-      "business finance management",
       "education",
-      "accounting",
-      "arts"
+      "law public administration",
+      "other",
+      "science"
     ],
     "courseFamilies": [
       "business",
-      "other",
       "ICT",
       "health",
       "education",
+      "other",
+      "community development",
       "law",
-      "arts",
-      "social work community development"
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT law public administration law social sciences community development social work community development degree planning built environment land arts communication arts media communication education science other accounting arts health engineering community development unknown procurement religious studies"
+    "browseSearchText": "degree education business finance management business engineering technology engineering law public administration science other arts media communication ICT ordinary diploma law social sciences community development social work community development health community development unknown accounting procurement religious studies"
   },
   {
     "institutionName": "MWENGE COMMUNITY COLLEGE - ZANZIBAR",
@@ -13717,23 +13729,23 @@
     ],
     "fieldCategories": [
       "business finance management",
+      "law public administration",
       "science",
       "education",
-      "health allied sciences",
       "ICT",
       "engineering technology",
-      "law public administration"
+      "health"
     ],
     "courseFamilies": [
       "business",
-      "ICT",
       "other",
       "education",
       "engineering",
-      "health",
-      "law"
+      "ICT",
+      "law public administration",
+      "health"
     ],
-    "browseSearchText": "ordinary diploma science other ICT degree business finance management business education health allied sciences health law public administration law engineering technology engineering"
+    "browseSearchText": "degree business finance management business law public administration other science ICT education engineering health engineering technology ordinary diploma"
   },
   {
     "institutionName": "MZUMBE UNIVERSITY (MU), MBEYA COLLEGE",
@@ -13758,10 +13770,9 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "MZUMBE UNIVERSITY (MU), MBEYA COLLEGE mzumbe mu mbeya MU MMB NACTVET University offering NTA programmes Government Mbeya Mbeya City Council Mainland MU",
-    "programmeCount": 10,
+    "programmeCount": 6,
     "awardLevels": [
-      "ordinary diploma",
-      "degree"
+      "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
@@ -13771,7 +13782,7 @@
       "business",
       "law"
     ],
-    "browseSearchText": "ordinary diploma business finance management business law public administration law degree"
+    "browseSearchText": "ordinary diploma business finance management business law public administration law"
   },
   {
     "institutionName": "NACHINGWEA SCHOOL OF NURSING",
@@ -14104,7 +14115,7 @@
       "missing_registration_number"
     ],
     "searchText": "NATIONAL INSTITUTE OF TRANSPORT (NIT) national transport nit NIT REG/EOS/009 NACTVET Technical Institution Government Dar es Salaam Kinondoni Municipal Council Mainland NIT National Institute of Transport (NIT) national transport nit NIT TCU Higher Education Institution public Dar es Salaam Mainland NIT NATIONAL INSTITUTE OF TRANSPORT (NIT) national institute of transport REG/EOS/009 NACTVET ; TCU technical college public Dar es Salaam Kinondoni Municipal Council Mainland",
-    "programmeCount": 62,
+    "programmeCount": 55,
     "awardLevels": [
       "ordinary diploma",
       "degree",
@@ -14116,20 +14127,20 @@
       "education",
       "ICT",
       "other needs classification",
-      "business",
+      "construction",
       "engineering",
-      "accounting"
+      "transport"
     ],
     "courseFamilies": [
       "engineering",
       "business",
       "ICT",
-      "education",
       "other",
+      "education",
       "construction",
       "transport"
     ],
-    "browseSearchText": "certificate education engineering ordinary diploma business finance management business engineering technology ICT other needs classification other degree accounting construction transport"
+    "browseSearchText": "degree business finance management business engineering technology engineering ICT education certificate ordinary diploma other needs classification other construction transport"
   },
   {
     "institutionName": "NDANDA COLLEGE OF HEALTH AND ALLIED SCIENCES",
@@ -14845,23 +14856,23 @@
       "business finance management",
       "arts media communication",
       "education",
-      "health allied sciences",
+      "law public administration",
       "other needs classification",
       "science",
-      "social sciences community development",
-      "ICT"
+      "agriculture",
+      "engineering technology"
     ],
     "courseFamilies": [
       "business",
-      "arts communication",
-      "education",
       "other",
-      "social work community development",
-      "health",
+      "education",
       "ICT",
-      "law"
+      "law public administration",
+      "agriculture",
+      "engineering",
+      "health"
     ],
-    "browseSearchText": "certificate business finance management business vocational trade other ordinary diploma other needs classification social work community development education ICT health allied sciences health degree arts media communication arts communication tourism hospitality tourism_hospitality social sciences community development law public administration law science planning built environment land"
+    "browseSearchText": "degree education arts media communication other law public administration tourism hospitality tourism_hospitality engineering technology engineering science ICT business finance management business social sciences community development agriculture certificate vocational trade ordinary diploma other needs classification social work community development health allied sciences health"
   },
   {
     "institutionName": "PADRE PIO COLLEGE OF HEALTH AND ALLIED SCIENCES",
@@ -15736,7 +15747,7 @@
       "missing_registration_number"
     ],
     "searchText": "RUAHA CATHOLIC UNIVERSITY (RUCU) ruaha catholic rucu RUCU RU NACTVET University offering NTA programmes Private Iringa Iringa Municipal Council Mainland RUCU Ruaha Catholic University (RUCU) ruaha catholic rucu RUCU TCU Higher Education Institution unknown Iringa Mainland RUCU Ruaha Catholic University (RUCU) ruaha catholic university TCU university private Iringa Mainland",
-    "programmeCount": 29,
+    "programmeCount": 18,
     "awardLevels": [
       "degree",
       "ordinary diploma"
@@ -15745,11 +15756,10 @@
       "business finance management",
       "health allied sciences",
       "ICT",
-      "business",
       "education",
       "law public administration",
-      "other",
-      "agriculture"
+      "health",
+      "other needs classification"
     ],
     "courseFamilies": [
       "business",
@@ -15758,10 +15768,9 @@
       "education",
       "engineering",
       "law",
-      "other",
-      "agriculture"
+      "other"
     ],
-    "browseSearchText": "ordinary diploma business finance management business ICT law public administration law other needs classification health allied sciences health degree education engineering technology engineering other agriculture"
+    "browseSearchText": "degree education law public administration other ICT business finance management business engineering health ordinary diploma law other needs classification health allied sciences"
   },
   {
     "institutionName": "RUAHA COMMUNITY DEVELOPMENT TRAINING INSTITUTE",
@@ -16045,21 +16054,28 @@
     "needsReview": false,
     "reviewReasons": [],
     "searchText": "INSTITUTE OF RURAL DEVELOPMENT PLANNING - MWANZA rural development planning mwanza REG/PWF/043 NACTVET Technical Institution Government Mwanza Magu District Council Mainland INSTITUTE OF RURAL DEVELOPMENT PLANNING - MWANZA institute of rural development planning mwanza REG/PWF/043 NACTVET ; TCU technical college public Mwanza Magu District Council Mainland",
-    "programmeCount": 4,
+    "programmeCount": 8,
     "awardLevels": [
+      "degree",
       "certificate",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "planning built environment land",
+      "business finance management",
+      "engineering technology",
+      "law public administration",
       "other"
     ],
     "courseFamilies": [
+      "business",
       "civil built environment",
+      "engineering",
+      "law public administration",
       "other",
       "social work community development"
     ],
-    "browseSearchText": "certificate planning built environment land civil built environment ordinary diploma social work community development other"
+    "browseSearchText": "degree engineering technology engineering business finance management business law public administration certificate planning built environment land civil built environment ordinary diploma social work community development other"
   },
   {
     "institutionName": "SAMAIL COLLEGE OF TECHNOLOGY AND INDUSTRY - CHAKECHAKE, PEMBA",
@@ -16800,19 +16816,22 @@
       "missing_registration_number"
     ],
     "searchText": "INSTITUTE OF SOCIAL WORK - KISANGARA CAMPUS social work kisangara campus REG/BTP/009 NACTVET Technical Institution Government Kilimanjaro Mwanga District Council Mainland Institute of Social Work (ISW) Kisangara Campus social work isw kisangara campus ISW TCU Higher Education Institution unknown Kilimanjaro Mainland ISW INSTITUTE OF SOCIAL WORK - KISANGARA CAMPUS institute of social work kisangara campus REG/BTP/009 NACTVET ; TCU community development/social work college public Kilimanjaro Mwanga District Council Mainland",
-    "programmeCount": 2,
+    "programmeCount": 3,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
+      "law public administration",
       "other needs classification",
       "social sciences community development"
     ],
     "courseFamilies": [
+      "law public administration",
       "other",
       "social work community development"
     ],
-    "browseSearchText": "ordinary diploma other needs classification other social sciences community development social work community development"
+    "browseSearchText": "degree law public administration ordinary diploma other needs classification other social sciences community development social work community development"
   },
   {
     "institutionName": "SOKOINE UNIVERSITY OF AGRICULTURE",
@@ -16849,32 +16868,32 @@
       "missing_registration_number"
     ],
     "searchText": "SOKOINE UNIVERSITY OF AGRICULTURE sokoine agriculture SU NACTVET University offering NTA programmes Government Morogoro Morogoro Municipal Council Mainland Sokoine University of Agriculture (SUA) sokoine agriculture sua SUA TCU Higher Education Institution unknown Morogoro Mainland SUA Sokoine University of Agriculture (SUA) sokoine university of agriculture TCU university public Morogoro Mainland",
-    "programmeCount": 74,
+    "programmeCount": 40,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
-      "business",
       "business finance management",
       "education",
       "agriculture",
-      "health allied sciences",
-      "agriculture fisheries livestock",
       "science",
-      "health"
+      "agriculture fisheries livestock",
+      "engineering technology",
+      "health",
+      "health allied sciences"
     ],
     "courseFamilies": [
       "business",
-      "agriculture",
       "education",
+      "other",
+      "agriculture",
       "health",
       "ICT",
-      "other",
       "engineering",
-      "tourism_hospitality"
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma business finance management business science ICT health allied sciences health degree education planning built environment land social work community development other engineering technology engineering agriculture fisheries livestock agriculture tourism_hospitality"
+    "browseSearchText": "degree engineering technology engineering agriculture business finance management business agriculture fisheries livestock other health education ICT tourism_hospitality science law public administration ordinary diploma health allied sciences"
   },
   {
     "institutionName": "SONGEA CATHOLIC INSTITUTE OF TECHNICAL EDUCATION - SONGEA",
@@ -17293,29 +17312,25 @@
       "missing_registration_number"
     ],
     "searchText": "ST. AUGUSTINE UNIVERSITY OF TANZANIA (SAUT) -ARUSHA CENTRE st augustine tanzania saut arusha SAUT SAA NACTVET University offering NTA programmes Private Arusha Arusha District Council Mainland SAUT St. Augustine University of Tanzania (SAUT) Arusha Centre st augustine tanzania saut arusha SAUT TCU Higher Education Institution unknown Arusha Mainland SAUT St. Augustine University of Tanzania (SAUT) -Arusha Centre st augustine university of tanzania arusha centre TCU mixed private Arusha Mainland",
-    "programmeCount": 12,
+    "programmeCount": 7,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
-      "business",
-      "education",
       "law public administration",
-      "health",
-      "other",
+      "education",
       "tourism hospitality"
     ],
     "courseFamilies": [
       "business",
       "education",
       "law",
-      "health",
       "other",
       "tourism_hospitality"
     ],
-    "browseSearchText": "ordinary diploma business finance management business law public administration law degree education tourism hospitality tourism_hospitality other health"
+    "browseSearchText": "degree education tourism hospitality tourism_hospitality law public administration other business finance management business ordinary diploma law"
   },
   {
     "institutionName": "ST. AUGUSTINE UNIVERSITY OF TANZANIA (SAUT) -MWANZA",
@@ -17493,33 +17508,42 @@
     "institutionType": "University offering NTA programmes",
     "region": "Morogoro",
     "districtOrCouncil": "Kilombero District Council",
+    "physicalLocation": "Ifakara",
     "mainlandOrZanzibar": "Mainland",
+    "website": "https://sfuchas.ac.tz/",
+    "logoUrl": "https://sfuchas.ac.tz/wp-content/uploads/2022/04/SFUCHAS-LOGO-NO-BG.png",
+    "logoSourceUrl": "https://sfuchas.ac.tz/",
+    "logoStatus": "verified",
+    "logoVerifiedAt": "2026-04-26",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "yes",
     "officialSourceUrl": "https://www.nactvet.go.tz/storage/public/files/GUIDEBOOK_FOR_ALL_UNIVERSITIES_2025_2026.pdf",
     "sourceType": "NACTVET admission guidebook 2025/2026 - universities offering certificate/diploma programmes",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official NACTVET guidebook. || Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official NACTVET guidebook. || Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as university approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "ST. FRANCIS UNIVERSITY COLLEGE OF HEALTH AND ALLIED SCIENCES (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS SF NACTVET University offering NTA programmes Private Morogoro Kilombero District Council Mainland SFUCHAS St. Francis University College of Health and Allied Sciences (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS TCU Higher Education Institution unknown Ifakara Mainland SFUCHAS",
+    "searchText": "ST. FRANCIS UNIVERSITY COLLEGE OF HEALTH AND ALLIED SCIENCES (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS SF NACTVET University offering NTA programmes Private Morogoro Kilombero District Council Mainland SFUCHAS St. Francis University College of Health and Allied Sciences (SFUCHAS) st francis health allied sciences sfuchas SFUCHAS TCU Higher Education Institution unknown Ifakara Mainland SFUCHAS St. Francis University College of Health and Allied Sciences(SFUCHAS) Ifakara st francis university college of health and allied sciences ifakara TCU university private Morogoro Mainland",
     "programmeCount": 3,
     "awardLevels": [
       "ordinary diploma",
       "degree"
     ],
     "fieldCategories": [
-      "health allied sciences"
+      "health allied sciences",
+      "health"
     ],
     "courseFamilies": [
       "health"
     ],
-    "browseSearchText": "ordinary diploma health allied sciences health degree"
+    "browseSearchText": "degree health ordinary diploma health allied sciences"
   },
   {
     "institutionName": "ST. GASPAR COLLEGE OF HEALTH AND ALLIED SCIENCES",
@@ -17640,32 +17664,28 @@
       "missing_registration_number"
     ],
     "searchText": "ST JOHN'S UNIVERSITY OF TANZANIA st john s tanzania SJ NACTVET University offering NTA programmes Private Dodoma Dodoma Municipal Council Mainland St. John's University of Tanzania (SJUT) st john s tanzania sjut SJUT TCU Higher Education Institution unknown Dodoma Mainland SJUT St. John’s University of Tanzania (SJUT) st john s university of tanzania TCU university private Dodoma Mainland",
-    "programmeCount": 26,
+    "programmeCount": 16,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
       "business finance management",
-      "ICT",
       "education",
-      "health",
-      "health allied sciences",
-      "accounting",
+      "ICT",
       "arts media communication",
-      "business"
+      "health",
+      "planning built environment land"
     ],
     "courseFamilies": [
       "business",
-      "health",
       "education",
-      "engineering",
       "ICT",
-      "arts communication",
-      "religious studies",
+      "health",
+      "other",
       "social work community development"
     ],
-    "browseSearchText": "ordinary diploma business finance management business planning built environment land social work community development ICT degree arts media communication arts communication education health allied sciences health accounting religious studies engineering"
+    "browseSearchText": "degree education business finance management business health arts media communication other ICT ordinary diploma planning built environment land social work community development"
   },
   {
     "institutionName": "ST. JOSEPH UNIVERSITY COLLEGE OF HEALTH SCIENCES",
@@ -18280,7 +18300,7 @@
       "missing_registration_number"
     ],
     "searchText": "STELLA MARIS MTWARA UNIVERSITY COLLEGE stella maris mtwara SAM NACTVET University offering NTA programmes Private Mtwara Mtwara District Council Mainland Stella Maris Mtwara University College (STEMMUCo) stella maris mtwara stemmuco STEMMUCo TCU Higher Education Institution unknown Mtwara Mainland STEMMUCo Stella Maris Mtwara University College (STeMMUCo) stella maris mtwara university college TCU university college private Mtwara Mainland",
-    "programmeCount": 21,
+    "programmeCount": 14,
     "awardLevels": [
       "degree",
       "ordinary diploma",
@@ -18288,23 +18308,20 @@
     ],
     "fieldCategories": [
       "business finance management",
-      "business",
       "education",
       "law public administration",
-      "accounting",
       "arts media communication",
-      "law",
-      "other"
+      "planning built environment land",
+      "science"
     ],
     "courseFamilies": [
       "business",
+      "other",
       "education",
       "law",
-      "other",
-      "arts communication",
       "social work community development"
     ],
-    "browseSearchText": "ordinary diploma business finance management business law public administration law planning built environment land social work community development certificate degree arts media communication arts communication education science other accounting"
+    "browseSearchText": "degree education arts media communication other science law public administration business finance management business ordinary diploma law planning built environment land social work community development certificate"
   },
   {
     "institutionName": "SUMBAWANGA COLLEGE OF HEALTH AND ALLIED SCIENCES",
@@ -18880,8 +18897,9 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - KIGOMA CAMPUS tanzania accountancy tia kigoma campus TIA REG/BTP/059 NACTVET Technical Institution Government Kigoma Kigoma-Ujiji Municipal Council Mainland TIA Tanzania Institute of Accountancy (TIA) Kigoma tanzania institute of accountancy kigoma TCU business college public Kigoma Mainland",
-    "programmeCount": 4,
+    "programmeCount": 8,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
@@ -18890,7 +18908,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MBEYA",
@@ -18922,8 +18940,9 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MBEYA tanzania accountancy tia mbeya TIA REG/BMG/012 NACTVET Technical Institution Government Mbeya Mbeya City Council Mainland TIA Tanzania Institute of Accountancy (TIA), Mbeya tanzania institute of accountancy mbeya TCU business college public Mbeya Mainland",
-    "programmeCount": 4,
+    "programmeCount": 10,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
@@ -18932,7 +18951,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MTWARA",
@@ -18964,9 +18983,10 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MTWARA tanzania accountancy tia mtwara TIA REG/BMG/022 NACTVET Technical Institution Government Mtwara Mtwara District Council Mainland TIA Tanzania Institute of Accountancy (TIA), Mtwara tanzania institute of accountancy mtwara TCU business college public Mtwara Mainland",
-    "programmeCount": 6,
+    "programmeCount": 9,
     "awardLevels": [
-      "ordinary diploma"
+      "ordinary diploma",
+      "degree"
     ],
     "fieldCategories": [
       "business finance management"
@@ -18974,7 +18994,7 @@
     "courseFamilies": [
       "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MWANZA CAMPUS",
@@ -19006,17 +19026,20 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MWANZA CAMPUS tanzania accountancy tia mwanza campus TIA REG/BMG/050 NACTVET Technical Institution Government Mwanza Ilemela Municipal Council Mainland TIA Tanzania Institute of Accountancy (TIA) Mwanza tanzania institute of accountancy mwanza TCU business college public Mwanza Mainland",
-    "programmeCount": 3,
+    "programmeCount": 9,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
-      "business finance management"
+      "business finance management",
+      "education"
     ],
     "courseFamilies": [
-      "business"
+      "business",
+      "education"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business education ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - SINGIDA",
@@ -19048,19 +19071,18 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - SINGIDA tanzania accountancy tia singida TIA REG/BMG/008 NACTVET Technical Institution Government Singida Singida District Council Mainland TIA Tanzania Institute of Accountancy (TIA) Singida tanzania institute of accountancy singida TCU business college public Singida Mainland",
-    "programmeCount": 5,
+    "programmeCount": 9,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
-      "business finance management",
-      "education"
+      "business finance management"
     ],
     "courseFamilies": [
-      "business",
-      "education"
+      "business"
     ],
-    "browseSearchText": "ordinary diploma business finance management business education"
+    "browseSearchText": "degree business finance management business ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - TANGA CAMPUS",
@@ -19092,17 +19114,20 @@
       "missing_registration_number"
     ],
     "searchText": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - TANGA CAMPUS tanzania accountancy tia tanga campus TIA REG/BTP/167 NACTVET Technical Institution Government Tanga Tanga City Council Mainland TIA Tanzania Institute of Accountancy (TIA), Tanga tanzania institute of accountancy tanga TCU business college public Tanga Mainland",
-    "programmeCount": 3,
+    "programmeCount": 7,
     "awardLevels": [
+      "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
-      "business finance management"
+      "business finance management",
+      "education"
     ],
     "courseFamilies": [
-      "business"
+      "business",
+      "education"
     ],
-    "browseSearchText": "ordinary diploma business finance management business"
+    "browseSearchText": "degree business finance management business education ordinary diploma"
   },
   {
     "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - ZANZIBAR CAMPUS",
@@ -19746,17 +19771,19 @@
     ],
     "fieldCategories": [
       "business finance management",
+      "law public administration",
       "planning built environment land",
-      "social sciences community development",
       "business",
-      "health allied sciences"
+      "health allied sciences",
+      "social sciences community development"
     ],
     "courseFamilies": [
       "business",
+      "law public administration",
       "social work community development",
       "health"
     ],
-    "browseSearchText": "ordinary diploma business finance management business planning built environment land social work community development health allied sciences health social sciences community development degree"
+    "browseSearchText": "degree law public administration business finance management business ordinary diploma planning built environment land social work community development health allied sciences health social sciences community development"
   },
   {
     "institutionName": "TEOFILO KISANJI UNIVERSITY - MBEYA",
@@ -20979,17 +21006,20 @@
     "fieldCategories": [
       "engineering technology",
       "other",
-      "health allied sciences",
       "other needs classification",
-      "community development"
+      "community development",
+      "health",
+      "health allied sciences",
+      "law public administration"
     ],
     "courseFamilies": [
       "engineering",
       "other",
       "health",
-      "community development"
+      "community development",
+      "law public administration"
     ],
-    "browseSearchText": "ordinary diploma engineering technology engineering other needs classification other health allied sciences health certificate degree community development"
+    "browseSearchText": "degree engineering technology engineering other needs classification other law public administration health ordinary diploma health allied sciences certificate community development"
   },
   {
     "institutionName": "WATER INSTITUTE SINGIDA CAMPUS",
@@ -21535,17 +21565,17 @@
       "missing_registration_number"
     ],
     "searchText": "Institute of Accountancy Arusha (IAA) accountancy arusha iaa IAA TCU Higher Education Institution unknown Arusha Mainland IAA INSTITUTE OF ACCOUNTANCY ARUSHA institute of accountancy arusha IAA NACTVET ; TCU business college unknown Arusha Songea Municipal Council Mainland",
-    "programmeCount": 72,
+    "programmeCount": 47,
     "awardLevels": [
       "degree",
       "ordinary diploma",
       "certificate"
     ],
     "fieldCategories": [
-      "accounting",
       "business finance management",
       "ICT",
       "business",
+      "accounting",
       "other needs classification",
       "arts media communication",
       "education",
@@ -21554,13 +21584,11 @@
     "courseFamilies": [
       "business",
       "ICT",
-      "education",
       "other",
-      "tourism_hospitality",
-      "agriculture",
-      "arts communication"
+      "education",
+      "tourism_hospitality"
     ],
-    "browseSearchText": "degree ICT business finance management business other needs classification other education science arts media communication arts communication tourism hospitality tourism_hospitality certificate accounting agriculture ordinary diploma"
+    "browseSearchText": "degree business finance management business ICT education science other needs classification other tourism hospitality tourism_hospitality arts media communication certificate accounting ordinary diploma"
   },
   {
     "institutionName": "Institute of Adult Education (IAE)",
@@ -21608,21 +21636,24 @@
     "ownershipType": "unknown",
     "institutionType": "Higher Education Institution",
     "region": "Mweka- Kilimanjaro",
+    "physicalLocation": "Kilimanjaro",
     "mainlandOrZanzibar": "Mainland",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "no",
     "officialSourceUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf; https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
     "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications; TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as non-university approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "College of African Wildlife Management (CAWM) african wildlife management cawm CAWM TCU Higher Education Institution unknown Mweka- Kilimanjaro Mainland CAWM",
+    "searchText": "College of African Wildlife Management (CAWM) african wildlife management cawm CAWM TCU Higher Education Institution unknown Mweka- Kilimanjaro Mainland CAWM College of African Wildlife Management Mweka (CAWM) college of african wildlife management mweka TCU agriculture college public Kilimanjaro Mainland",
     "programmeCount": 4,
     "awardLevels": [
       "degree"
@@ -21667,18 +21698,18 @@
       "missing_registration_number"
     ],
     "searchText": "Aga Khan University (AKU) aga khan aku AKU TCU Higher Education Institution unknown Dar es Salaam Mainland AKU Aga Khan University (AKU) aga khan university TCU university private Dar es Salaam Mainland",
-    "programmeCount": 3,
+    "programmeCount": 2,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "health allied sciences",
-      "health"
+      "health",
+      "health allied sciences"
     ],
     "courseFamilies": [
       "health"
     ],
-    "browseSearchText": "degree health allied sciences health"
+    "browseSearchText": "degree health health allied sciences"
   },
   {
     "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
@@ -21711,31 +21742,19 @@
       "missing_registration_number"
     ],
     "searchText": "Archbishop Mihayo University College of Tabora (AMUCTA) archbishop mihayo tabora amucta AMUCTA TCU Higher Education Institution unknown Tabora Mainland AMUCTA Archbishop Mihayo University College of Tabora (AMUCTA) archbishop mihayo university college of tabora TCU university college private Tabora Mainland",
-    "programmeCount": 65,
+    "programmeCount": 4,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "business",
-      "other",
-      "accounting",
-      "health",
-      "ICT",
-      "education",
-      "engineering",
-      "arts"
+      "business finance management",
+      "education"
     ],
     "courseFamilies": [
       "business",
-      "other",
-      "education",
-      "health",
-      "ICT",
-      "engineering",
-      "arts",
-      "construction"
+      "education"
     ],
-    "browseSearchText": "degree business finance management business education accounting ICT other engineering community development arts social work tourism_hospitality health construction law"
+    "browseSearchText": "degree education business finance management business"
   },
   {
     "institutionName": "Ardhi University (ARU)",
@@ -21775,21 +21794,18 @@
     "fieldCategories": [
       "engineering technology",
       "business finance management",
-      "planning built environment land",
       "ICT",
       "science",
-      "health allied sciences"
+      "law public administration"
     ],
     "courseFamilies": [
       "engineering",
       "business",
-      "civil built environment",
       "ICT",
       "other",
-      "health",
-      "social work community development"
+      "law public administration"
     ],
-    "browseSearchText": "degree engineering technology engineering planning built environment land social work community development business finance management business ICT health allied sciences health science other civil built environment"
+    "browseSearchText": "degree engineering technology engineering science other business finance management business law public administration ICT"
   },
   {
     "institutionName": "Arusha Technical College (ATC)",
@@ -21830,7 +21846,7 @@
       "engineering",
       "ICT"
     ],
-    "browseSearchText": "degree engineering technology engineering ICT health allied sciences"
+    "browseSearchText": "degree ICT engineering technology engineering health allied sciences"
   },
   {
     "institutionName": "University of Arusha (UoA)",
@@ -21873,11 +21889,11 @@
       "education"
     ],
     "courseFamilies": [
-      "arts communication",
+      "other",
       "business",
       "education"
     ],
-    "browseSearchText": "degree arts media communication arts communication education business finance management business"
+    "browseSearchText": "degree education business finance management business arts media communication other"
   },
   {
     "institutionName": "College of Business Education (CBE)",
@@ -21902,7 +21918,7 @@
       "missing_registration_number"
     ],
     "searchText": "College of Business Education (CBE) business education cbe CBE TCU Higher Education Institution unknown Dar es Salaam Mainland CBE",
-    "programmeCount": 35,
+    "programmeCount": 21,
     "awardLevels": [
       "degree"
     ],
@@ -21910,17 +21926,16 @@
       "business finance management",
       "education",
       "other",
-      "ICT",
-      "other needs classification"
+      "ICT"
     ],
     "courseFamilies": [
       "business",
       "education",
+      "ICT",
       "other",
-      "tourism_hospitality",
-      "ICT"
+      "tourism_hospitality"
     ],
-    "browseSearchText": "degree other needs classification other business finance management business education ICT tourism_hospitality"
+    "browseSearchText": "degree business finance management business other ICT education tourism_hospitality"
   },
   {
     "institutionName": "Catholic University of Mbeya (CUoM)",
@@ -21959,17 +21974,16 @@
     ],
     "fieldCategories": [
       "business finance management",
-      "arts media communication",
-      "education",
-      "law public administration"
+      "law public administration",
+      "education"
     ],
     "courseFamilies": [
       "business",
       "education",
-      "law",
-      "social work community development"
+      "law public administration",
+      "other"
     ],
-    "browseSearchText": "degree business finance management business arts media communication social work community development education law public administration law"
+    "browseSearchText": "degree education business finance management business law public administration other"
   },
   {
     "institutionName": "Dar es Salaam Tumaini University (DarTU)",
@@ -22003,28 +22017,26 @@
       "region_contains_dotted_filler"
     ],
     "searchText": "Dar es Salaam Tumaini University (DarTU) dar es salaam tumaini dartu DarTU TCU Higher Education Institution unknown Dar es Salaam Mainland DarTU Dar es Salaam Tumaini University (DarTU) dar es salaam tumaini university TCU university private Dar es Salaam Mainland",
-    "programmeCount": 18,
+    "programmeCount": 17,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
       "ICT",
+      "law public administration",
       "arts media communication",
       "education",
-      "law public administration",
       "other needs classification"
     ],
     "courseFamilies": [
       "business",
-      "education",
-      "ICT",
-      "law",
-      "arts communication",
       "other",
-      "social work community development"
+      "ICT",
+      "education",
+      "law public administration"
     ],
-    "browseSearchText": "degree ICT business arts media communication arts communication social work community development education business finance management law public administration law other needs classification other"
+    "browseSearchText": "degree arts media communication other law public administration ICT business finance management business education other needs classification"
   },
   {
     "institutionName": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR)",
@@ -22034,21 +22046,24 @@
     "ownershipType": "unknown",
     "institutionType": "Higher Education Institution",
     "region": "Dar es Salaam",
+    "physicalLocation": "Dar es Salaam",
     "mainlandOrZanzibar": "Mainland",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "no",
     "officialSourceUrl": "https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
     "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as non-university approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR) dr salim ahmed salim foreign relations cfr CFR TCU Higher Education Institution unknown Dar es Salaam Mainland CFR",
+    "searchText": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR) dr salim ahmed salim foreign relations cfr CFR TCU Higher Education Institution unknown Dar es Salaam Mainland CFR Center for Foreign Relations (CFR) center for foreign relations TCU mixed public Dar es Salaam Mainland",
     "programmeCount": 2,
     "awardLevels": [
       "degree"
@@ -22058,9 +22073,10 @@
       "other needs classification"
     ],
     "courseFamilies": [
+      "law public administration",
       "other"
     ],
-    "browseSearchText": "degree law public administration other other needs classification"
+    "browseSearchText": "degree other needs classification other law public administration"
   },
   {
     "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
@@ -22088,25 +22104,21 @@
       "missing_registration_number"
     ],
     "searchText": "Eastern Africa Statistical Training Centre (EASTC) eastern africa statistical training eastc EASTC TCU Higher Education Institution unknown Dar es Salaam Mainland EASTC Eastern Africa Statistical Training Centre (EASTC) eastern africa statistical training centre TCU mixed public Dar es Salaam Mainland",
-    "programmeCount": 10,
+    "programmeCount": 5,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "other",
       "business finance management",
       "science",
-      "agriculture",
-      "business",
       "ICT"
     ],
     "courseFamilies": [
-      "other",
       "business",
-      "agriculture",
+      "other",
       "ICT"
     ],
-    "browseSearchText": "degree business finance management business ICT science other agriculture"
+    "browseSearchText": "degree science other ICT business finance management business"
   },
   {
     "institutionName": "Institute of Finance Management (IFM)",
@@ -22141,15 +22153,15 @@
       "missing_registration_number"
     ],
     "searchText": "Institute of Finance Management (IFM) finance management ifm IFM TCU Higher Education Institution unknown Dar es Salaam Mainland IFM Institute of Finance Management (IFS) finance management ifs IFS TCU Higher Education Institution unknown Simiyu Mainland IFS IFM INSTITUTE OF FINANCE MANAGEMENT institute of finance management IFM NACTVET ; TCU business college unknown Dar es Salaam Chato District Council Mainland IFM",
-    "programmeCount": 27,
+    "programmeCount": 14,
     "awardLevels": [
       "degree",
       "ordinary diploma"
     ],
     "fieldCategories": [
-      "business",
-      "ICT",
       "business finance management",
+      "ICT",
+      "business",
       "science"
     ],
     "courseFamilies": [
@@ -22157,7 +22169,7 @@
       "ICT",
       "other"
     ],
-    "browseSearchText": "degree ICT business finance management business science other ordinary diploma"
+    "browseSearchText": "degree business finance management business ICT science other ordinary diploma"
   },
   {
     "institutionName": "Kairuki University (KU)",
@@ -22190,22 +22202,19 @@
       "missing_registration_number"
     ],
     "searchText": "Kairuki University (KU) kairuki ku KU TCU Higher Education Institution unknown Dar es Salaam Mainland KU Kairuki University (KU) kairuki university TCU university private Dar es Salaam Mainland",
-    "programmeCount": 5,
+    "programmeCount": 3,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "health allied sciences",
       "health",
-      "social sciences community development",
-      "social work"
+      "law public administration"
     ],
     "courseFamilies": [
       "health",
-      "social work",
-      "social work community development"
+      "law public administration"
     ],
-    "browseSearchText": "degree health allied sciences health social sciences community development social work community development social work"
+    "browseSearchText": "degree health law public administration"
   },
   {
     "institutionName": "Karume Institute of Science and Technology (KIST)",
@@ -22233,25 +22242,17 @@
       "missing_registration_number"
     ],
     "searchText": "Karume Institute of Science and Technology (KIST) karume science technology kist KIST TCU Higher Education Institution unknown Zanzibar Zanzibar KIST Karume Institute of Science and Technology (KIST) karume institute of science and technology TCU mixed public Zanzibar Zanzibar",
-    "programmeCount": 14,
+    "programmeCount": 4,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "engineering technology",
-      "other",
-      "engineering",
-      "health",
-      "ICT",
-      "business"
+      "engineering technology"
     ],
     "courseFamilies": [
-      "engineering",
-      "other",
-      "health",
-      "business"
+      "engineering"
     ],
-    "browseSearchText": "degree engineering technology engineering business ICT health other"
+    "browseSearchText": "degree engineering technology engineering"
   },
   {
     "institutionName": "KCMC University",
@@ -22284,19 +22285,19 @@
       "missing_registration_number"
     ],
     "searchText": "KCMC University kcmc TCU Higher Education Institution unknown Kilimanjaro Mainland KCMC University kcmc university TCU university private Kilimanjaro Mainland",
-    "programmeCount": 5,
+    "programmeCount": 6,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "science",
-      "health allied sciences"
+      "health",
+      "science"
     ],
     "courseFamilies": [
-      "other",
-      "health"
+      "health",
+      "other"
     ],
-    "browseSearchText": "degree science other health allied sciences health"
+    "browseSearchText": "degree health science other"
   },
   {
     "institutionName": "Kizumbi Institute of Co-operative and Business Education (KICoB)",
@@ -22306,21 +22307,29 @@
     "ownershipType": "unknown",
     "institutionType": "Higher Education Institution",
     "region": "Shinyanga",
+    "physicalLocation": "Shinyanga",
     "mainlandOrZanzibar": "Mainland",
+    "website": "https://www.mocu.ac.tz/",
+    "logoUrl": "https://www.mocu.ac.tz/wp-content/uploads/2023/11/Moshi-Cooperative-University-MoCU-2023.png",
+    "logoSourceUrl": "https://www.mocu.ac.tz/",
+    "logoStatus": "verified",
+    "logoVerifiedAt": "2026-04-26",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "no",
     "officialSourceUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf; https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
     "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications; TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as university campus institute approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "Kizumbi Institute of Co-operative and Business Education (KICoB) kizumbi co operative business education kicob KICoB TCU Higher Education Institution unknown Shinyanga Mainland KICoB",
+    "searchText": "Kizumbi Institute of Co-operative and Business Education (KICoB) kizumbi co operative business education kicob KICoB TCU Higher Education Institution unknown Shinyanga Mainland KICoB Kizumbi Institute of Cooperative Business Education (KICoB) kizumbi institute of cooperative business education TCU university college public Shinyanga Mainland",
     "programmeCount": 1,
     "awardLevels": [
       "degree"
@@ -22359,25 +22368,19 @@
       "missing_registration_number"
     ],
     "searchText": "Local Government Training Institute (LGTI) local government training lgti LGTI TCU Higher Education Institution unknown Dodoma Mainland LGTI Local Government Training Institute (LGTI) local government training institute TCU mixed public Dodoma Mainland",
-    "programmeCount": 7,
+    "programmeCount": 4,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
-      "business",
-      "community development",
-      "other",
-      "planning built environment land"
+      "law public administration"
     ],
     "courseFamilies": [
       "business",
-      "community development",
-      "other",
-      "social work community development",
-      "tourism_hospitality"
+      "law public administration"
     ],
-    "browseSearchText": "degree business finance management business planning built environment land social work community development other tourism_hospitality community development"
+    "browseSearchText": "degree business finance management business law public administration"
   },
   {
     "institutionName": "Mbeya University of Science and Technology – Mtwara Campus College of Technical Education (MUST – MCCTE)",
@@ -22500,7 +22503,7 @@
       "missing_registration_number"
     ],
     "searchText": "Mkwawa University College of Education (MUCE) mkwawa education muce MUCE TCU Higher Education Institution unknown Iringa Mainland MUCE Mkwawa University College of Education (MUCE) mkwawa university college of education TCU university college public Iringa Mainland",
-    "programmeCount": 7,
+    "programmeCount": 3,
     "awardLevels": [
       "degree"
     ],
@@ -22522,21 +22525,29 @@
     "ownershipType": "unknown",
     "institutionType": "Higher Education Institution",
     "region": "Kilimanjaro",
+    "physicalLocation": "Kilimanjaro",
     "mainlandOrZanzibar": "Mainland",
+    "website": "https://www.mocu.ac.tz/",
+    "logoUrl": "http://www.mocu.ac.tz/wp-content/uploads/2025/03/logo.png",
+    "logoSourceUrl": "https://www.mocu.ac.tz/",
+    "logoStatus": "verified",
+    "logoVerifiedAt": "2026-04-26",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "no",
     "officialSourceUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf; https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
     "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications; TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as university approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "Moshi Co-operative University (MoCU) moshi co operative mocu MoCU TCU Higher Education Institution unknown Kilimanjaro Mainland MoCU",
+    "searchText": "Moshi Co-operative University (MoCU) moshi co operative mocu MoCU TCU Higher Education Institution unknown Kilimanjaro Mainland MoCU Moshi Cooperative University (MoCU) moshi cooperative university TCU university public Kilimanjaro Mainland",
     "programmeCount": 13,
     "awardLevels": [
       "degree"
@@ -22549,11 +22560,10 @@
     ],
     "courseFamilies": [
       "business",
-      "ICT",
-      "law",
-      "social work community development"
+      "other",
+      "ICT"
     ],
-    "browseSearchText": "degree business finance management business arts media communication social work community development law public administration law ICT"
+    "browseSearchText": "degree arts media communication other business finance management business law public administration ICT"
   },
   {
     "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
@@ -22586,26 +22596,24 @@
       "missing_registration_number"
     ],
     "searchText": "Muhimbili University of Health and Allied Sciences (MUHAS) muhimbili health allied sciences muhas MUHAS TCU Higher Education Institution unknown Dar es Salaam Mainland MUHAS Muhimbili University of Health and Allied Sciences (MUHAS) muhimbili university of health and allied sciences TCU university public Dar es Salaam Mainland",
-    "programmeCount": 36,
+    "programmeCount": 14,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "health",
-      "health allied sciences",
       "science",
+      "engineering technology",
       "arts media communication",
+      "health allied sciences",
       "other needs classification"
     ],
     "courseFamilies": [
       "health",
       "other",
-      "business",
-      "education",
-      "engineering",
-      "arts communication"
+      "engineering"
     ],
-    "browseSearchText": "degree health allied sciences engineering health science other arts media communication arts communication unknown other needs classification business education"
+    "browseSearchText": "degree health engineering technology engineering science other other needs classification health allied sciences arts media communication"
   },
   {
     "institutionName": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT)",
@@ -22615,35 +22623,42 @@
     "ownershipType": "unknown",
     "institutionType": "Higher Education Institution",
     "region": "Musoma",
+    "physicalLocation": "Musoma",
     "mainlandOrZanzibar": "Mainland",
+    "website": "https://www.mnuat.ac.tz/",
+    "logoUrl": "https://www.mnuat.ac.tz/templates/cassiopeia_coict/images/logo/mnuat.png",
+    "logoSourceUrl": "https://www.mnuat.ac.tz/",
+    "logoStatus": "verified",
+    "logoVerifiedAt": "2026-04-26",
+    "applicationMethod": "TCU",
     "hasFormFourDirectProgramme": "no",
     "officialSourceUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf; https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
     "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications; TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
     "sourceDatasets": [
-      "education_pathways"
+      "education_pathways",
+      "post_form_four"
     ],
     "confidenceLevel": "high",
     "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
+    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map. || Listed by TCU as university approved to admit students in 2025/2026.",
     "needsReview": true,
     "reviewReasons": [
       "missing_registration_number"
     ],
-    "searchText": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT) mwalimu nyerere agriculture technology mnuat MNUAT TCU Higher Education Institution unknown Musoma Mainland MNUAT",
+    "searchText": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT) mwalimu nyerere agriculture technology mnuat MNUAT TCU Higher Education Institution unknown Musoma Mainland MNUAT Mwalimu Nyerere University of Agriculture and Technology (MNUAT) Musoma mwalimu nyerere university of agriculture and technology musoma TCU university public Mara Mainland",
     "programmeCount": 4,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "agriculture fisheries livestock",
-      "business finance management",
-      "ICT"
+      "business finance management"
     ],
     "courseFamilies": [
-      "agriculture",
-      "business"
+      "business",
+      "other"
     ],
-    "browseSearchText": "degree business finance management business ICT agriculture fisheries livestock agriculture"
+    "browseSearchText": "degree business finance management business agriculture fisheries livestock other"
   },
   {
     "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
@@ -22671,29 +22686,23 @@
       "missing_registration_number"
     ],
     "searchText": "Mwalimu Nyerere Memorial Academy (MNMA) mwalimu nyerere memorial academy mnma MNMA TCU Higher Education Institution unknown Dar es Salaam Mainland MNMA Mwalimu Nyerere Memorial Academy (MNMA) mwalimu nyerere memorial academy TCU mixed public Dar es Salaam Mainland",
-    "programmeCount": 25,
+    "programmeCount": 12,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "education",
       "business finance management",
-      "business",
-      "other",
-      "ICT",
-      "agriculture",
-      "health",
-      "law public administration"
+      "law public administration",
+      "social sciences community development"
     ],
     "courseFamilies": [
       "education",
       "business",
-      "other",
-      "agriculture",
-      "health",
-      "social work community development"
+      "law public administration",
+      "other"
     ],
-    "browseSearchText": "degree business finance management business social sciences community development social work community development law public administration other education ICT agriculture health"
+    "browseSearchText": "degree business finance management business social sciences community development other education law public administration"
   },
   {
     "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA) - Pemba Campus",
@@ -22774,12 +22783,12 @@
       "degree"
     ],
     "fieldCategories": [
-      "health allied sciences"
+      "health"
     ],
     "courseFamilies": [
       "health"
     ],
-    "browseSearchText": "degree health allied sciences health"
+    "browseSearchText": "degree health"
   },
   {
     "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
@@ -22813,21 +22822,19 @@
       "missing_region"
     ],
     "searchText": "Mzumbe University Dar es Salaam Campus College (MUDCCo) mzumbe dar es salaam campus mudcco MUDCCo TCU Higher Education Institution unknown Dar es Salaam Mainland MUDCCo Mzumbe University (MU) - Dar es Salaam Campus College mzumbe mu dar es salaam campus MU TCU Higher Education Institution unknown Mainland MU Mzumbe University Dar es Salaam Campus College (MUDCCo) mzumbe university dar es salaam campus college TCU university college public Dar es Salaam Mainland",
-    "programmeCount": 9,
+    "programmeCount": 3,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "business",
       "business finance management",
-      "accounting",
-      "law"
+      "law public administration"
     ],
     "courseFamilies": [
       "business",
-      "law"
+      "law public administration"
     ],
-    "browseSearchText": "degree business finance management business accounting law"
+    "browseSearchText": "degree business finance management business law public administration"
   },
   {
     "institutionName": "Mzumbe University Mbeya Campus College (MUMCCo)",
@@ -22861,7 +22868,7 @@
       "missing_region"
     ],
     "searchText": "Mzumbe University Mbeya Campus College (MUMCCo) mzumbe mbeya campus mumcco MUMCCo TCU Higher Education Institution unknown Mbeya Mainland MUMCCo Mzumbe University (MU) - Mbeya Campus College mzumbe mu mbeya campus MU TCU Higher Education Institution unknown Mainland MU Mzumbe University Mbeya Campus College (MUMCCo) mzumbe university mbeya campus college TCU university college public Mbeya Mainland",
-    "programmeCount": 2,
+    "programmeCount": 6,
     "awardLevels": [
       "degree"
     ],
@@ -22871,38 +22878,9 @@
     ],
     "courseFamilies": [
       "business",
-      "law"
+      "other"
     ],
-    "browseSearchText": "degree business finance management business law public administration law"
-  },
-  {
-    "institutionName": "Open University of Tanzania (OUT) are advised not to apply",
-    "normalizedInstitutionName": "open tanzania out are advised not to apply",
-    "regulator": "TCU",
-    "accreditationStatus": "listed in TCU 2025/2026 admission guidebook",
-    "ownershipType": "unknown",
-    "institutionType": "Higher Education Institution",
-    "region": "as",
-    "mainlandOrZanzibar": "Mainland",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://tcu.go.tz/sites/default/files/file_uploads/guide_books/2025-07/Admissions%20Guidebook%20for%20Holders%20of%20Diploma%20or%20Equivalent%20Qualifications_2025_2026.pdf",
-    "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - ordinary diploma/equivalent qualifications",
-    "sourceDatasets": [
-      "education_pathways"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "Open University of Tanzania (OUT) are advised not to apply open tanzania out are advised not to apply OUT TCU Higher Education Institution unknown as Mainland OUT",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
+    "browseSearchText": "degree law public administration other business finance management business"
   },
   {
     "institutionName": "Institute of Public Administration (IPA)",
@@ -22936,44 +22914,15 @@
     ],
     "fieldCategories": [
       "business finance management",
-      "other needs classification",
-      "planning built environment land"
+      "engineering technology",
+      "other needs classification"
     ],
     "courseFamilies": [
       "business",
-      "civil built environment",
+      "engineering",
       "other"
     ],
-    "browseSearchText": "degree planning built environment land civil built environment business finance management business other needs classification other"
-  },
-  {
-    "institutionName": "university qualifications",
-    "normalizedInstitutionName": "qualifications",
-    "regulator": "TCU",
-    "accreditationStatus": "listed in TCU 2025/2026 admission guidebook",
-    "ownershipType": "unknown",
-    "institutionType": "Higher Education Institution",
-    "region": "it shall be the responsibility of the",
-    "mainlandOrZanzibar": "Mainland",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf",
-    "sourceType": "TCU 2025/2026 Bachelor degree admission guidebook - secondary school qualifications",
-    "sourceDatasets": [
-      "education_pathways"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-26",
-    "notes": "Institution/programmes extracted from official TCU guidebook. Ownership is blank unless found in enrichment map.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "university qualifications qualifications TCU Higher Education Institution unknown it shall be the responsibility of the Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
+    "browseSearchText": "degree other needs classification other business finance management business engineering technology engineering"
   },
   {
     "institutionName": "Institute of Rural Development Planning (IRDP)",
@@ -23001,28 +22950,27 @@
       "missing_registration_number"
     ],
     "searchText": "Institute of Rural Development Planning (IRDP) rural development planning irdp IRDP TCU Higher Education Institution unknown Dodoma Mainland IRDP Institute of Rural Development Planning (IRDP) institute of rural development planning TCU mixed public Dodoma Mainland",
-    "programmeCount": 21,
+    "programmeCount": 17,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
-      "planning built environment land",
-      "business",
-      "accounting",
-      "community development",
+      "engineering technology",
       "ICT",
+      "law public administration",
+      "planning built environment land",
       "science"
     ],
     "courseFamilies": [
       "business",
+      "engineering",
       "civil built environment",
-      "community development",
       "ICT",
-      "other",
-      "social work community development"
+      "law public administration",
+      "other"
     ],
-    "browseSearchText": "degree business finance management business planning built environment land social work community development ICT civil built environment science other community development accounting"
+    "browseSearchText": "degree business finance management business engineering technology engineering law public administration science other ICT planning built environment land civil built environment"
   },
   {
     "institutionName": "Institute of Social Work (ISW)",
@@ -23050,30 +22998,22 @@
       "missing_registration_number"
     ],
     "searchText": "Institute of Social Work (ISW) social work isw ISW TCU Higher Education Institution unknown Dar es Salaam Mainland ISW Institute of Social Work (ISW) institute of social work TCU community development/social work college public Dar es Salaam Mainland",
-    "programmeCount": 31,
+    "programmeCount": 7,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "social work",
-      "business",
       "business finance management",
-      "education",
-      "ICT",
-      "social sciences community development",
-      "accounting",
-      "health"
+      "law public administration",
+      "other needs classification",
+      "social sciences community development"
     ],
     "courseFamilies": [
       "business",
-      "social work",
-      "education",
-      "ICT",
-      "social work community development",
-      "health",
-      "other"
+      "other",
+      "law public administration"
     ],
-    "browseSearchText": "degree other needs classification other social sciences community development social work community development business finance management business social work health accounting education ICT"
+    "browseSearchText": "degree business finance management business law public administration other needs classification other social sciences community development"
   },
   {
     "institutionName": "Sokoine University of Agriculture - Mizengo Pinda Campus College (SUA-MPCCo)",
@@ -23149,30 +23089,24 @@
       "missing_registration_number"
     ],
     "searchText": "St. Augustine University of Tanzania (SAUT) st augustine tanzania saut SAUT TCU Higher Education Institution unknown Mwanza Mainland SAUT St. Augustine University of Tanzania (SAUT) st augustine university of tanzania TCU university private Mwanza Mainland",
-    "programmeCount": 21,
+    "programmeCount": 11,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
-      "business",
       "arts media communication",
-      "arts",
-      "education",
       "engineering technology",
-      "engineering",
-      "other"
+      "education"
     ],
     "courseFamilies": [
       "business",
-      "arts communication",
+      "other",
       "engineering",
-      "tourism_hospitality",
-      "arts",
       "education",
-      "other"
+      "tourism_hospitality"
     ],
-    "browseSearchText": "degree business finance management business arts media communication arts communication education engineering technology engineering tourism_hospitality arts other tourism"
+    "browseSearchText": "degree arts media communication other business finance management business education engineering technology engineering tourism_hospitality"
   },
   {
     "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
@@ -23205,26 +23139,21 @@
       "missing_registration_number"
     ],
     "searchText": "St. Joseph University College of Engineering and Technology (SJCET) st joseph engineering technology sjcet SJCET TCU Higher Education Institution unknown Dar es Salaam Mainland SJCET St. Joseph University College of Engineering and Technology (SJCET) st joseph university college of engineering and technology TCU university private Dar es Salaam Mainland",
-    "programmeCount": 17,
+    "programmeCount": 8,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "engineering technology",
       "ICT",
-      "engineering",
-      "health",
-      "business",
       "education"
     ],
     "courseFamilies": [
       "engineering",
-      "ICT",
-      "health",
-      "business",
-      "education"
+      "education",
+      "ICT"
     ],
-    "browseSearchText": "degree engineering technology engineering ICT education business health"
+    "browseSearchText": "degree engineering technology engineering ICT education"
   },
   {
     "institutionName": "St. Joseph University College of Health and Allied Sciences (SJCHAS)",
@@ -23262,12 +23191,12 @@
       "degree"
     ],
     "fieldCategories": [
-      "health allied sciences"
+      "health"
     ],
     "courseFamilies": [
       "health"
     ],
-    "browseSearchText": "degree health allied sciences health"
+    "browseSearchText": "degree health"
   },
   {
     "institutionName": "State University of Zanzibar (SUZA)",
@@ -23300,31 +23229,31 @@
       "missing_registration_number"
     ],
     "searchText": "State University of Zanzibar (SUZA) state zanzibar suza SUZA TCU Higher Education Institution unknown Zanzibar Zanzibar SUZA State University of Zanzibar (SUZA) state university of zanzibar TCU university public Zanzibar Zanzibar",
-    "programmeCount": 34,
+    "programmeCount": 19,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
-      "health allied sciences",
-      "arts",
-      "business",
-      "education",
       "health",
+      "arts media communication",
+      "education",
+      "engineering technology",
       "ICT",
-      "arts media communication"
+      "agriculture",
+      "other needs classification"
     ],
     "courseFamilies": [
       "business",
       "health",
-      "arts",
-      "arts communication",
+      "other",
       "education",
+      "engineering",
       "agriculture",
       "ICT",
-      "other"
+      "tourism_hospitality"
     ],
-    "browseSearchText": "degree business finance management business ICT planning built environment land arts communication arts media communication tourism_hospitality education other needs classification other health allied sciences health agriculture fisheries livestock agriculture unknown procurement arts media accounting"
+    "browseSearchText": "degree health education business finance management business engineering technology engineering ICT arts media communication other tourism_hospitality agriculture other needs classification"
   },
   {
     "institutionName": "Tanzania Institute of Accountancy (TIA)",
@@ -23360,27 +23289,21 @@
       "region_contains_dotted_filler"
     ],
     "searchText": "Tanzania Institute of Accountancy (TIA) tanzania accountancy tia TIA TCU Higher Education Institution unknown Tanga Mainland TIA TANZANIA INSTITUTE OF ACCOUNTANCY tanzania institute of accountancy TIA NACTVET business college unknown Zanzibar Central/South Kati Distric Zanzibar",
-    "programmeCount": 45,
+    "programmeCount": 19,
     "awardLevels": [
-      "degree",
       "ordinary diploma",
+      "degree",
       "certificate"
     ],
     "fieldCategories": [
-      "business",
       "business finance management",
-      "accounting",
-      "education",
-      "ICT",
-      "other needs classification"
+      "business",
+      "accounting"
     ],
     "courseFamilies": [
-      "business",
-      "education",
-      "ICT",
-      "other"
+      "business"
     ],
-    "browseSearchText": "degree business finance management business education other needs classification other certificate accounting ICT ordinary diploma"
+    "browseSearchText": "degree business finance management business certificate accounting ordinary diploma"
   },
   {
     "institutionName": "Tanzania Institute of Project Management (TIPM)",
@@ -23457,7 +23380,7 @@
       "missing_registration_number"
     ],
     "searchText": "Tanzania Public Service College (TPSC) tanzania public service tpsc TPSC TCU Higher Education Institution unknown Dar es Salaam Mainland TPSC TANZANIA PUBLIC SERVICE COLLEGE tanzania public service college TPSC NACTVET technical college unknown Tabora Tabora Municipal Council Mainland",
-    "programmeCount": 8,
+    "programmeCount": 7,
     "awardLevels": [
       "ordinary diploma",
       "degree"
@@ -23465,15 +23388,14 @@
     "fieldCategories": [
       "business",
       "other",
-      "arts media communication",
-      "other needs classification",
-      "vocational trade"
+      "business finance management",
+      "other needs classification"
     ],
     "courseFamilies": [
-      "other",
-      "business"
+      "business",
+      "other"
     ],
-    "browseSearchText": "degree other needs classification other vocational trade arts media communication ordinary diploma business"
+    "browseSearchText": "degree business finance management business other needs classification other ordinary diploma"
   },
   {
     "institutionName": "Institute of Tax Administration (ITA)",
@@ -23544,31 +23466,28 @@
       "missing_registration_number"
     ],
     "searchText": "Teofilo Kisanji University (TEKU) teofilo kisanji teku TEKU TCU Higher Education Institution unknown Mbeya Mainland TEKU Teofilo Kisanji University (TEKU) teofilo kisanji university TCU university private Mbeya Mainland",
-    "programmeCount": 23,
+    "programmeCount": 10,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
-      "arts",
-      "arts media communication",
-      "education",
-      "other",
-      "business",
       "business finance management",
+      "education",
+      "law public administration",
+      "arts media communication",
+      "engineering technology",
       "ICT",
-      "community development"
+      "other needs classification"
     ],
     "courseFamilies": [
-      "other",
       "business",
-      "arts",
       "education",
-      "ICT",
-      "social work community development",
-      "arts communication",
-      "community development"
+      "law public administration",
+      "other",
+      "engineering",
+      "ICT"
     ],
-    "browseSearchText": "degree arts media communication social work community development business finance management business arts communication education other needs classification other ICT science community development arts social work law"
+    "browseSearchText": "degree education law public administration other needs classification other engineering technology engineering ICT business finance management business arts media communication"
   },
   {
     "institutionName": "Tumaini University Makumira (TUMA)",
@@ -23601,30 +23520,21 @@
       "missing_registration_number"
     ],
     "searchText": "Tumaini University Makumira (TUMA) tumaini makumira tuma TUMA TCU Higher Education Institution unknown Arusha Mainland TUMA Tumaini University Makumira (TUMA) tumaini university makumira TCU university private Arusha Mainland",
-    "programmeCount": 16,
+    "programmeCount": 6,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "education",
-      "ICT",
-      "other",
       "arts media communication",
-      "business",
       "law public administration",
-      "other needs classification",
-      "religious studies"
+      "other needs classification"
     ],
     "courseFamilies": [
       "education",
-      "ICT",
-      "business",
-      "other",
-      "arts communication",
-      "engineering",
-      "law"
+      "other"
     ],
-    "browseSearchText": "degree arts media communication arts communication education other needs classification other law public administration law ICT religious studies business engineering"
+    "browseSearchText": "degree education law public administration other arts media communication other needs classification"
   },
   {
     "institutionName": "Unique Academy Dar es Salaam (UAD)",
@@ -23661,9 +23571,10 @@
       "other needs classification"
     ],
     "courseFamilies": [
-      "ICT"
+      "ICT",
+      "other"
     ],
-    "browseSearchText": "degree ICT other needs classification"
+    "browseSearchText": "degree ICT other other needs classification"
   },
   {
     "institutionName": "United African University of Tanzania (UAUT)",
@@ -23697,14 +23608,13 @@
     ],
     "fieldCategories": [
       "business finance management",
-      "engineering technology",
       "ICT"
     ],
     "courseFamilies": [
       "business",
       "engineering"
     ],
-    "browseSearchText": "degree business finance management business ICT engineering technology engineering"
+    "browseSearchText": "degree ICT engineering business finance management business"
   },
   {
     "institutionName": "Zanzibar University (ZU)",
@@ -23737,31 +23647,30 @@
       "missing_registration_number"
     ],
     "searchText": "Zanzibar University (ZU) zanzibar zu ZU TCU Higher Education Institution unknown Zanzibar Zanzibar ZU Zanzibar University (ZU) zanzibar university TCU university private Zanzibar Zanzibar",
-    "programmeCount": 39,
+    "programmeCount": 20,
     "awardLevels": [
       "degree"
     ],
     "fieldCategories": [
       "business finance management",
-      "ICT",
-      "arts",
-      "business",
+      "law public administration",
       "arts media communication",
-      "engineering technology",
       "health",
-      "health allied sciences"
+      "ICT",
+      "other needs classification",
+      "education",
+      "engineering technology"
     ],
     "courseFamilies": [
+      "other",
       "business",
+      "law public administration",
       "engineering",
       "health",
-      "arts",
-      "ICT",
-      "social work community development",
-      "arts communication",
-      "education"
+      "education",
+      "ICT"
     ],
-    "browseSearchText": "degree business finance management business arts media communication arts communication planning built environment land social work community development other needs classification ICT other law public administration law engineering technology engineering social sciences community development health allied sciences health education arts community development agriculture social work"
+    "browseSearchText": "degree business finance management business ICT other arts media communication law public administration engineering engineering technology other needs classification social sciences community development health education"
   },
   {
     "institutionName": "Arusha VTC",
@@ -28674,36 +28583,6 @@
     "browseSearchText": "ordinary diploma education"
   },
   {
-    "institutionName": "Center for Foreign Relations (CFR)",
-    "normalizedInstitutionName": "center for foreign relations",
-    "regulator": "TCU",
-    "ownershipType": "public",
-    "institutionType": "mixed",
-    "region": "Dar es Salaam",
-    "physicalLocation": "Dar es Salaam",
-    "mainlandOrZanzibar": "Mainland",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as non-university approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "Center for Foreign Relations (CFR) center for foreign relations TCU mixed public Dar es Salaam Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
-  },
-  {
     "institutionName": "Kipawa ICT Centre",
     "normalizedInstitutionName": "kipawa ict centre",
     "regulator": "VETA",
@@ -29457,36 +29336,6 @@
     "browseSearchText": "vocational certificate beauty fashion electrical construction mechanical"
   },
   {
-    "institutionName": "College of African Wildlife Management Mweka (CAWM)",
-    "normalizedInstitutionName": "college of african wildlife management mweka",
-    "regulator": "TCU",
-    "ownershipType": "public",
-    "institutionType": "agriculture college",
-    "region": "Kilimanjaro",
-    "physicalLocation": "Kilimanjaro",
-    "mainlandOrZanzibar": "Mainland",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as non-university approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "College of African Wildlife Management Mweka (CAWM) college of african wildlife management mweka TCU agriculture college public Kilimanjaro Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
-  },
-  {
     "institutionName": "Kilimanjaro modern",
     "normalizedInstitutionName": "kilimanjaro modern",
     "regulator": "Ministry",
@@ -29521,56 +29370,6 @@
       "education"
     ],
     "browseSearchText": "ordinary diploma education"
-  },
-  {
-    "institutionName": "Moshi Cooperative University (MoCU)",
-    "normalizedInstitutionName": "moshi cooperative university",
-    "regulator": "TCU",
-    "ownershipType": "public",
-    "institutionType": "university",
-    "region": "Kilimanjaro",
-    "physicalLocation": "Kilimanjaro",
-    "mainlandOrZanzibar": "Mainland",
-    "website": "https://www.mocu.ac.tz/",
-    "logoUrl": "http://www.mocu.ac.tz/wp-content/uploads/2025/03/logo.png",
-    "logoSourceUrl": "https://www.mocu.ac.tz/",
-    "logoStatus": "verified",
-    "logoVerifiedAt": "2026-04-26",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as university approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "Moshi Cooperative University (MoCU) moshi cooperative university TCU university public Kilimanjaro Mainland",
-    "programmeCount": 12,
-    "awardLevels": [
-      "degree"
-    ],
-    "fieldCategories": [
-      "business",
-      "accounting",
-      "other",
-      "arts",
-      "health",
-      "law"
-    ],
-    "courseFamilies": [
-      "business",
-      "other",
-      "arts",
-      "health",
-      "law"
-    ],
-    "browseSearchText": "degree accounting business arts health other law"
   },
   {
     "institutionName": "Ruangwa DVTC",
@@ -29852,41 +29651,6 @@
     "browseSearchText": "ordinary diploma education"
   },
   {
-    "institutionName": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT) Musoma",
-    "normalizedInstitutionName": "mwalimu nyerere university of agriculture and technology musoma",
-    "regulator": "TCU",
-    "ownershipType": "public",
-    "institutionType": "university",
-    "region": "Mara",
-    "physicalLocation": "Musoma",
-    "mainlandOrZanzibar": "Mainland",
-    "website": "https://www.mnuat.ac.tz/",
-    "logoUrl": "https://www.mnuat.ac.tz/templates/cassiopeia_coict/images/logo/mnuat.png",
-    "logoSourceUrl": "https://www.mnuat.ac.tz/",
-    "logoStatus": "verified",
-    "logoVerifiedAt": "2026-04-26",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as university approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT) Musoma mwalimu nyerere university of agriculture and technology musoma TCU university public Mara Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
-  },
-  {
     "institutionName": "Chunya DVTC",
     "normalizedInstitutionName": "chunya dvtc",
     "regulator": "VETA",
@@ -30163,41 +29927,6 @@
       "education"
     ],
     "browseSearchText": "ordinary diploma education"
-  },
-  {
-    "institutionName": "St. Francis University College of Health and Allied Sciences(SFUCHAS) Ifakara",
-    "normalizedInstitutionName": "st francis university college of health and allied sciences ifakara",
-    "regulator": "TCU",
-    "ownershipType": "private",
-    "institutionType": "university",
-    "region": "Morogoro",
-    "physicalLocation": "Ifakara",
-    "mainlandOrZanzibar": "Mainland",
-    "website": "https://sfuchas.ac.tz/",
-    "logoUrl": "https://sfuchas.ac.tz/wp-content/uploads/2022/04/SFUCHAS-LOGO-NO-BG.png",
-    "logoSourceUrl": "https://sfuchas.ac.tz/",
-    "logoStatus": "verified",
-    "logoVerifiedAt": "2026-04-26",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as university approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "St. Francis University College of Health and Allied Sciences(SFUCHAS) Ifakara st francis university college of health and allied sciences ifakara TCU university private Morogoro Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
   },
   {
     "institutionName": "Ulanga DVTC",
@@ -30961,41 +30690,6 @@
       "education"
     ],
     "browseSearchText": "ordinary diploma education"
-  },
-  {
-    "institutionName": "Kizumbi Institute of Cooperative Business Education (KICoB)",
-    "normalizedInstitutionName": "kizumbi institute of cooperative business education",
-    "regulator": "TCU",
-    "ownershipType": "public",
-    "institutionType": "university college",
-    "region": "Shinyanga",
-    "physicalLocation": "Shinyanga",
-    "mainlandOrZanzibar": "Mainland",
-    "website": "https://www.mocu.ac.tz/",
-    "logoUrl": "https://www.mocu.ac.tz/wp-content/uploads/2023/11/Moshi-Cooperative-University-MoCU-2023.png",
-    "logoSourceUrl": "https://www.mocu.ac.tz/",
-    "logoStatus": "verified",
-    "logoVerifiedAt": "2026-04-26",
-    "applicationMethod": "TCU",
-    "hasFormFourDirectProgramme": "unknown",
-    "officialSourceUrl": "https://www.tcu.go.tz/sites/default/files/admission_guidebooks/Bachelors_Degree_Admission_Guidebook_for_the_2025_2026_Academic_Year_For_Holders_of_Secondary_School_Qualifications.pdf",
-    "sourceType": "regulator",
-    "sourceDatasets": [
-      "post_form_four"
-    ],
-    "confidenceLevel": "high",
-    "lastVerifiedDate": "2026-04-24",
-    "notes": "Listed by TCU as university campus institute approved to admit students in 2025/2026.",
-    "needsReview": true,
-    "reviewReasons": [
-      "missing_registration_number"
-    ],
-    "searchText": "Kizumbi Institute of Cooperative Business Education (KICoB) kizumbi institute of cooperative business education TCU university college public Shinyanga Mainland",
-    "programmeCount": 0,
-    "awardLevels": [],
-    "fieldCategories": [],
-    "courseFamilies": [],
-    "browseSearchText": ""
   },
   {
     "institutionName": "Kishapu DVTC",
