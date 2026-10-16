@@ -5,10 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
-import {
-  ArrowRightIcon,
-  PinIcon,
-} from "@/components/search/search-icons"
+import { ArrowRightIcon, PinIcon } from "@/components/search/search-icons"
+import { campusPhotos } from "@/components/vyuo/institutions"
 import { api } from "@/convex/_generated/api"
 
 type BrowseInstitution = NonNullable<
@@ -16,95 +14,150 @@ type BrowseInstitution = NonNullable<
 >["results"][number]
 type InstitutionTone = BrowseInstitution["monogramTone"]
 
-export function InstitutionCard({ institution }: { institution: BrowseInstitution }) {
+// The backend assigns a rotating tone; map it onto the poster palette.
+const TILE_TONES: Record<InstitutionTone, string> = {
+  amber: "bg-kozi-yellow text-kozi-ink",
+  blue: "bg-kozi-cobalt text-kozi-yellow",
+  green: "bg-white text-kozi-ink",
+  indigo: "bg-kozi-ink text-kozi-yellow",
+  ink: "bg-kozi-yellow text-kozi-ink",
+  red: "bg-kozi-cobalt text-white",
+}
+
+const OWNERSHIP_LABELS: Record<string, string> = {
+  Public: "Serikali",
+  Private: "Binafsi",
+}
+
+export function InstitutionCard({
+  institution,
+}: {
+  institution: BrowseInstitution
+}) {
+  const photo = campusPhotos[institution.normalizedName]
+  const ownership = OWNERSHIP_LABELS[institution.ownership]
+  const href = `/search?q=${encodeURIComponent(institution.name)}&institution=${encodeURIComponent(
+    institution.normalizedName
+  )}&institutionLabel=${encodeURIComponent(institution.name)}`
+
   return (
-    <article className="group flex h-full max-w-full flex-col overflow-hidden rounded-2xl border border-brand-ink/10 bg-white p-5 transition hover:border-brand-blue/35 hover:shadow-[0_22px_50px_-32px_rgba(29,78,216,0.45)]">
-      <div className="flex items-start gap-4">
-        <Crest institution={institution} />
-        <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-2 text-[15.5px] font-bold leading-snug tracking-tight">
-            {institution.name}
-          </h3>
-          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-            <span className="inline-flex items-center rounded-md bg-brand-blue/10 px-2 py-0.5 text-[11px] font-semibold text-brand-blue">
-              {institution.type}
+    <article className="group flex h-full max-w-full flex-col overflow-hidden rounded-[20px] border-[3px] border-kozi-ink bg-white shadow-[6px_6px_0_var(--kozi-ink)] transition-transform hover:-translate-y-1">
+      <div className="relative h-40 shrink-0 border-b-[3px] border-kozi-ink sm:h-44">
+        {photo ? (
+          <Image
+            src={photo}
+            alt={`${institution.name} campus`}
+            fill
+            sizes="(min-width: 1280px) 400px, (min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+          />
+        ) : (
+          <div
+            className={`flex h-full items-end justify-between gap-3 overflow-hidden px-5 py-4 ${TILE_TONES[institution.monogramTone]}`}
+          >
+            <span
+              className={`font-display leading-[0.85] tracking-[-0.06em] whitespace-nowrap ${codeSize(institution.short)}`}
+            >
+              {institution.short}
             </span>
           </div>
-          <p className="mt-2 inline-flex items-center gap-1.5 text-[12.5px] text-brand-ink/65">
-            <PinIcon className="size-3.5" />
-            {institution.region}
-          </p>
+        )}
+        <Crest institution={institution} />
+      </div>
+
+      <div className="flex flex-1 flex-col gap-2.5 px-5 pt-5 pb-4 sm:px-6">
+        <div className="flex flex-wrap gap-1.5">
+          <Badge tone="yellow">{institution.short}</Badge>
+          <Badge>{institution.type}</Badge>
+          {ownership ? <Badge>{ownership}</Badge> : null}
         </div>
-      </div>
-
-      <p className="mt-4 line-clamp-2 text-[13px] leading-6 text-brand-ink/70">
-        {institution.blurb}
-      </p>
-
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {institution.fields.slice(0, 3).map((item, index) => (
-          <span
-            key={`${institution.id}-${item}-${index}`}
-            className="rounded-md bg-brand-ink/[0.05] px-2 py-1 text-[11.5px] font-medium text-brand-ink/65"
-          >
-            {item}
-          </span>
-        ))}
-      </div>
-
-      <div className="mt-auto flex flex-col items-start gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[12.5px] font-semibold text-brand-blue">
-          {institution.programmes > 0
-            ? `Programu ${institution.programmes}+`
-            : "Programu zinahakikiwa"}
+        <h3 className="line-clamp-2 font-display text-[21px] leading-[1.15] tracking-[-0.02em] text-kozi-ink">
+          {institution.name}
+        </h3>
+        <p className="inline-flex items-center gap-1.5 font-poster text-sm font-medium text-kozi-graphite">
+          <PinIcon className="size-3.5 shrink-0" />
+          {institution.region}
         </p>
-        <Link
-          href={`/search?q=${encodeURIComponent(institution.name)}&institution=${encodeURIComponent(
-            institution.normalizedName,
-          )}&institutionLabel=${encodeURIComponent(institution.name)}`}
-          className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-brand-ink/15 px-3.5 py-1.5 text-[12.5px] font-semibold text-brand-ink transition group-hover:border-brand-ink group-hover:bg-brand-ink group-hover:text-white sm:w-auto"
-        >
-          Tazama chuo
-          <ArrowRightIcon className="size-3.5" />
-        </Link>
+        {institution.fields.length > 0 ? (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {institution.fields.slice(0, 3).map((item, index) => (
+              <span
+                key={`${institution.id}-${item}-${index}`}
+                className="rounded-full bg-[#f3f4f6] px-2.5 py-1 font-poster text-xs font-semibold text-kozi-ink"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
+
+      <Link
+        href={href}
+        className="mt-auto flex items-center justify-between gap-3 border-t-2 border-[#e2e2e6] px-5 py-4 sm:px-6"
+      >
+        <span className="font-display text-base whitespace-nowrap text-kozi-cobalt">
+          {institution.programmes > 0
+            ? `${institution.programmes} KOZI`
+            : "KOZI ZINAHAKIKIWA"}
+        </span>
+        <span className="flex items-center gap-2 font-poster text-sm font-bold whitespace-nowrap text-kozi-ink">
+          {/* Label drops out where two columns get narrow; the arrow stays. */}
+          <span className="md:max-xl:sr-only">Tazama kozi</span>
+          <span className="grid size-10 place-items-center rounded-full bg-kozi-ink text-kozi-yellow transition-transform group-hover:translate-x-0.5">
+            <ArrowRightIcon className="size-4" />
+          </span>
+        </span>
+      </Link>
     </article>
   )
 }
 
+// Longer codes (AMUCTA, DESEIT) step down so the tile never truncates them.
+function codeSize(code: string) {
+  if (code.length <= 3) return "text-[64px] sm:text-[76px]"
+  if (code.length <= 4) return "text-[56px] sm:text-[64px]"
+  if (code.length <= 5) return "text-[46px] sm:text-[52px]"
+  return "text-[36px] sm:text-[42px]"
+}
+
+function Badge({
+  children,
+  tone = "outline",
+}: {
+  children: React.ReactNode
+  tone?: "outline" | "yellow"
+}) {
+  return (
+    <span
+      className={`rounded-md border-2 border-kozi-ink px-2 py-0.5 font-tag text-[11px] font-semibold tracking-[0.04em] uppercase ${
+        tone === "yellow" ? "bg-kozi-yellow text-kozi-ink" : "text-kozi-ink"
+      }`}
+    >
+      {children}
+    </span>
+  )
+}
+
+// Verified logo, pinned to the tile corner; hidden if it fails to load.
 function Crest({ institution }: { institution: BrowseInstitution }) {
   const [failed, setFailed] = useState(false)
 
-  const tones: Record<InstitutionTone, string> = {
-    amber: "bg-amber-50 text-amber-800 ring-amber-200",
-    blue: "bg-blue-50 text-blue-700 ring-blue-200",
-    green: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-    indigo: "bg-indigo-50 text-indigo-700 ring-indigo-200",
-    ink: "bg-brand-ink/[0.06] text-brand-ink ring-brand-ink/15",
-    red: "bg-rose-50 text-rose-700 ring-rose-200",
-  }
-
-  if (institution.logoUrl && !failed) {
-    return (
-      <div className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl border border-brand-ink/10 bg-white p-1.5">
-        <Image
-          src={institution.logoUrl}
-          alt={`${institution.name} logo`}
-          width={48}
-          height={48}
-          className="max-h-full max-w-full object-contain"
-          onError={() => setFailed(true)}
-          unoptimized
-        />
-      </div>
-    )
+  if (!institution.logoUrl || failed) {
+    return null
   }
 
   return (
-    <div
-      className={`grid size-12 shrink-0 place-items-center rounded-xl ring-1 ring-inset ${tones[institution.monogramTone]}`}
-    >
-      <span className="font-mono text-[10.5px] font-bold tracking-tight">{institution.short}</span>
+    <div className="absolute top-3 right-3 grid size-14 place-items-center overflow-hidden rounded-xl border-[3px] border-kozi-ink bg-white p-1.5">
+      <Image
+        src={institution.logoUrl}
+        alt={`${institution.name} logo`}
+        width={56}
+        height={56}
+        className="max-h-full max-w-full object-contain"
+        onError={() => setFailed(true)}
+        unoptimized
+      />
     </div>
   )
 }
