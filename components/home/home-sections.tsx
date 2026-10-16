@@ -214,9 +214,9 @@ export function IndexCheckSection() {
       className="bg-kozi-cobalt py-16 lg:py-32"
     >
       <div
-        className={`${container} flex flex-col gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-16`}
+        className={`${container} flex flex-col gap-12 xl:flex-row xl:items-center xl:justify-between xl:gap-16`}
       >
-        <div className="flex flex-col gap-7 lg:w-[760px]">
+        <div className="flex flex-col gap-7 xl:w-[700px]">
           <span className="w-fit -rotate-3 border-[3px] border-kozi-ink bg-kozi-yellow px-4 py-2 font-display text-[15px] text-kozi-ink">
             MATOKEO YAMETOKA?
           </span>

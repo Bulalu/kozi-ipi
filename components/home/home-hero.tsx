@@ -13,21 +13,21 @@ export function HomeHero() {
       <div className="relative mx-auto flex w-full max-w-[1440px] flex-col px-5 pt-5 sm:px-10 lg:min-h-[900px] lg:px-14 lg:pt-7">
         <HomeNav />
 
-        <h1 className="relative z-10 mt-6 flex flex-col text-kozi-ink lg:mt-4">
-          <span className="pl-1 font-poster text-lg font-bold lg:text-[22px]">
-            Oyaaa,
-          </span>
-          <span className="font-display text-[128px] leading-[0.84] tracking-[-0.06em] sm:text-[180px] lg:text-[240px]">
-            KOZI
-          </span>
-          <span className="font-display text-[128px] leading-[0.84] tracking-[-0.06em] sm:text-[180px] lg:text-[240px]">
-            IPI?
-          </span>
-          <span className="sr-only">Unachukua kozi ipi?</span>
+        {/* Brush-lettered headline artwork; the text lives in the sr-only span. */}
+        <h1 className="relative z-10 mt-4 w-full max-w-[600px] lg:mt-2 lg:w-[520px] xl:w-[620px]">
+          <span className="sr-only">Oyaaa, kozi ipi unachukua?</span>
+          <Image
+            src="/home/oyaaa-headline.webp"
+            alt=""
+            width={1200}
+            height={767}
+            priority
+            className="h-auto w-full select-none"
+          />
+          {/* Anchored to the artwork so it can't drift onto the lettering:
+              beside the "?" on desktop, just under the headline on phones. */}
+          <Sticker className="absolute right-0 -bottom-20 z-20 size-[84px] text-[15px] sm:-bottom-24 sm:size-32 sm:text-2xl lg:top-[28%] lg:right-auto lg:bottom-auto lg:left-[calc(100%+20px)] lg:size-[130px] lg:text-[26px] xl:size-[150px] xl:text-[30px]" />
         </h1>
-
-        {/* Below lg the sticker sits in the free space right of "IPI?". */}
-        <Sticker className="absolute top-[244px] right-2 z-20 size-[84px] text-[15px] sm:top-[280px] sm:right-10 sm:size-32 sm:text-2xl lg:top-[150px] lg:right-auto lg:left-[690px] lg:size-[150px] lg:text-[30px] xl:top-[390px] xl:left-[545px]" />
 
         <Link
           href="/form-six"
@@ -41,7 +41,7 @@ export function HomeHero() {
           </span>
         </Link>
 
-        <div className="relative -mx-5 -mt-2 h-[300px] sm:h-[420px] lg:absolute lg:right-[-40px] lg:bottom-[-30px] lg:mx-0 lg:mt-0 lg:h-[540px] lg:w-[720px] xl:h-[675px] xl:w-[900px]">
+        <div className="relative -mx-5 -mt-2 h-[300px] sm:h-[420px] lg:absolute lg:right-[-40px] lg:bottom-[-30px] lg:mx-0 lg:mt-0 lg:h-[540px] lg:w-[720px] xl:right-[-60px] xl:h-[615px] xl:w-[820px]">
           <Image
             src="/home/students-cutout.webp"
             alt="Three Tanzanian students looking ahead, in blue and yellow"
