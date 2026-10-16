@@ -13,17 +13,11 @@ const pill =
   "rounded-full border-2 border-kozi-ink px-4 py-2 text-sm font-bold transition-colors hover:bg-kozi-ink hover:text-kozi-yellow"
 
 // Shared poster nav. `active` is the href of the current section, if any.
+// No logo here: each page's headline carries the name, and the footer
+// wordmark links home.
 export function HomeNav({ active }: { active?: string } = {}) {
   return (
-    <header className="relative z-30 flex items-center justify-between gap-6">
-      <Link
-        href="/"
-        aria-label="Kozi Ipi home"
-        className="font-display text-[22px] tracking-[-0.02em] text-kozi-ink sm:text-[26px]"
-      >
-        KOZI IPI★
-      </Link>
-
+    <header className="relative z-30 flex items-center justify-end gap-6">
       <nav className="hidden items-center gap-2 font-poster md:flex">
         {NAV_LINKS.map((link) => (
           <Link
