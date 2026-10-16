@@ -11,11 +11,14 @@ import {
   countAcseePrincipalPasses,
   countAcseeSubsidiaryPasses,
   countCseePasses,
+  evaluateRequirementClause,
   evaluateRequirementRuleSet,
   fallbackEligibilityFromApplicantPathwayFlag,
   normalizeStudentProfile,
   normalizeSubjectName,
   parseRequirementRuleSet,
+  resolveAcseeRequirementSubjects,
+  summarizeAcseeSubjectGrades,
   summarizeEligibilityEvaluation,
 } from "../lib/eligibility"
 import {
@@ -576,6 +579,204 @@ assert(
     "Does not currently meet"
   ),
   "Eligibility summaries should use safe public wording."
+)
+
+// Synthetic grades only: General Studies and BAM are subsidiary subjects and
+// must not inflate principal passes or admission points.
+const subsidiarySubjectSummary = summarizeAcseeSubjectGrades({
+  general_studies: "A",
+  basic_applied_mathematics: "B",
+  history: "C",
+  geography: "D",
+  economics: "S",
+  kiswahili: "E",
+})
+assert.equal(
+  subsidiarySubjectSummary.principalPassCount,
+  3,
+  "General Studies and BAM should not count as principal passes."
+)
+assert.equal(
+  subsidiarySubjectSummary.points,
+  6,
+  "ACSEE admission points should use the best three principal subjects only."
+)
+assert.deepEqual(
+  subsidiarySubjectSummary.pointSubjects,
+  ["history", "geography", "kiswahili"],
+  "Admission points should name the three subjects they came from."
+)
+
+// A Form Six profile has no O-Level grades, so an O-Level clause is unknown,
+// not failed: the programme needs review instead of being ruled out.
+const formSixWithoutCsee = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "Advanced Mathematics", grade: "B" },
+      { subject: "Physics", grade: "C" },
+      { subject: "Chemistry", grade: "D" },
+    ],
+  },
+})
+const oLevelUnknownEvaluation = evaluateRequirementRuleSet(
+  engineeringRuleSet,
+  formSixWithoutCsee
+)
+assert.equal(
+  oLevelUnknownEvaluation.status,
+  "cannot_determine",
+  "Missing O-Level data should not make a Form Six student not_eligible."
+)
+assert(
+  evaluateRequirementClause(
+    { kind: "o_level_subject_grade", subject: "chemistry", minGrade: "C" },
+    formSixWithoutCsee
+  ).unknown,
+  "O-Level clauses without CSEE data should be marked unknown."
+)
+
+// "Principal passes in X and Y" needs a principal pass, not just a sitting.
+const failedSubjectProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "Advanced Mathematics", grade: "B" },
+      { subject: "Physics", grade: "F" },
+    ],
+  },
+})
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "all_of",
+      subjects: ["advanced_mathematics", "physics"],
+    },
+    failedSubjectProfile
+  ).passed,
+  false,
+  "ACSEE subject groups without a grade should require principal passes."
+)
+
+// "One principal pass and one subsidiary pass": a second principal pass is a
+// higher grade than S, so it covers the subsidiary.
+const twoPrincipalPassProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "History", grade: "C" },
+      { subject: "Geography", grade: "D" },
+      { subject: "General Studies", grade: "C" },
+    ],
+  },
+})
+const principalPlusSubsidiaryRuleSet = {
+  ...engineeringRuleSet,
+  variants: [
+    {
+      route: "form_six" as const,
+      parseStatus: "structured" as const,
+      clauses: [
+        { kind: "min_acsee_principal_passes" as const, count: 1 },
+        { kind: "min_acsee_subsidiary_passes" as const, count: 1 },
+      ],
+    },
+  ],
+}
+assert.equal(
+  evaluateRequirementRuleSet(
+    principalPlusSubsidiaryRuleSet,
+    twoPrincipalPassProfile
+  ).status,
+  "eligible",
+  "Extra principal passes should satisfy a subsidiary-pass minimum."
+)
+assert.equal(
+  evaluateRequirementRuleSet(principalPlusSubsidiaryRuleSet, {
+    ...twoPrincipalPassProfile,
+    acseeSummary: {
+      ...twoPrincipalPassProfile.acseeSummary!,
+      principalPassCount: 1,
+    },
+  }).status,
+  "not_eligible",
+  "One principal pass without an S grade should miss a subsidiary minimum."
+)
+
+// Parsed A-Level subject names can be joined or carry filler words.
+assert.deepEqual(
+  resolveAcseeRequirementSubjects([
+    "physics_chemistry",
+    "in_one_of_geography",
+    "mathematics",
+    "fine_art",
+    "the_following",
+  ]),
+  {
+    subjects: [
+      "physics",
+      "chemistry",
+      "geography",
+      "advanced_mathematics",
+      "fine_arts",
+    ],
+    unresolved: ["the_following"],
+  },
+  "A-Level requirement subjects should be split, aliased, and unreadable ones kept apart."
+)
+
+const historyGeographyProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "History", grade: "C" },
+      { subject: "Geography", grade: "D" },
+    ],
+  },
+})
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["arts", "science", "business_related"],
+    },
+    historyGeographyProfile
+  ).unknown,
+  true,
+  "An unreadable subject list should be unknown, not a failure."
+)
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["history", "the_following", "physics"],
+    },
+    historyGeographyProfile
+  ).unknown,
+  true,
+  "One readable pass plus an unreadable option should stay unknown."
+)
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "at_least_n_of",
+      count: 2,
+      subjects: ["history", "geography", "the_following"],
+    },
+    historyGeographyProfile
+  ).passed,
+  true,
+  "Readable passes that meet the count should pass despite noise."
 )
 
 console.log(

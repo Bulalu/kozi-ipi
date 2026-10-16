@@ -30,7 +30,7 @@ const monoFont = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "The Form Six Almanac — ACSEE 2026 | Kozi Ipi",
+  title: "The Form Six Almanac — ACSEE 2026",
   description:
     "An editorial reading of Tanzania's ACSEE 2026 Form Six results: national divisions, regional outcomes, subject grade ledgers, and the best-performing schools.",
 }

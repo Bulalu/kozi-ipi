@@ -15,6 +15,7 @@ import type * as corrections from "../corrections.js";
 import type * as entryRequirements from "../entryRequirements.js";
 import type * as http from "../http.js";
 import type * as institutions from "../institutions.js";
+import type * as programmeEligibility_overview from "../programmeEligibility/overview.js";
 import type * as programmeEligibility_search from "../programmeEligibility/search.js";
 import type * as programmeSearch_candidates from "../programmeSearch/candidates.js";
 import type * as programmeSearch_display from "../programmeSearch/display.js";
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   entryRequirements: typeof entryRequirements;
   http: typeof http;
   institutions: typeof institutions;
+  "programmeEligibility/overview": typeof programmeEligibility_overview;
   "programmeEligibility/search": typeof programmeEligibility_search;
   "programmeSearch/candidates": typeof programmeSearch_candidates;
   "programmeSearch/display": typeof programmeSearch_display;

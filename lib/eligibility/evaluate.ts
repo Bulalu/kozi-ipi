@@ -1,4 +1,7 @@
-import { normalizeSubjectName } from "./subjects"
+import {
+  normalizeSubjectName,
+  resolveAcseeRequirementSubjects,
+} from "./subjects"
 import { compareEligibilityEvaluations } from "./evidence"
 import type {
   AcseeDivision,
@@ -15,8 +18,11 @@ import type {
   RequirementVariant,
 } from "./types"
 
-type ClauseEvaluation = {
+export type ClauseEvaluation = {
   passed: boolean
+  // True when the clause could not be checked because the student's profile
+  // has no data for it (for example O-Level grades on a Form Six lookup).
+  unknown?: boolean
   matchedClauses: string[]
   missingClauses: string[]
   warnings: string[]
@@ -90,8 +96,9 @@ export function evaluateRequirementVariant(
     })
   }
 
+  const context = clauseContextForVariant(variant)
   const clauseResults = variant.clauses.map((clause) =>
-    evaluateClause(clause, profile)
+    evaluateClause(clause, profile, context)
   )
   const matchedClauses = clauseResults.flatMap(
     (result) => result.matchedClauses
@@ -101,6 +108,9 @@ export function evaluateRequirementVariant(
   )
   const warnings = clauseResults.flatMap((result) => result.warnings)
   const allClausesPassed = clauseResults.every((result) => result.passed)
+  const onlyUnknownClausesFailed =
+    !allClausesPassed &&
+    clauseResults.every((result) => result.passed || result.unknown)
 
   if (allClausesPassed && variant.parseStatus === "structured") {
     return baseEvaluation(ruleSet, {
@@ -132,6 +142,20 @@ export function evaluateRequirementVariant(
     })
   }
 
+  // Everything the profile can show passed; the rest needs results the
+  // student has not given (usually Form Four). That is not a failure.
+  if (onlyUnknownClausesFailed) {
+    return baseEvaluation(ruleSet, {
+      status: "cannot_determine",
+      matchedRoute: variant.route,
+      matchedVariantIndex: variantIndex,
+      confidence: lowerConfidence(ruleSet.confidence),
+      matchedClauses,
+      missingClauses,
+      warnings,
+    })
+  }
+
   return baseEvaluation(ruleSet, {
     status:
       variant.parseStatus === "structured" && ruleSet.confidence === "high"
@@ -149,14 +173,58 @@ export function evaluateRequirementVariant(
   })
 }
 
+// Other clauses in the same variant that change how a clause reads. Today
+// that is the principal-pass minimum: in "one principal pass and one
+// subsidiary pass", any principal pass beyond the first also covers the
+// subsidiary, because a principal pass is a higher grade than S.
+export type ClauseContext = {
+  requiredPrincipalPasses: number
+}
+
+export function clauseContextForVariant(
+  variant: Pick<RequirementVariant, "clauses">
+): ClauseContext {
+  return {
+    requiredPrincipalPasses: variant.clauses.reduce(
+      (required, clause) =>
+        clause.kind === "min_acsee_principal_passes"
+          ? Math.max(required, clause.count)
+          : required,
+      0
+    ),
+  }
+}
+
+export function evaluateRequirementClause(
+  clause: RequirementClause,
+  profile: NormalizedStudentProfile,
+  context: ClauseContext = { requiredPrincipalPasses: 0 }
+): ClauseEvaluation {
+  return evaluateClause(clause, profile, context)
+}
+
+// S grades plus principal passes left over after the principal minimum.
+export function subsidiaryOrBetterPassCount(
+  profile: NormalizedStudentProfile,
+  context: ClauseContext = { requiredPrincipalPasses: 0 }
+) {
+  const summary = profile.acseeSummary
+  if (!summary) return undefined
+  return (
+    summary.subsidiaryPassCount +
+    Math.max(0, summary.principalPassCount - context.requiredPrincipalPasses)
+  )
+}
+
 function evaluateClause(
   clause: RequirementClause,
-  profile: NormalizedStudentProfile
+  profile: NormalizedStudentProfile,
+  context: ClauseContext
 ): ClauseEvaluation {
   if (clause.kind === "min_csee_passes") {
     const passCount = profile.cseeSummary?.passCount
     if (passCount === undefined) {
-      return missing("CSEE results are required.")
+      return missingData("CSEE results are required.")
     }
     return passCount >= clause.count
       ? matched(`CSEE pass count ${passCount} meets minimum ${clause.count}.`)
@@ -208,7 +276,7 @@ function evaluateClause(
   }
 
   if (clause.kind === "min_acsee_subsidiary_passes") {
-    const passCount = profile.acseeSummary?.subsidiaryPassCount
+    const passCount = subsidiaryOrBetterPassCount(profile, context)
     if (passCount === undefined) {
       return missing("ACSEE subsidiary pass count is required.")
     }
@@ -242,7 +310,7 @@ function evaluateDivisionClause(
   label: "CSEE" | "ACSEE"
 ): ClauseEvaluation {
   if (!actual) {
-    return missing(`${label} division is required.`)
+    return missingData(`${label} division is required.`)
   }
   return DIVISION_RANK[actual] <= DIVISION_RANK[required]
     ? matched(`${label} division ${actual} meets minimum division ${required}.`)
@@ -255,7 +323,18 @@ function evaluateAcseeSubjectGradeClause(
   clause: Extract<RequirementClause, { kind: "acsee_subject_grade" }>,
   profile: NormalizedStudentProfile
 ): ClauseEvaluation {
-  const subject = normalizeSubjectName(clause.subject)
+  const [subject] = resolveAcseeRequirementSubjects([clause.subject]).subjects
+  if (!subject) {
+    return {
+      passed: false,
+      unknown: true,
+      matchedClauses: [],
+      missingClauses: [
+        `ACSEE subject could not be read: ${normalizeSubjectName(clause.subject)}.`,
+      ],
+      warnings: [],
+    }
+  }
   const grade = profile.acseeSummary?.subjectGrades[subject]
   if (!grade) {
     return missing(`ACSEE ${subject} grade is required.`)
@@ -278,48 +357,109 @@ function evaluateSubjectGroupClause(
       : profile.acseeSummary?.subjectGrades
 
   if (!gradeMap) {
-    return missing(`${clause.level.toUpperCase()} subject grades are required.`)
-  }
-
-  const subjectResults = clause.subjects.map((subject) => {
-    const normalizedSubject = normalizeSubjectName(subject)
-    const grade = gradeMap[normalizedSubject]
-    const passed =
-      grade !== undefined &&
-      (!clause.minGrade ||
-        gradeMeetsMinimum(grade, clause.minGrade, clause.level))
-
-    return {
-      subject: normalizedSubject,
-      grade,
-      passed,
-    }
-  })
-
-  const passedSubjects = subjectResults.filter((result) => result.passed)
-  const requiredCount =
-    clause.mode === "all_of"
-      ? subjectResults.length
-      : clause.mode === "one_of"
-        ? 1
-        : (clause.count ?? subjectResults.length)
-
-  const passed = passedSubjects.length >= requiredCount
-
-  if (passed) {
-    return matched(
-      `Matched ${passedSubjects.length} of ${subjectResults.length} required ${clause.level.toUpperCase()} subjects.`
+    return missingData(
+      `${clause.level.toUpperCase()} subject grades are required.`
     )
   }
 
-  const missingSubjects = subjectResults
+  const assessment = assessSubjectGroup(clause, gradeMap)
+
+  if (assessment.outcome === "pass") {
+    return matched(
+      `Matched ${assessment.passedCount} of ${assessment.subjects.length} required ${clause.level.toUpperCase()} subjects.`
+    )
+  }
+
+  if (assessment.outcome === "unknown") {
+    return {
+      passed: false,
+      unknown: true,
+      matchedClauses: [],
+      missingClauses: [
+        `Part of the ${clause.level.toUpperCase()} subject list could not be read: ${assessment.unresolved.join(", ")}.`,
+      ],
+      warnings: [],
+    }
+  }
+
+  const missingSubjects = assessment.subjects
     .filter((result) => !result.passed)
     .map((result) => result.subject)
     .join(", ")
 
   return missing(
-    `Needs ${requiredCount} matching ${clause.level.toUpperCase()} subject(s); missing or below grade: ${missingSubjects}.`
+    `Needs ${assessment.requiredCount} matching ${clause.level.toUpperCase()} subject(s); missing or below grade: ${missingSubjects}.`
   )
+}
+
+export type SubjectGroupAssessment = {
+  outcome: "pass" | "fail" | "unknown"
+  minGrade: CseeGrade | AcseeGrade
+  requiredCount: number
+  passedCount: number
+  subjects: Array<{
+    subject: string
+    grade?: CseeGrade | AcseeGrade
+    passed: boolean
+  }>
+  unresolved: string[]
+}
+
+// Checks a subject group against one level's grades. Requirement subjects
+// the parser could not read are kept apart: they never count as passed, but
+// they also never turn a result into a failure on their own.
+export function assessSubjectGroup(
+  clause: Extract<RequirementClause, { kind: "subject_group" }>,
+  gradeMap: Record<string, CseeGrade | AcseeGrade>
+): SubjectGroupAssessment {
+  // A subject group without an explicit grade comes from wording such as
+  // "principal passes in ...", so it needs at least a principal pass (E) at
+  // A-Level or a pass (D) at O-Level. Sitting the subject is not enough.
+  const minGrade = clause.minGrade ?? (clause.level === "acsee" ? "E" : "D")
+  const { subjects, unresolved } =
+    clause.level === "acsee"
+      ? resolveAcseeRequirementSubjects(clause.subjects)
+      : { subjects: clause.subjects.map(normalizeSubjectName), unresolved: [] }
+  const subjectResults = subjects.map((subject) => {
+    const grade = gradeMap[subject]
+    return {
+      subject,
+      grade,
+      passed:
+        grade !== undefined && gradeMeetsMinimum(grade, minGrade, clause.level),
+    }
+  })
+  const passedCount = subjectResults.filter((result) => result.passed).length
+  const listedCount = subjects.length + unresolved.length
+  const requiredCount =
+    clause.mode === "all_of"
+      ? listedCount
+      : clause.mode === "one_of"
+        ? 1
+        : Math.min(clause.count ?? listedCount, listedCount)
+
+  let outcome: SubjectGroupAssessment["outcome"]
+  if (passedCount >= requiredCount) {
+    outcome = "pass"
+  } else if (unresolved.length === 0) {
+    outcome = "fail"
+  } else if (clause.mode === "all_of") {
+    outcome = subjectResults.every((result) => result.passed)
+      ? "unknown"
+      : "fail"
+  } else {
+    outcome =
+      passedCount + unresolved.length >= requiredCount ? "unknown" : "fail"
+  }
+
+  return {
+    outcome,
+    minGrade,
+    requiredCount,
+    passedCount,
+    subjects: subjectResults,
+    unresolved,
+  }
 }
 
 function evaluatePriorAwardClause(
@@ -367,7 +507,10 @@ function evaluateOLevelSubjectGradeClause(
   profile: NormalizedStudentProfile
 ): ClauseEvaluation {
   const subject = normalizeSubjectName(clause.subject)
-  const grade = profile.cseeSummary?.subjectGrades[subject]
+  if (!profile.cseeSummary) {
+    return missingData(`O-Level ${subject} grade is required.`)
+  }
+  const grade = profile.cseeSummary.subjectGrades[subject]
   if (!grade) {
     return missing(`O-Level ${subject} grade is required.`)
   }
@@ -408,6 +551,16 @@ function matched(message: string): ClauseEvaluation {
 function missing(message: string): ClauseEvaluation {
   return {
     passed: false,
+    matchedClauses: [],
+    missingClauses: [message],
+    warnings: [],
+  }
+}
+
+function missingData(message: string): ClauseEvaluation {
+  return {
+    passed: false,
+    unknown: true,
     matchedClauses: [],
     missingClauses: [message],
     warnings: [],

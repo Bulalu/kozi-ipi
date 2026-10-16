@@ -3,8 +3,8 @@
 // when the processed dataset changes.
 
 export const HOME_STATS = {
-  programmes: "4,440",
-  institutions: "742",
+  programmes: "3,915",
+  institutions: "734",
 }
 
 export const TICKER_COURSES = [

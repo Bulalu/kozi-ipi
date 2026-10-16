@@ -7,8 +7,13 @@ import type { StudentEligibilityProfile } from "../lib/eligibility"
 import {
   applicationRouteValidator,
   queryProgrammesByApplicantPathway,
+  queryProgrammesByApplicantPathwayAndAwardLevel,
   type ApplicationRoute,
 } from "./applicantPathways"
+import {
+  evaluateEligibilityOverview,
+  getProgrammeEligibilityDetail,
+} from "./programmeEligibility/overview"
 import { evaluateEligibilityPage } from "./programmeEligibility/search"
 import { formatProgrammeSearchResults } from "./programmeSearch/display"
 import {
@@ -27,6 +32,11 @@ const DEFAULT_RESULT_LIMIT = 25
 const MAX_VISIBLE_RESULT_LIMIT = 200
 const MAX_CANDIDATE_SCAN_LIMIT = 1000
 const ELIGIBILITY_BROWSE_SCAN_LIMIT = 1000
+// Per award level. Form Six slices are about 800-950 programmes today; each
+// row also reads its requirement rules, so 1000 keeps a call under the
+// Convex per-query read limits. Anything above is reported as capped.
+const ELIGIBILITY_OVERVIEW_SCAN_LIMIT = 1000
+const ELIGIBILITY_OVERVIEW_SEARCH_LIMIT = 300
 
 const cseeDivision = v.union(
   v.literal("I"),
@@ -287,6 +297,91 @@ export const eligibleSearchPaginated = query({
       buckets: evaluated.buckets,
       isDone: !page.hasMore,
       continueCursor: page.nextCursor ?? page.cursor ?? "",
+    }
+  },
+})
+
+// Evaluates the student's whole candidate set for one award level and
+// returns true status counts plus every row in fit order. The client asks
+// once per award level (degree, diploma, certificate), so each call reads
+// one slice and stays well inside Convex read limits. Region, field and
+// status filters are applied on the client from these rows.
+export const eligibleOverview = query({
+  args: {
+    profile: eligibilityProfileValidator,
+    awardLevel: v.string(),
+    query: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const text = args.query?.trim() ?? ""
+    const scanLimit = text
+      ? ELIGIBILITY_OVERVIEW_SEARCH_LIMIT
+      : ELIGIBILITY_OVERVIEW_SCAN_LIMIT
+    // Read one extra row so a full slice can be reported as capped.
+    const candidates = text
+      ? (
+          await getSmartSearchCandidates(ctx, {
+            query: text,
+            filters: { awardLevel: args.awardLevel },
+            limit: scanLimit,
+            maxCount: scanLimit,
+          })
+        ).rankedResults.filter(
+          (programme) => programme.awardLevel === args.awardLevel
+        )
+      : await queryProgrammesByApplicantPathwayAndAwardLevel(
+          ctx,
+          args.profile.applicationRoute,
+          args.awardLevel,
+          scanLimit + 1
+        )
+    // Search returns at most `scanLimit` rows, so a full search slice may
+    // also have been cut short.
+    const capped = text
+      ? candidates.length >= scanLimit
+      : candidates.length > scanLimit
+    const evaluated = await evaluateEligibilityOverview(ctx, {
+      programmes: candidates.slice(0, scanLimit),
+      profile: args.profile as StudentEligibilityProfile,
+    })
+
+    return {
+      awardLevel: args.awardLevel,
+      scanned: Math.min(candidates.length, scanLimit),
+      scanLimit,
+      capped,
+      counts: evaluated.counts,
+      rows: evaluated.rows,
+    }
+  },
+})
+
+// Evidence for one result card: each requirement line for the student's
+// route checked against their results, plus the official wording.
+export const eligibilityDetail = query({
+  args: {
+    profile: eligibilityProfileValidator,
+    programmeId: v.id("programmes"),
+  },
+  handler: async (ctx, args) => {
+    const programme = await ctx.db.get(args.programmeId)
+    if (!programme) return null
+
+    const detail = await getProgrammeEligibilityDetail(
+      ctx,
+      programme,
+      args.profile as StudentEligibilityProfile
+    )
+
+    return {
+      status: detail.status,
+      confidence: detail.confidence,
+      basis: detail.basis,
+      evidence: detail.evidence,
+      needsCsee: detail.needsCsee,
+      requirementText: detail.requirementText,
+      officialSourceUrl: programme.officialSourceUrl,
+      lastVerifiedDate: programme.lastVerifiedDate,
     }
   },
 })

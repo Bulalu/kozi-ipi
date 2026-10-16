@@ -1,4 +1,5 @@
 import "./globals.css"
+import type { Metadata } from "next"
 import { Archivo, Archivo_Black, Geist_Mono, Inter } from "next/font/google"
 import { ConvexClientProvider } from "@/components/convex-client-provider"
 import { SiteFooter } from "@/components/site-footer"
@@ -29,6 +30,41 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   display: "swap",
 })
+
+const SITE_DESCRIPTION =
+  "Tafuta kozi na vyuo Tanzania baada ya Form Four, Form Six au diploma, na angalia sifa zako dhidi ya masharti ya TCU na NACTVET. Find courses and colleges in Tanzania and check your entry requirements."
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://www.koziipi.com"),
+  title: {
+    default: "Kozi Ipi — Kozi na vyuo Tanzania",
+    template: "%s | Kozi Ipi",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: "Kozi Ipi",
+  openGraph: {
+    type: "website",
+    siteName: "Kozi Ipi",
+    locale: "sw_TZ",
+    url: "/",
+    title: "Kozi Ipi — Kozi na vyuo Tanzania",
+    description: SITE_DESCRIPTION,
+    images: [
+      {
+        url: "/hero-students.png",
+        width: 1448,
+        height: 1086,
+        alt: "Wanafunzi wa Tanzania",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kozi Ipi — Kozi na vyuo Tanzania",
+    description: SITE_DESCRIPTION,
+    images: ["/hero-students.png"],
+  },
+}
 
 export default function RootLayout({
   children,

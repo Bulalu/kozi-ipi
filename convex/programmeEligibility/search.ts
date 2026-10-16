@@ -52,7 +52,7 @@ export async function evaluateEligibilityPage(
   }
 }
 
-async function getProgrammeRequirementRuleSets(
+export async function getProgrammeRequirementRuleSets(
   ctx: QueryCtx,
   programme: Pick<
     Doc<"programmes">,

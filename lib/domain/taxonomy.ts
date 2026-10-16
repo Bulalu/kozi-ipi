@@ -200,6 +200,89 @@ export const fieldTaxonomy: Record<string, string[]> = {
   Tourism: ["tourism", "hospitality", "tour guiding", "culinary", "wildlife"],
 }
 
+// Display labels for the processed `fieldCategory` slugs, Swahili first.
+// Unknown slugs fall back to title case so a new category still reads well.
+export const fieldCategoryLabels: Record<
+  string,
+  { swahili: string; english: string }
+> = {
+  "business finance management": {
+    swahili: "Biashara, fedha na uongozi",
+    english: "Business, finance & management",
+  },
+  "health allied sciences": {
+    swahili: "Afya na sayansi shirikishi",
+    english: "Health & allied sciences",
+  },
+  education: { swahili: "Elimu na ualimu", english: "Education" },
+  ICT: { swahili: "TEHAMA", english: "ICT & computing" },
+  "engineering technology": {
+    swahili: "Uhandisi na teknolojia",
+    english: "Engineering & technology",
+  },
+  health: { swahili: "Afya", english: "Health" },
+  business: { swahili: "Biashara", english: "Business" },
+  "vocational trade": { swahili: "Ufundi stadi", english: "Vocational trades" },
+  other: { swahili: "Nyingine", english: "Other" },
+  "other needs classification": { swahili: "Nyingine", english: "Other" },
+  "arts media communication": {
+    swahili: "Sanaa, habari na mawasiliano",
+    english: "Arts, media & communication",
+  },
+  "planning built environment land": {
+    swahili: "Mipango, ujenzi na ardhi",
+    english: "Planning, built environment & land",
+  },
+  "social sciences community development": {
+    swahili: "Sayansi za jamii na maendeleo",
+    english: "Social sciences & community development",
+  },
+  mechanical: { swahili: "Ufundi mitambo", english: "Mechanical" },
+  science: { swahili: "Sayansi", english: "Science" },
+  "agriculture fisheries livestock": {
+    swahili: "Kilimo, uvuvi na mifugo",
+    english: "Agriculture, fisheries & livestock",
+  },
+  "tourism hospitality": {
+    swahili: "Utalii na ukarimu",
+    english: "Tourism & hospitality",
+  },
+  "beauty fashion": { swahili: "Urembo na mitindo", english: "Beauty & fashion" },
+  electrical: { swahili: "Umeme", english: "Electrical" },
+  accounting: { swahili: "Uhasibu", english: "Accounting" },
+  construction: { swahili: "Ujenzi", english: "Construction" },
+  engineering: { swahili: "Uhandisi", english: "Engineering" },
+  "law public administration": {
+    swahili: "Sheria na utawala",
+    english: "Law & public administration",
+  },
+  arts: { swahili: "Sanaa", english: "Arts" },
+  agriculture: { swahili: "Kilimo", english: "Agriculture" },
+  "social work": { swahili: "Ustawi wa jamii", english: "Social work" },
+  hospitality: { swahili: "Ukarimu", english: "Hospitality" },
+  "community development": {
+    swahili: "Maendeleo ya jamii",
+    english: "Community development",
+  },
+  law: { swahili: "Sheria", english: "Law" },
+  tourism: { swahili: "Utalii", english: "Tourism" },
+  media: { swahili: "Habari", english: "Media" },
+  transport: { swahili: "Usafirishaji", english: "Transport" },
+  "religious studies": { swahili: "Dini", english: "Religious studies" },
+  procurement: { swahili: "Ununuzi", english: "Procurement" },
+}
+
+export function fieldCategoryLabel(slug: string) {
+  const known = fieldCategoryLabels[slug]
+  if (known) return known
+  const titled = slug
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ")
+  return { swahili: titled, english: titled }
+}
+
 export function fieldTerms(field: string) {
   return fieldTaxonomy[field] ?? [field.toLowerCase()]
 }
