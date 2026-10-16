@@ -11,11 +11,13 @@ import {
   countAcseePrincipalPasses,
   countAcseeSubsidiaryPasses,
   countCseePasses,
+  evaluateRequirementClause,
   evaluateRequirementRuleSet,
   fallbackEligibilityFromApplicantPathwayFlag,
   normalizeStudentProfile,
   normalizeSubjectName,
   parseRequirementRuleSet,
+  summarizeAcseeSubjectGrades,
   summarizeEligibilityEvaluation,
 } from "../lib/eligibility"
 import {
@@ -576,6 +578,85 @@ assert(
     "Does not currently meet"
   ),
   "Eligibility summaries should use safe public wording."
+)
+
+// Synthetic grades only: General Studies and BAM are subsidiary subjects and
+// must not inflate principal passes or admission points.
+const subsidiarySubjectSummary = summarizeAcseeSubjectGrades({
+  general_studies: "A",
+  basic_applied_mathematics: "B",
+  history: "C",
+  geography: "D",
+  economics: "S",
+  kiswahili: "E",
+})
+assert.equal(
+  subsidiarySubjectSummary.principalPassCount,
+  3,
+  "General Studies and BAM should not count as principal passes."
+)
+assert.equal(
+  subsidiarySubjectSummary.points,
+  6,
+  "ACSEE admission points should use the best three principal subjects only."
+)
+assert.deepEqual(
+  subsidiarySubjectSummary.pointSubjects,
+  ["history", "geography", "kiswahili"],
+  "Admission points should name the three subjects they came from."
+)
+
+// A Form Six profile has no O-Level grades, so an O-Level clause is unknown,
+// not failed: the programme needs review instead of being ruled out.
+const formSixWithoutCsee = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "Advanced Mathematics", grade: "B" },
+      { subject: "Physics", grade: "C" },
+      { subject: "Chemistry", grade: "D" },
+    ],
+  },
+})
+const oLevelUnknownEvaluation = evaluateRequirementRuleSet(
+  engineeringRuleSet,
+  formSixWithoutCsee
+)
+assert.equal(
+  oLevelUnknownEvaluation.status,
+  "cannot_determine",
+  "Missing O-Level data should not make a Form Six student not_eligible."
+)
+assert(
+  evaluateRequirementClause(
+    { kind: "o_level_subject_grade", subject: "chemistry", minGrade: "C" },
+    formSixWithoutCsee
+  ).unknown,
+  "O-Level clauses without CSEE data should be marked unknown."
+)
+
+// "Principal passes in X and Y" needs a principal pass, not just a sitting.
+const failedSubjectProfile = normalizeStudentProfile({
+  applicationRoute: "form_six",
+  acsee: {
+    subjects: [
+      { subject: "Advanced Mathematics", grade: "B" },
+      { subject: "Physics", grade: "F" },
+    ],
+  },
+})
+assert.equal(
+  evaluateRequirementClause(
+    {
+      kind: "subject_group",
+      level: "acsee",
+      mode: "all_of",
+      subjects: ["advanced_mathematics", "physics"],
+    },
+    failedSubjectProfile
+  ).passed,
+  false,
+  "ACSEE subject groups without a grade should require principal passes."
 )
 
 console.log(

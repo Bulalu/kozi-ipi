@@ -1,9 +1,4 @@
-import {
-  countAcseePrincipalPasses,
-  countAcseeSubsidiaryPasses,
-  countCseePasses,
-} from "./grades"
-import { calculateAcseePoints } from "./points"
+import { countCseePasses, summarizeAcseeSubjectGrades } from "./grades"
 import {
   normalizeSubjectGradeEntries,
   normalizeSubjectList,
@@ -25,6 +20,10 @@ export function normalizeStudentProfile(
     ...Object.keys(acseeSubjectGrades ?? {}),
   ])
 
+  const acseeGradeSummary = acseeSubjectGrades
+    ? summarizeAcseeSubjectGrades(acseeSubjectGrades)
+    : undefined
+
   return {
     ...profile,
     cseeSummary: cseeSubjectGrades
@@ -34,19 +33,16 @@ export function normalizeStudentProfile(
           subjectGrades: cseeSubjectGrades,
         }
       : undefined,
-    acseeSummary: acseeSubjectGrades
-      ? {
-          division: profile.acsee?.division,
-          principalPassCount: countAcseePrincipalPasses(
-            Object.values(acseeSubjectGrades)
-          ),
-          subsidiaryPassCount: countAcseeSubsidiaryPasses(
-            Object.values(acseeSubjectGrades)
-          ),
-          points: calculateAcseePoints(Object.values(acseeSubjectGrades)),
-          subjectGrades: acseeSubjectGrades,
-        }
-      : undefined,
+    acseeSummary:
+      acseeSubjectGrades && acseeGradeSummary
+        ? {
+            division: profile.acsee?.division,
+            principalPassCount: acseeGradeSummary.principalPassCount,
+            subsidiaryPassCount: acseeGradeSummary.subsidiaryPassCount,
+            points: acseeGradeSummary.points,
+            subjectGrades: acseeSubjectGrades,
+          }
+        : undefined,
     normalizedSubjects,
   }
 }
