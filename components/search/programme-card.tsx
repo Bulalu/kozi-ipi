@@ -5,7 +5,10 @@ import type { ReactNode } from "react"
 import { useEffect, useRef, useState } from "react"
 import type { useQuery } from "convex/react"
 
-import { familyMeta } from "@/components/search/search-config"
+import {
+  familyMeta,
+  fieldCategoryLabel,
+} from "@/components/search/search-config"
 import {
   ArrowRightIcon,
   ClockIcon,
@@ -191,7 +194,10 @@ function ProgrammeDetails({ programme }: { programme: ProgrammeSearchResult }) {
   const detailRows = [
     { label: "Institution", value: programme.institutionName },
     { label: "Award level", value: programme.awardLevel },
-    { label: "Field", value: programme.fieldCategory },
+    {
+      label: "Field",
+      value: fieldCategoryLabel(programme.fieldCategory).english,
+    },
     {
       label: "Duration",
       value: programme.duration ? `${programme.duration} years` : undefined,

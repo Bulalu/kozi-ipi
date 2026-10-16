@@ -1,11 +1,18 @@
 import {
   awardLevels,
   courseFamilies,
+  fieldCategoryLabel,
   searchRegions as regions,
   trendingQueries,
 } from "@/lib/domain/taxonomy"
 
-export { awardLevels, courseFamilies, regions, trendingQueries }
+export {
+  awardLevels,
+  courseFamilies,
+  fieldCategoryLabel,
+  regions,
+  trendingQueries,
+}
 
 export type SearchFilterKey = "family" | "level" | "region" | "institution"
 
