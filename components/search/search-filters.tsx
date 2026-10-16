@@ -1,4 +1,6 @@
-import type { ReactNode } from "react"
+"use client"
+
+import { type ReactNode, useState } from "react"
 
 import {
   type ActiveFilter,
@@ -17,6 +19,11 @@ type SearchFiltersProps = {
   setFilter: (key: SearchFilterKey, value: string | null) => void
 }
 
+const chip =
+  "rounded-full border-2 border-kozi-ink px-3.5 py-2 font-poster text-sm font-bold transition-colors"
+const chipOn = "bg-kozi-ink text-kozi-yellow"
+const chipOff = "bg-white text-kozi-ink hover:bg-kozi-yellow"
+
 export function SearchFilters({
   activeFilters,
   awardLevel,
@@ -25,83 +32,129 @@ export function SearchFilters({
   clearAllFilters,
   setFilter,
 }: SearchFiltersProps) {
+  // Collapsed by default on phones so results aren't pushed below the fold.
+  const [mobileOpen, setMobileOpen] = useState(false)
+
   return (
-    <aside className="h-fit lg:sticky lg:top-6" aria-label="Search filters">
-      <div className="rounded-2xl border border-brand-ink/10 bg-white">
-        <div className="flex items-center justify-between border-b border-brand-ink/8 px-5 py-4">
-          <p className="text-[13px] font-semibold tracking-tight">Filters</p>
+    <aside
+      className="flex h-fit flex-col gap-7 lg:sticky lg:top-6"
+      aria-label="Search filters"
+    >
+      <button
+        aria-controls="search-filter-panel"
+        aria-expanded={mobileOpen}
+        className="flex items-center justify-between rounded-2xl border-[3px] border-kozi-ink bg-white px-5 py-3.5 shadow-[4px_4px_0_var(--kozi-ink)] lg:hidden"
+        onClick={() => setMobileOpen((open) => !open)}
+        type="button"
+      >
+        <span className="font-display text-base text-kozi-ink">
+          VICHUJIO
+          {activeFilters.length > 0 ? ` · ${activeFilters.length}` : ""}
+        </span>
+        <span className="font-poster text-sm font-bold text-kozi-cobalt">
+          {mobileOpen ? "Funga" : "Fungua"}
+        </span>
+      </button>
+
+      <div
+        id="search-filter-panel"
+        className={`${mobileOpen ? "flex" : "hidden"} flex-col gap-7 lg:flex`}
+      >
+        <div className="flex items-center justify-between">
+          <p className="hidden font-display text-xl tracking-[-0.02em] text-kozi-ink lg:block">
+            VICHUJIO
+          </p>
           {activeFilters.length > 0 ? (
             <button
               aria-label="Clear all filters"
-              className="text-[12px] font-medium text-brand-blue hover:underline"
+              className="font-poster text-sm font-bold text-kozi-cobalt underline underline-offset-4"
               onClick={clearAllFilters}
               type="button"
             >
-              Clear all
+              Futa zote
             </button>
           ) : null}
         </div>
 
-        <FilterSection title="Field of study" hint="Eneo la masomo">
-          <div className="grid grid-cols-2 gap-1.5" role="group" aria-label="Field of study options">
-            {courseFamilies.map((courseFamily) => (
-              <button
-                aria-pressed={family === courseFamily.key}
-                className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[12.5px] transition ${
-                  family === courseFamily.key
-                    ? "border-brand-blue bg-brand-blue/5 text-brand-blue"
-                    : "border-brand-ink/10 text-brand-ink/75 hover:border-brand-ink/25"
-                }`}
-                key={courseFamily.key}
-                onClick={() =>
-                  setFilter("family", family === courseFamily.key ? null : courseFamily.key)
-                }
-                type="button"
-              >
-                <span className="font-mono text-[13px] opacity-70">{courseFamily.mark}</span>
-                <span className="truncate font-medium">{courseFamily.label}</span>
-              </button>
-            ))}
+        <FilterSection title="Fani" hint="Field of study">
+          <div
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label="Field of study options"
+          >
+            {courseFamilies.map((courseFamily) => {
+              const selected = family === courseFamily.key
+              return (
+                <button
+                  aria-pressed={selected}
+                  className={`${chip} ${selected ? chipOn : chipOff}`}
+                  key={courseFamily.key}
+                  onClick={() =>
+                    setFilter("family", selected ? null : courseFamily.key)
+                  }
+                  type="button"
+                >
+                  {courseFamily.label}
+                </button>
+              )
+            })}
           </div>
         </FilterSection>
 
-        <FilterSection title="Level" hint="Ngazi ya kozi">
-          <div className="grid grid-cols-1 gap-1" role="group" aria-label="Award level options">
-            {awardLevels.map((level) => (
-              <button
-                aria-pressed={awardLevel === level.value}
-                className={`flex items-center justify-between rounded-lg px-3 py-2 text-left text-[13px] transition ${
-                  awardLevel === level.value
-                    ? "bg-brand-ink text-white"
-                    : "text-brand-ink/75 hover:bg-brand-ink/5"
-                }`}
-                key={level.value}
-                onClick={() => setFilter("level", level.value)}
-                type="button"
-              >
-                <span className="font-medium">{level.label}</span>
-                {level.duration ? (
+        <FilterSection title="Ngazi" hint="Level">
+          <div
+            className="flex flex-col gap-1.5"
+            role="group"
+            aria-label="Award level options"
+          >
+            {awardLevels.map((level) => {
+              const selected = awardLevel === level.value
+              return (
+                <button
+                  aria-pressed={selected}
+                  className={`flex items-center gap-3 rounded-xl px-2 py-2 text-left font-poster transition-colors ${
+                    selected ? "" : "hover:bg-kozi-yellow/40"
+                  }`}
+                  key={level.value}
+                  onClick={() => setFilter("level", level.value)}
+                  type="button"
+                >
                   <span
-                    className={`text-[11px] ${
-                      awardLevel === level.value ? "text-white/60" : "text-brand-ink/45"
+                    aria-hidden
+                    className={`grid size-6 shrink-0 place-items-center rounded-full border-[2.5px] border-kozi-ink ${
+                      selected ? "bg-kozi-cobalt" : "bg-white"
                     }`}
                   >
-                    {level.duration}
+                    {selected ? (
+                      <span className="size-2 rounded-full bg-white" />
+                    ) : null}
                   </span>
-                ) : null}
-              </button>
-            ))}
+                  <span
+                    className={`flex-1 text-base text-kozi-ink ${
+                      selected ? "font-bold" : "font-medium"
+                    }`}
+                  >
+                    {level.label}
+                  </span>
+                  {level.duration ? (
+                    <span className="font-tag text-xs font-semibold text-kozi-graphite">
+                      {level.duration}
+                    </span>
+                  ) : null}
+                </button>
+              )
+            })}
           </div>
         </FilterSection>
 
-        <FilterSection title="Region" hint="Mkoa" last>
+        <FilterSection title="Mkoa" hint="Region" last>
           <select
             aria-label="Filter by region"
-            className="h-10 w-full rounded-lg border border-brand-ink/15 bg-white px-3 text-[13px] outline-none transition focus:border-brand-blue"
+            className="h-12 w-full cursor-pointer rounded-xl border-[2.5px] border-kozi-ink bg-white px-3 font-poster text-[15px] font-semibold text-kozi-ink outline-none focus-visible:ring-4 focus-visible:ring-kozi-yellow"
             onChange={(event) => setFilter("region", event.target.value)}
             value={region}
           >
-            <option value="">All</option>
+            <option value="">Mikoa yote</option>
             {regions.map((regionName) => (
               <option key={regionName} value={regionName}>
                 {regionName}
@@ -126,10 +179,16 @@ function FilterSection({
   children: ReactNode
 }) {
   return (
-    <div className={last ? "px-5 py-5" : "border-b border-brand-ink/8 px-5 py-5"}>
-      <div className="mb-3 flex items-baseline justify-between">
-        <p className="text-[13px] font-semibold tracking-tight">{title}</p>
-        <p className="text-[11px] text-brand-ink/45">{hint}</p>
+    <div
+      className={`flex flex-col gap-3.5 ${
+        last ? "" : "border-b-[3px] border-kozi-ink pb-7"
+      }`}
+    >
+      <div className="flex items-baseline justify-between">
+        <p className="font-display text-[15px] tracking-[0.04em] text-kozi-ink uppercase">
+          {title}
+        </p>
+        <p className="font-tag text-[11px] text-kozi-graphite">{hint}</p>
       </div>
       {children}
     </div>

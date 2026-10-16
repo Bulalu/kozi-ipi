@@ -1,13 +1,11 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { type FormEvent, useState } from "react"
 
+import { HomeNav } from "@/components/home/home-nav"
 import { trendingQueries } from "@/components/search/search-config"
 import { SearchIcon, XIcon } from "@/components/search/search-icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 
 type SearchHeaderProps = {
   initialQuery: string
@@ -26,123 +24,92 @@ export function SearchHeader({
     event.preventDefault()
     onSubmit(query)
   }
+
   return (
-    <>
-      <header className="border-b border-brand-ink/8">
-        <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-3"
-            aria-label="Kozi Ipi home"
-          >
-            <Image
-              src="/kozi-ipi-logo.png"
-              alt="Kozi Ipi"
-              width={36}
-              height={36}
-              priority
-              className="size-9"
-            />
-            <span className="text-[15px] font-semibold tracking-tight">
-              Kozi Ipi
-            </span>
-            <span className="rounded-full bg-brand-blue/10 px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] text-brand-blue uppercase">
-              Beta
-            </span>
-          </Link>
+    <header className="border-b-[3px] border-kozi-ink bg-kozi-yellow">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-5 pt-5 pb-9 sm:px-10 lg:gap-10 lg:px-14 lg:pt-7 lg:pb-12">
+        <HomeNav active="/search" />
 
-          <nav className="flex items-center gap-5 text-[13.5px] font-medium text-brand-ink/70 md:gap-7">
-            <Link href="/search" className="text-brand-ink">
-              Kozi
-            </Link>
-            <Link href="/vyuo" className="transition hover:text-brand-blue">
-              Vyuo
-            </Link>
-            <Link
-              href="/eligibility"
-              className="transition hover:text-brand-blue"
-            >
-              Sifa
-            </Link>
-          </nav>
-
-          <Link
-            href="/search"
-            aria-label="Search programmes"
-            className="grid size-10 place-items-center rounded-full text-brand-ink transition-colors hover:bg-brand-ink/5 md:hidden"
-          >
-            <SearchIcon className="size-[18px]" />
-          </Link>
-        </div>
-      </header>
-
-      <section className="border-b border-brand-ink/8 bg-[#fbfbfb]">
-        <div className="mx-auto max-w-[1280px] px-6 py-7 sm:px-8">
-          <div className="flex items-center gap-3 text-[12px] tracking-[0.18em] text-brand-blue uppercase">
-            <span className="font-semibold">Search</span>
-            <span className="h-px flex-1 bg-brand-blue/20" />
+        <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between xl:gap-12">
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <p className="font-poster text-lg font-bold text-kozi-ink lg:text-xl">
+              {initialQuery ? "Matokeo ya" : "Tafuta kozi"}
+            </p>
+            <h1 className="font-display text-[44px] leading-[0.92] tracking-[-0.05em] break-words text-kozi-ink uppercase sm:text-[72px] lg:text-[96px] xl:text-[104px]">
+              {initialQuery || "Kozi ipi?"}
+            </h1>
           </div>
 
-          <h1 className="mt-3 max-w-3xl text-[34px] leading-[1.1] font-bold tracking-tight">
-            Tafuta kozi na njia inayokufaa.
-          </h1>
-          <p className="mt-2 max-w-2xl text-[15px] leading-7 text-brand-ink/65">
-            fahamu kozi, vyuo, na njia za kujiunga kulingana na elimu uliyonayo.
-          </p>
-
-          <form
-            className="mt-6 flex w-full max-w-3xl flex-col gap-2 rounded-3xl border border-brand-ink/10 bg-white p-2 shadow-[0_18px_38px_-22px_rgba(15,15,18,0.25)] sm:flex-row sm:items-center sm:rounded-full"
-            onSubmit={handleSubmit}
-          >
-            <label className="flex flex-1 items-center gap-3 px-4">
-              <span className="sr-only">Tafuta kozi, chuo, career path</span>
-              <SearchIcon className="size-[18px] shrink-0 text-brand-ink/55" />
-              <Input
-                aria-label="Tafuta kozi, chuo, career path"
-                className="h-12 min-w-0 flex-1 border-0 bg-transparent px-0 text-[15px] text-brand-ink caret-brand-blue shadow-none placeholder:text-brand-ink/40 focus-visible:ring-0"
+          <div className="flex w-full shrink-0 flex-col gap-4 lg:max-w-[640px] xl:w-[560px] xl:pb-1.5">
+            <form
+              className="flex items-center gap-2 rounded-full border-[3px] border-kozi-ink bg-white py-1.5 pr-1.5 pl-5 shadow-[6px_6px_0_var(--kozi-ink)]"
+              onSubmit={handleSubmit}
+              role="search"
+            >
+              <SearchIcon className="size-5 shrink-0 text-kozi-ink" />
+              <label htmlFor="search-query" className="sr-only">
+                Tafuta kozi, chuo, career path
+              </label>
+              <input
+                id="search-query"
+                type="search"
+                className="h-12 min-w-0 flex-1 bg-transparent font-poster text-base font-semibold text-kozi-ink caret-kozi-cobalt placeholder:font-normal placeholder:text-[#6b6b73] focus:outline-none lg:text-[17px] [&::-webkit-search-cancel-button]:hidden"
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Tafuta kozi, chuo, career path..."
-                size="xl"
-                variant="ghost"
                 value={query}
               />
               {query ? (
                 <button
-                  className="grid size-7 place-items-center rounded-full text-brand-ink/40 transition hover:bg-brand-ink/5 hover:text-brand-ink"
+                  aria-label="Clear search"
+                  className="grid size-9 shrink-0 place-items-center rounded-full text-kozi-ink/50 transition hover:bg-kozi-ink/5 hover:text-kozi-ink"
                   onClick={() => setQuery("")}
                   type="button"
-                  aria-label="Clear search"
                 >
                   <XIcon className="size-4" />
                 </button>
               ) : null}
-            </label>
-            <Button
-              className="h-12 shrink-0 rounded-full bg-brand-blue px-7 text-[14px] font-semibold text-white transition hover:bg-brand-blue-deep"
-              type="submit"
-            >
-              Tafuta
-            </Button>
-          </form>
-
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-[12.5px]">
-            <span className="font-semibold text-brand-ink/60">Trending:</span>
-            {trendingQueries.map((trending) => (
               <button
-                className="rounded-full border border-brand-ink/15 bg-white px-3 py-1.5 text-brand-ink/70 transition hover:border-brand-blue hover:bg-brand-blue hover:text-white"
-                key={trending}
-                onClick={() => {
-                  setQuery(trending)
-                  onTrending(trending)
-                }}
-                type="button"
+                className="h-12 shrink-0 rounded-full bg-kozi-cobalt px-5 font-display text-sm text-white transition-colors hover:bg-kozi-ink lg:px-6 lg:text-base"
+                type="submit"
               >
-                {trending}
+                TAFUTA
               </button>
-            ))}
+            </form>
+
+            {/* Search has no student profile, so eligibility lives on Form Six. */}
+            <Link
+              href="/form-six"
+              className="flex w-fit -rotate-[1.5deg] items-center gap-3 rounded-xl bg-kozi-ink px-4 py-2.5 transition-transform hover:rotate-0"
+            >
+              <span className="font-tag text-[11px] font-semibold tracking-[0.1em] text-kozi-yellow/75">
+                UNASTAHILI?
+              </span>
+              <span className="font-display text-sm text-kozi-yellow">
+                WEKA INDEX YA FORM SIX →
+              </span>
+            </Link>
           </div>
         </div>
-      </section>
-    </>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="pr-1 font-display text-[13px] tracking-[0.04em] text-kozi-ink">
+            ZINAZOTAFUTWA:
+          </span>
+          {trendingQueries.map((trending) => (
+            <button
+              className="rounded-full border-2 border-kozi-ink bg-white/60 px-3.5 py-1.5 font-poster text-[13px] font-bold text-kozi-ink transition hover:bg-kozi-ink hover:text-kozi-yellow"
+              key={trending}
+              onClick={() => {
+                setQuery(trending)
+                onTrending(trending)
+              }}
+              type="button"
+            >
+              {trending}
+            </button>
+          ))}
+        </div>
+      </div>
+    </header>
   )
 }

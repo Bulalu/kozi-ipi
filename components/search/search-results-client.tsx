@@ -218,7 +218,7 @@ export function SearchResultsClient({
   }
 
   return (
-    <main className="min-h-screen bg-white text-brand-ink">
+    <main className="min-h-screen bg-white font-poster text-kozi-ink">
       <SearchHeader
         key={queryFromUrl}
         initialQuery={queryFromUrl}
@@ -226,7 +226,7 @@ export function SearchResultsClient({
         onTrending={runTrending}
       />
 
-      <div className="mx-auto grid max-w-[1280px] gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[19rem_1fr] lg:px-8">
+      <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-5 py-10 sm:px-10 lg:grid-cols-[18rem_1fr] lg:gap-12 lg:px-14 lg:py-12">
         <SearchFilters
           activeFilters={activeFilters}
           awardLevel={awardLevel}
@@ -247,23 +247,23 @@ export function SearchResultsClient({
           />
 
           {activeFilters.length > 0 ? (
-            <div className="mt-4 flex min-w-0 flex-wrap items-center gap-2">
+            <div className="mt-5 flex min-w-0 flex-wrap items-center gap-2">
               {activeFilters.map((filter) => (
                 <button
                   aria-label={`Remove ${filter.label} filter`}
-                  className="inline-flex max-w-full items-center gap-1.5 rounded-full bg-brand-blue/10 px-3 py-1.5 text-[12px] font-medium text-brand-blue hover:bg-brand-blue/15"
+                  className="inline-flex max-w-full items-center gap-2 rounded-full border-2 border-kozi-ink bg-kozi-yellow px-3.5 py-1.5 font-poster text-[13px] font-bold text-kozi-ink transition hover:bg-kozi-ink hover:text-kozi-yellow"
                   key={filter.key}
                   onClick={filter.clear}
                   type="button"
                 >
                   <span className="min-w-0 truncate">{filter.label}</span>
-                  <XIcon className="size-3 shrink-0" />
+                  <XIcon className="size-3.5 shrink-0" />
                 </button>
               ))}
             </div>
           ) : null}
 
-          <div className="mt-5 grid min-w-0 gap-4">
+          <div className="mt-6 grid min-w-0 gap-5">
             {!activeQuery ? (
               <EmptyState />
             ) : isResultsLoading ? (
@@ -291,7 +291,7 @@ export function SearchResultsClient({
                 />
               </>
             ) : (
-              <EmptyState message="No matching programmes. Try a broader search or remove a filter." />
+              <EmptyState message="Hakuna kozi inayolingana. Jaribu neno pana zaidi au ondoa kichujio." />
             )}
           </div>
         </section>
@@ -316,21 +316,22 @@ function SearchResultsFooter({
   totalMatches: number
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 border-t border-brand-ink/8 pt-5 text-center">
-      <p className="text-[12.5px] text-brand-ink/55">
-        Showing {renderedCount} of {totalMatches}
-        {isCapped ? "+" : ""} matches
-      </p>
+    <div className="flex flex-col items-center gap-4 pt-6 text-center">
       {canLoadMore || isLoadingMore ? (
         <button
-          className="rounded-full border border-brand-ink/15 px-5 py-2.5 text-[13px] font-semibold text-brand-ink transition hover:border-brand-blue hover:bg-brand-blue hover:text-white disabled:cursor-wait disabled:opacity-60"
+          className="rounded-full border-[3px] border-kozi-ink bg-kozi-yellow px-8 py-4 font-display text-base text-kozi-ink shadow-[5px_5px_0_var(--kozi-ink)] transition-transform hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
           disabled={isLoadingMore}
           onClick={onLoadMore}
           type="button"
         >
-          {isLoadingMore ? "Loading..." : "Load more"}
+          {isLoadingMore ? "INAPAKIA..." : "ONYESHA ZAIDI"}
         </button>
       ) : null}
+      <p className="font-poster text-sm text-kozi-graphite">
+        Unaona {renderedCount} kati ya {totalMatches}
+        {isCapped ? "+" : ""} · Thibitisha sifa na TCU / NACTVET kabla ya
+        kuomba.
+      </p>
     </div>
   )
 }
@@ -351,20 +352,20 @@ function SearchResultsHeader({
   resultCount?: number
 }) {
   return (
-    <div className="flex min-w-0 flex-wrap items-end justify-between gap-4 border-b border-brand-ink/8 pb-4">
-      <div className="min-w-0">
-        <p className="text-[12.5px] font-medium tracking-[0.16em] text-brand-blue uppercase">
+    <div className="flex min-w-0 flex-wrap items-end justify-between gap-4 border-b-[3px] border-kozi-ink pb-5">
+      <div className="flex min-w-0 flex-wrap items-baseline gap-x-4 gap-y-1">
+        <h2 className="font-display text-[44px] leading-none tracking-[-0.05em] text-kozi-ink sm:text-[64px]">
           {isResultsLoading
-            ? "Searching"
-            : `${totalMatches ?? resultCount ?? 0}${isCapped ? "+" : ""} matches`}
-        </p>
-        <h2 className="mt-1 text-[22px] font-bold tracking-tight break-words">
-          {activeQuery ? `Results for "${activeQuery}"` : "All programmes"}
+            ? "TUNATAFUTA…"
+            : `${totalMatches ?? resultCount ?? 0}${isCapped ? "+" : ""} KOZI`}
         </h2>
+        <p className="font-poster text-base font-medium break-words text-kozi-graphite">
+          {activeQuery ? `za "${activeQuery}"` : "zote"}
+        </p>
       </div>
       {inferredFamily ? (
-        <span className="max-w-full shrink-0 truncate rounded-full bg-brand-blue/10 px-3 py-1.5 text-[12px] font-medium text-brand-blue">
-          {familyMeta(inferredFamily).label}
+        <span className="max-w-full shrink-0 truncate rounded-full bg-kozi-cobalt px-3.5 py-1.5 font-poster text-[13px] font-bold text-white">
+          Fani: {familyMeta(inferredFamily).label}
         </span>
       ) : null}
     </div>
@@ -372,14 +373,13 @@ function SearchResultsHeader({
 }
 
 function EmptyState({
-  message = "Search a course, college, or career path to see results.",
+  message = "Tafuta kozi, chuo, au career path kuona matokeo.",
 }) {
   return (
-    <div className="rounded-2xl border border-dashed border-brand-ink/15 bg-white p-10 text-center">
-      <p className="text-[15px] font-semibold">{message}</p>
-      <p className="mt-1 text-[13px] text-brand-ink/55">
-        Try “clinical medicine”, “civil engineering”, or “computer courses after
-        school”.
+    <div className="rounded-[20px] border-[3px] border-dashed border-kozi-ink bg-white p-10 text-center">
+      <p className="font-display text-lg text-kozi-ink">{message}</p>
+      <p className="mt-2 font-poster text-sm text-kozi-graphite">
+        Jaribu “clinical medicine”, “civil engineering”, au “nataka kuwa nurse”.
       </p>
     </div>
   )
@@ -390,7 +390,7 @@ function LoadingState() {
     <div className="grid gap-4">
       {[0, 1, 2].map((item) => (
         <div
-          className="h-52 animate-pulse rounded-2xl border border-brand-ink/10 bg-brand-ink/[0.03]"
+          className="h-56 animate-pulse rounded-[20px] border-[3px] border-kozi-ink/15 bg-kozi-yellow/10"
           key={item}
         />
       ))}

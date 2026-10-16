@@ -10,9 +10,10 @@ const NAV_LINKS = [
 ]
 
 const pill =
-  "rounded-full border-2 border-kozi-ink px-4 py-2 text-sm font-bold text-kozi-ink transition-colors hover:bg-kozi-ink hover:text-kozi-yellow"
+  "rounded-full border-2 border-kozi-ink px-4 py-2 text-sm font-bold transition-colors hover:bg-kozi-ink hover:text-kozi-yellow"
 
-export function HomeNav() {
+// Shared poster nav. `active` is the href of the current section, if any.
+export function HomeNav({ active }: { active?: string } = {}) {
   return (
     <header className="relative z-30 flex items-center justify-between gap-6">
       <Link
@@ -25,7 +26,16 @@ export function HomeNav() {
 
       <nav className="hidden items-center gap-2 font-poster md:flex">
         {NAV_LINKS.map((link) => (
-          <Link key={link.href} href={link.href} className={pill}>
+          <Link
+            key={link.href}
+            href={link.href}
+            aria-current={active === link.href ? "page" : undefined}
+            className={`${pill} ${
+              active === link.href
+                ? "bg-kozi-ink text-kozi-yellow"
+                : "text-kozi-ink"
+            }`}
+          >
             {link.label}
           </Link>
         ))}
