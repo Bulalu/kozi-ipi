@@ -1,0 +1,4064 @@
+{
+  "source": {
+    "guidebook": "TCU Bachelor's Degree Admission Guidebook 2025/2026 (holders of secondary school qualifications), 6 October 2025 edition",
+    "guidebookUrl": "https://tcu.go.tz/sites/default/files/public_notices/2025-07/Admission%20Guidebook%20for%20Holders%20of%20Secondary%20School%20Qualifications_2025_2026.pdf",
+    "extractedCsv": "data/extracted/tcu-secondary-guidebook-2025-2026-programmes.csv"
+  },
+  "summary": {
+    "guidebookInstitutionHeadings": 90,
+    "guidebookProgrammeRows": 882,
+    "guidebookProgrammeCodes": 882,
+    "guidebookRowsWithoutPrintedCode": 1,
+    "guidebookCodesPublished": 882,
+    "guidebookCodesMissing": [],
+    "processedTcuDegreeProgrammes": 890,
+    "processedTcuDegreeProgrammesWithCode": 890,
+    "processedTcuDegreeCodedPercent": 100,
+    "processedTcuCodesNotInGuidebook": 8,
+    "tcuDegreesWithCapacity": 888,
+    "tcuDegreesWithMinimumAdmissionPoints": 882,
+    "tcuDegreesWithFees": 0,
+    "droppedUncodedTcuDegreeRecords": 361,
+    "droppedBrokenTitleTcuDegreeRecords": 1,
+    "titleLeakRecordsRecoveredByCode": 19,
+    "sourceTitlesRepairedByCode": 27,
+    "formSixRequirementParseStatus": {
+      "structured": 674,
+      "partial": 211,
+      "unparsed": 0,
+      "programmesWithoutFormSixVariant": 8,
+      "programmesWithoutRule": 0
+    }
+  },
+  "institutionFixes": {
+    "droppedProseInstitutionNames": [
+      "Open University of Tanzania (OUT) are advised not to apply",
+      "university qualifications"
+    ],
+    "mergedDuplicateInstitutions": [
+      {
+        "duplicate": "Center for Foreign Relations (CFR)",
+        "mergedInto": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR)"
+      },
+      {
+        "duplicate": "College of African Wildlife Management Mweka (CAWM)",
+        "mergedInto": "College of African Wildlife Management (CAWM)"
+      },
+      {
+        "duplicate": "Moshi Cooperative University (MoCU)",
+        "mergedInto": "Moshi Co-operative University (MoCU)"
+      },
+      {
+        "duplicate": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT) Musoma",
+        "mergedInto": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT)"
+      },
+      {
+        "duplicate": "St. Francis University College of Health and Allied Sciences(SFUCHAS) Ifakara",
+        "mergedInto": "ST. FRANCIS UNIVERSITY COLLEGE OF HEALTH AND ALLIED SCIENCES (SFUCHAS)"
+      },
+      {
+        "duplicate": "Kizumbi Institute of Cooperative Business Education (KICoB)",
+        "mergedInto": "Kizumbi Institute of Co-operative and Business Education (KICoB)"
+      }
+    ],
+    "createdFromGuidebookHeadings": []
+  },
+  "institutions": [
+    {
+      "guidebookHeading": "Abdulrahman Al- Sumait University (SUMAIT), Zanzibar",
+      "institutionName": "ABDULRAHMAN AL- SUMAIT UNIVERSITY",
+      "normalizedInstitutionName": "abdulrahman al sumait",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Aga Khan University (AKU), Dar es Salaam",
+      "institutionName": "Aga Khan University (AKU)",
+      "normalizedInstitutionName": "aga khan aku",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "AKU02",
+          "programmeName": "Bachelor of Science in Midwifery",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Archbishop Mihayo University College of Tabora (AMUCTA), Tabora",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "normalizedInstitutionName": "archbishop mihayo tabora amucta",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Ardhi University (ARU), Dar es Salaam",
+      "institutionName": "Ardhi University (ARU)",
+      "normalizedInstitutionName": "ardhi aru",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 25,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 25,
+      "processedGuidebookCodeCount": 25,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Arusha Technical College (ATC), Arusha",
+      "institutionName": "Arusha Technical College (ATC)",
+      "normalizedInstitutionName": "arusha technical atc",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "AT001",
+          "programmeName": "Bachelor Degree in Civil and Irrigation Engineering",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        },
+        {
+          "programmeCode": "AT002",
+          "programmeName": "Bachelor Degree in Electrical and Biomedical Engineering",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Catholic University of Health and Allied Sciences (CUHAS), Mwanza",
+      "institutionName": "CATHOLIC UNIVERSITY OF HEALTH AND ALLIED SCIENCES (CUHAS)",
+      "normalizedInstitutionName": "catholic health allied sciences cuhas",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 5,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 5,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "CU002",
+          "programmeName": "Bachelor of Science in Nursing Education",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Catholic University of Mbeya (CUoM), Mbeya",
+      "institutionName": "Catholic University of Mbeya (CUoM)",
+      "normalizedInstitutionName": "catholic mbeya cuom",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 8,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 8,
+      "processedGuidebookCodeCount": 8,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR), Dar es Salaam",
+      "institutionName": "Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR)",
+      "normalizedInstitutionName": "dr salim ahmed salim foreign relations cfr",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "College of African Wildlife Management (CAWM), Mweka- Kilimanjaro",
+      "institutionName": "College of African Wildlife Management (CAWM)",
+      "normalizedInstitutionName": "african wildlife management cawm",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "College of Business Education (CBE), Dar es Salaam",
+      "institutionName": "College of Business Education (CBE)",
+      "normalizedInstitutionName": "business education cbe",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 21,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 21,
+      "processedGuidebookCodeCount": 21,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "College of Business Education (CBE), Dodoma",
+      "institutionName": "COLLEGE OF BUSINESS EDUCATION - DODOMA",
+      "normalizedInstitutionName": "business education dodoma",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 13,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 13,
+      "processedGuidebookCodeCount": 13,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "College of Business Education (CBE), Mwanza",
+      "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+      "normalizedInstitutionName": "business education mwanza",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 10,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 10,
+      "processedGuidebookCodeCount": 10,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "College of Business Education (CBE), Mbeya",
+      "institutionName": "COLLEGE OF BUSINESS EDUCATION - MBEYA CAMPUS",
+      "normalizedInstitutionName": "business education mbeya campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dar es Salaam Institute of Technology (DIT), Dar es Salaam",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "normalizedInstitutionName": "dar es salaam technology",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 9,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 9,
+      "processedGuidebookCodeCount": 9,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dar es Salaam Institute of Technology (DIT), Mwanza Campus",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY - MWANZA CAMPUS",
+      "normalizedInstitutionName": "dar es salaam technology mwanza campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dar es Salaam Maritime Institute (DMI), Dar es Salaam",
+      "institutionName": "DAR ES SALAAM MARITIME INSTITUTE",
+      "normalizedInstitutionName": "dar es salaam maritime",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 10,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 10,
+      "processedGuidebookCodeCount": 10,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dar es Salaam Tumaini University (DarTU), Dar es Salaam",
+      "institutionName": "Dar es Salaam Tumaini University (DarTU)",
+      "normalizedInstitutionName": "dar es salaam tumaini dartu",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 17,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 17,
+      "processedGuidebookCodeCount": 17,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Dar es Salaam University College of Education (DUCE), Dar es Salaam",
+      "institutionName": "DAR ES SALAAM UNIVERSITY COLLEGE OF EDUCATION (DUCE)",
+      "normalizedInstitutionName": "dar es salaam education duce",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Eastern Africa Statistical Training Centre (EASTC), Dar es Salaam",
+      "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
+      "normalizedInstitutionName": "eastern africa statistical training eastc",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 5,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 5,
+      "processedGuidebookCodeCount": 5,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Accountancy Arusha (IAA), Arusha",
+      "institutionName": "Institute of Accountancy Arusha (IAA)",
+      "normalizedInstitutionName": "accountancy arusha iaa",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 27,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 27,
+      "processedGuidebookCodeCount": 27,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Accountancy Arusha (IAA), Dar es Salaam Campus",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA (IAA) - DAR ES SALAAM CAMPUS",
+      "normalizedInstitutionName": "accountancy arusha iaa dar es salaam campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 5,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 5,
+      "processedGuidebookCodeCount": 5,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Adult Education (IAE), Dar es Salaam",
+      "institutionName": "Institute of Adult Education (IAE)",
+      "normalizedInstitutionName": "adult education iae",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Finance Management (IFM), Dar es Salaam",
+      "institutionName": "Institute of Finance Management (IFM)",
+      "normalizedInstitutionName": "finance management ifm",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 12,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 12,
+      "processedGuidebookCodeCount": 12,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Finance Management (IFM), Dodoma",
+      "institutionName": "INSTITUTE OF FINANCE MANAGEMENT - DODOMA CAMPUS",
+      "normalizedInstitutionName": "finance management dodoma campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Finance Management (IFM), Mwanza",
+      "institutionName": "INSTITUTE OF FINANCE MANAGEMENT - MWANZA CAMPUS",
+      "normalizedInstitutionName": "finance management mwanza campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Finance Management (IFS), Simiyu",
+      "institutionName": "INSTITUTE OF FINANCE MANAGEMENT - SIMIYU CAMPUS",
+      "normalizedInstitutionName": "finance management simiyu campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Public Administration (IPA), Zanzibar",
+      "institutionName": "Institute of Public Administration (IPA)",
+      "normalizedInstitutionName": "public administration ipa",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Rural Development Planning (IRDP), Dodoma",
+      "institutionName": "Institute of Rural Development Planning (IRDP)",
+      "normalizedInstitutionName": "rural development planning irdp",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 16,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 17,
+      "processedGuidebookCodeCount": 16,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "RD012",
+          "programmeName": "Bachelor Degree in Urban and Regional Planning",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Institute of Rural Development Planning (IRDP), Mwanza",
+      "institutionName": "INSTITUTE OF RURAL DEVELOPMENT PLANNING - MWANZA",
+      "normalizedInstitutionName": "rural development planning mwanza",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Social Work (ISW), Dar es Salaam",
+      "institutionName": "Institute of Social Work (ISW)",
+      "normalizedInstitutionName": "social work isw",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 7,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 7,
+      "processedGuidebookCodeCount": 7,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Social Work (ISW) Kisangara Campus, Kilimanjaro",
+      "institutionName": "INSTITUTE OF SOCIAL WORK - KISANGARA CAMPUS",
+      "normalizedInstitutionName": "social work kisangara campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Institute of Tax Administration (ITA), Dar es Salaam",
+      "institutionName": "Institute of Tax Administration (ITA)",
+      "normalizedInstitutionName": "tax administration ita",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Jordan University College (JUCo), Morogoro",
+      "institutionName": "JORDAN UNIVERSITY COLLEGE (JUCO)",
+      "normalizedInstitutionName": "jordan juco",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 12,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 12,
+      "processedGuidebookCodeCount": 12,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Kampala International University in Tanzania (KIUT), Dar es Salaam",
+      "institutionName": "KAMPALA INTERNATIONAL UNIVERSITY IN TANZANIA (KIUT)",
+      "normalizedInstitutionName": "kampala international tanzania kiut",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 13,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 13,
+      "processedGuidebookCodeCount": 13,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Kairuki University (KU), Dar es Salaam",
+      "institutionName": "Kairuki University (KU)",
+      "normalizedInstitutionName": "kairuki ku",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Karume Institute of Science and Technology (KIST), Zanzibar",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "normalizedInstitutionName": "karume science technology kist",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "KCMC University, Kilimanjaro",
+      "institutionName": "KCMC University",
+      "normalizedInstitutionName": "kcmc",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 6,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 6,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Kizumbi Institute of Co-operative and Business Education (KICoB), Shinyanga",
+      "institutionName": "Kizumbi Institute of Co-operative and Business Education (KICoB)",
+      "normalizedInstitutionName": "kizumbi co operative business education kicob",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Local Government Training Institute (LGTI), Dodoma",
+      "institutionName": "Local Government Training Institute (LGTI)",
+      "normalizedInstitutionName": "local government training lgti",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Marian University College (MARUCo), Bagamoyo",
+      "institutionName": "MARIAN UNIVERSITY COLLEGE",
+      "normalizedInstitutionName": "marian",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mbeya University of Science and Technology (MUST), Mbeya",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "normalizedInstitutionName": "mbeya science technology",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 38,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 38,
+      "processedGuidebookCodeCount": 38,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mbeya University of Science and Technology (MUST)– Rukwa Campus College",
+      "institutionName": "Mbeya University of Science and Technology (MUST)– Rukwa Campus College",
+      "normalizedInstitutionName": "mbeya science technology must rukwa campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mbeya University of Science and Technology – Mtwara Campus College of Technical Education (MUST – MCCTE)",
+      "institutionName": "Mbeya University of Science and Technology – Mtwara Campus College of Technical Education (MUST – MCCTE)",
+      "normalizedInstitutionName": "mbeya science technology mtwara campus technical education must mccte",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mkwawa University College of Education (MUCE), Iringa",
+      "institutionName": "Mkwawa University College of Education (MUCE)",
+      "normalizedInstitutionName": "mkwawa education muce",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Moshi Co-operative University (MoCU), Kilimanjaro",
+      "institutionName": "Moshi Co-operative University (MoCU)",
+      "normalizedInstitutionName": "moshi co operative mocu",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 13,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 13,
+      "processedGuidebookCodeCount": 13,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "MS Training Centre for Development Cooperation (MS-TCDC), Arusha",
+      "institutionName": "MS TRAINING CENTRE FOR DEVELOPMENT COOPERATION",
+      "normalizedInstitutionName": "ms training development cooperation",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Muhimbili University of Health and Allied Sciences (MUHAS), Dar es Salaam",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "normalizedInstitutionName": "muhimbili health allied sciences muhas",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 13,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 14,
+      "processedGuidebookCodeCount": 13,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "MH015",
+          "programmeName": "Bachelor of Science in Nurse Anesthesia",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Muslim University of Morogoro (MUM), Morogoro",
+      "institutionName": "MUSLIM UNIVERSITY OF MOROGORO",
+      "normalizedInstitutionName": "muslim morogoro",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 11,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 11,
+      "processedGuidebookCodeCount": 11,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwalimu Nyerere Memorial Academy (MNMA), Dar es Salaam",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "normalizedInstitutionName": "mwalimu nyerere memorial academy mnma",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 12,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 12,
+      "processedGuidebookCodeCount": 12,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwalimu Nyerere Memorial Academy (MNMA), Zanzibar Campus",
+      "institutionName": "THE MWALIMU NYERERE MEMORIAL ACADEMY - ZANZIBAR",
+      "normalizedInstitutionName": "mwalimu nyerere memorial academy zanzibar",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 11,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 11,
+      "processedGuidebookCodeCount": 11,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwalimu Nyerere Memorial Academy (MNMA) - Pemba Campus",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA) - Pemba Campus",
+      "normalizedInstitutionName": "mwalimu nyerere memorial academy mnma pemba campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT), Musoma",
+      "institutionName": "Mwalimu Nyerere University of Agriculture and Technology (MNUAT)",
+      "normalizedInstitutionName": "mwalimu nyerere agriculture technology mnuat",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwanza University (MzU), Mwanza",
+      "institutionName": "Mwanza University (MzU)",
+      "normalizedInstitutionName": "mwanza mzu",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mwenge Catholic University (MWECAU), Kilimanjaro",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "normalizedInstitutionName": "mwenge catholic",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 15,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 15,
+      "processedGuidebookCodeCount": 15,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mzumbe University (MU), Morogoro",
+      "institutionName": "MZUMBE UNIVERSITY",
+      "normalizedInstitutionName": "mzumbe",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 29,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 29,
+      "processedGuidebookCodeCount": 29,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mzumbe University Dar es Salaam Campus College (MUDCCo), Dar es Salaam",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "normalizedInstitutionName": "mzumbe dar es salaam campus mudcco",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Mzumbe University Mbeya Campus College (MUMCCo), Mbeya",
+      "institutionName": "Mzumbe University Mbeya Campus College (MUMCCo)",
+      "normalizedInstitutionName": "mzumbe mbeya campus mumcco",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 6,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 6,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "National Institute of Transport (NIT), Dar es Salaam",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "normalizedInstitutionName": "national transport nit",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 19,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 20,
+      "processedGuidebookCodeCount": 19,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "NT014",
+          "programmeName": "Bachelor Degree in Freight Clearing and Forwarding",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Open University of Tanzania (OUT), Dar es Salaam",
+      "institutionName": "OPEN UNIVERSITY OF TANZANIA",
+      "normalizedInstitutionName": "open tanzania",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 31,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 31,
+      "processedGuidebookCodeCount": 31,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Ruaha Catholic University (RUCU), Iringa",
+      "institutionName": "RUAHA CATHOLIC UNIVERSITY (RUCU)",
+      "normalizedInstitutionName": "ruaha catholic rucu",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 9,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 9,
+      "processedGuidebookCodeCount": 9,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Sokoine University of Agriculture (SUA), Morogoro",
+      "institutionName": "SOKOINE UNIVERSITY OF AGRICULTURE",
+      "normalizedInstitutionName": "sokoine agriculture",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 33,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 34,
+      "processedGuidebookCodeCount": 33,
+      "missingCodes": [],
+      "extraRecords": [
+        {
+          "programmeCode": "SU028",
+          "programmeName": "Bachelor of Science Applied Agricultural Extension",
+          "inGuidebookUnderAnotherInstitution": false,
+          "sourceDatasets": [
+            "education_pathways"
+          ]
+        }
+      ]
+    },
+    {
+      "guidebookHeading": "Sokoine University of Agriculture - Mizengo Pinda Campus College (SUA-MPCCo), Katavi",
+      "institutionName": "Sokoine University of Agriculture - Mizengo Pinda Campus College (SUA-MPCCo)",
+      "normalizedInstitutionName": "sokoine agriculture mizengo pinda campus sua mpcco",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. Augustine University of Tanzania (SAUT), Mwanza",
+      "institutionName": "St. Augustine University of Tanzania (SAUT)",
+      "normalizedInstitutionName": "st augustine tanzania saut",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 11,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 11,
+      "processedGuidebookCodeCount": 11,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. Augustine University of Tanzania (SAUT) Arusha Centre, Arusha",
+      "institutionName": "ST. AUGUSTINE UNIVERSITY OF TANZANIA (SAUT) -ARUSHA CENTRE",
+      "normalizedInstitutionName": "st augustine tanzania saut arusha",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. Francis University College of Health and Allied Sciences (SFUCHAS), Ifakara",
+      "institutionName": "ST. FRANCIS UNIVERSITY COLLEGE OF HEALTH AND ALLIED SCIENCES (SFUCHAS)",
+      "normalizedInstitutionName": "st francis health allied sciences sfuchas",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. John's University of Tanzania (SJUT), Dodoma",
+      "institutionName": "ST JOHN'S UNIVERSITY OF TANZANIA",
+      "normalizedInstitutionName": "st john s tanzania",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 9,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 9,
+      "processedGuidebookCodeCount": 9,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. Joseph University College of Health and Allied Sciences (SJCHAS), Dar es Salaam",
+      "institutionName": "St. Joseph University College of Health and Allied Sciences (SJCHAS)",
+      "normalizedInstitutionName": "st joseph health allied sciences sjchas",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "St. Joseph University College of Engineering and Technology (SJCET), Dar es Salaam",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "normalizedInstitutionName": "st joseph engineering technology sjcet",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 8,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 8,
+      "processedGuidebookCodeCount": 8,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "State University of Zanzibar (SUZA), Zanzibar",
+      "institutionName": "State University of Zanzibar (SUZA)",
+      "normalizedInstitutionName": "state zanzibar suza",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 19,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 19,
+      "processedGuidebookCodeCount": 19,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Stella Maris Mtwara University College (STEMMUCo), Mtwara",
+      "institutionName": "STELLA MARIS MTWARA UNIVERSITY COLLEGE",
+      "normalizedInstitutionName": "stella maris mtwara",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 7,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 7,
+      "processedGuidebookCodeCount": 7,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Dar es Salaam",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "normalizedInstitutionName": "tanzania accountancy tia",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 8,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 8,
+      "processedGuidebookCodeCount": 8,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Mbeya",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MBEYA",
+      "normalizedInstitutionName": "tanzania accountancy tia mbeya",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 6,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 6,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Mwanza",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MWANZA CAMPUS",
+      "normalizedInstitutionName": "tanzania accountancy tia mwanza campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 6,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 6,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Mtwara",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - MTWARA",
+      "normalizedInstitutionName": "tanzania accountancy tia mtwara",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Singida",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - SINGIDA",
+      "normalizedInstitutionName": "tanzania accountancy tia singida",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 5,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 5,
+      "processedGuidebookCodeCount": 5,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Kigoma",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - KIGOMA CAMPUS",
+      "normalizedInstitutionName": "tanzania accountancy tia kigoma campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Accountancy (TIA), Tanga",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - TANGA CAMPUS",
+      "normalizedInstitutionName": "tanzania accountancy tia tanga campus",
+      "isBranchCampus": true,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Institute of Project Management (TIPM), Dar es Salaam",
+      "institutionName": "Tanzania Institute of Project Management (TIPM)",
+      "normalizedInstitutionName": "tanzania project management tipm",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 1,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 1,
+      "processedGuidebookCodeCount": 1,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tanzania Public Service College (TPSC), Dar es Salaam",
+      "institutionName": "Tanzania Public Service College (TPSC)",
+      "normalizedInstitutionName": "tanzania public service tpsc",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 2,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 2,
+      "processedGuidebookCodeCount": 2,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tengeru Institute of Community Development (TICD), Arusha",
+      "institutionName": "TENGERU INSTITUTE OF COMMUNITY DEVELOPMENT",
+      "normalizedInstitutionName": "tengeru community development",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 7,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 7,
+      "processedGuidebookCodeCount": 7,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Teofilo Kisanji University (TEKU), Mbeya",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "normalizedInstitutionName": "teofilo kisanji teku",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 10,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 10,
+      "processedGuidebookCodeCount": 10,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Tumaini University Makumira (TUMA), Arusha",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "normalizedInstitutionName": "tumaini makumira tuma",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 6,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 6,
+      "processedGuidebookCodeCount": 6,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Unique Academy Dar es Salaam (UAD)",
+      "institutionName": "Unique Academy Dar es Salaam (UAD)",
+      "normalizedInstitutionName": "unique academy dar es salaam uad",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "United African University of Tanzania (UAUT), Dar es Salaam",
+      "institutionName": "United African University of Tanzania (UAUT)",
+      "normalizedInstitutionName": "united african tanzania uaut",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 3,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 3,
+      "processedGuidebookCodeCount": 3,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "University of Arusha (UoA), Arusha",
+      "institutionName": "University of Arusha (UoA)",
+      "normalizedInstitutionName": "arusha uoa",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 4,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 4,
+      "processedGuidebookCodeCount": 4,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "University of Dar es Salaam (UDSM), Dar es Salaam",
+      "institutionName": "UNIVERSITY OF DAR ES SALAAM",
+      "normalizedInstitutionName": "dar es salaam",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 92,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 92,
+      "processedGuidebookCodeCount": 92,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "University of Dodoma (UDOM), Dodoma",
+      "institutionName": "UNIVERSITY OF DODOMA",
+      "normalizedInstitutionName": "dodoma",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 71,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 71,
+      "processedGuidebookCodeCount": 71,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "University of Iringa (UoI), Iringa",
+      "institutionName": "UNIVERSITY OF IRINGA",
+      "normalizedInstitutionName": "iringa",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 14,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 14,
+      "processedGuidebookCodeCount": 14,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Water Institute (WI), Dar es Salaam",
+      "institutionName": "WATER INSTITUTE",
+      "normalizedInstitutionName": "water",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 9,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 9,
+      "processedGuidebookCodeCount": 9,
+      "missingCodes": [],
+      "extraRecords": []
+    },
+    {
+      "guidebookHeading": "Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "normalizedInstitutionName": "zanzibar zu",
+      "isBranchCampus": false,
+      "institutionCreatedFromGuidebook": false,
+      "guidebookProgrammeCount": 20,
+      "guidebookRowsWithoutCode": [],
+      "processedTcuDegreeCount": 20,
+      "processedGuidebookCodeCount": 20,
+      "missingCodes": [],
+      "extraRecords": []
+    }
+  ],
+  "tcuDegreesOutsideGuidebookInstitutions": [],
+  "droppedBrokenTitleTcuDegreeRecords": [
+    {
+      "programmeCode": "MH012",
+      "programmeName": "Bachelor of Science in",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    }
+  ],
+  "droppedUncodedTcuDegreeRecords": [
+    {
+      "programmeName": "Bachelor Degree in Accounting and",
+      "institutionName": "College of Business Education (CBE)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business",
+      "institutionName": "College of Business Education (CBE)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement",
+      "institutionName": "College of Business Education (CBE)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Supplies",
+      "institutionName": "College of Business Education (CBE)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education",
+      "institutionName": "Dar es Salaam Tumaini University (DarTU)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Education",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Education with Accounting and",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Human",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Human Resource",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Marketing and",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Logistic",
+      "institutionName": "Tanzania Institute of Accountancy (TIA)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Records",
+      "institutionName": "Tanzania Public Service College (TPSC)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Secretarial Studies and",
+      "institutionName": "Tanzania Public Service College (TPSC)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "Degree in Geography, Kiswahili",
+      "institutionName": "Tanzania Public Service College (TPSC)",
+      "sourceDatasets": [
+        "education_pathways"
+      ]
+    },
+    {
+      "programmeName": "BA in History and Political Science",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "BA with Education (Chinese and English)",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "BA in Statistics",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Adult and Community Education",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Commerce",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Psychology",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Arts",
+      "institutionName": "Dar es Salaam University College of Education (DUCE)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Science",
+      "institutionName": "Dar es Salaam University College of Education (DUCE)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Arts",
+      "institutionName": "Mkwawa University College of Education (MUCE)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Science",
+      "institutionName": "Mkwawa University College of Education (MUCE)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "Mbeya College of Health and Allied Sciences (MCHAS)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Dental Surgery",
+      "institutionName": "Mbeya College of Health and Allied Sciences (MCHAS)",
+      "sourceDatasets": [
+        "udsm_undergraduate_prospectus_2024_2025"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in",
+      "institutionName": "ABDULRAHMAN AL- SUMAIT UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in",
+      "institutionName": "ABDULRAHMAN AL- SUMAIT UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accountancy and Taxation ’ Basic Mathematics at O Level",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accountancy",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accounting and Finance",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Banking and Finance ’ Basic Mathematics at O Level",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business Studies with Economics, Commerce, Advanced Education",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business Studies with Education",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Computer Science",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Information Technology",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Innovation",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in International Relations and Diplomacy",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Marketing",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Mechanical Engineering",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Mechatronic and Material Engineering “ ”",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Metrology and Standardization",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Supplies Chain Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree of Business Administration in Human Resources Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor degree in Digital Marketing",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accountancy and Economics with",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accountancy and Taxation",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Advance Mathematics, Physics, Chemistry, Geography Science in Geographical Information Systems and Remote Sensing",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Architecture Basic Mathematics at O-Level",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Community Development Studies",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Economics",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Management for Community Development",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Social Work",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce and Accountancy with",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Marketing Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Marketing and Tourism and Events Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Medical “ ” Laboratory Sciences “ ”",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Pharmacy “ ”",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Procurement and Supply Chain Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science and Valuation",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Accounting and Finance",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Building Surveying and Construction Maintenance",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Computer Systems and Networks",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Construction Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental Engineering",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental Laboratory Science and Technology",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental Science and Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Geomatics",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Housing and Infrastructure Planning",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information Systems Management",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Landscape Architecture",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Medical Imaging and Radiotherapy",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Municipal and Engineerig",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Nursing “ ” “ ”",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Property and",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Quantity Surveying and Construction",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Real Estate Finance and Investment",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Regional Development Planning",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Urban and Regional Planning",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of laws “ ”",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "Archbishop Mihayo University College of Tabora (AMUCTA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business Administration. Language, Mathematics, Economics, Accountancy",
+      "institutionName": "College of Business Education (CBE) Mbeya",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Marketing. Language, Mathematics, Economics, Accountancy",
+      "institutionName": "College of Business Education (CBE) Mbeya",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Supply Chain",
+      "institutionName": "College of Business Education (CBE) Mbeya",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Marine Engineering Technology",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Maritime Transport and Nautical Science",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Mechanical and Marine Engineering",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Naval Architecture and Offshore Engineering",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Oil and Gas Engineering",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Purchasing, and Supply Chain Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Shipping and Logistics Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Transport and Supply Chain Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting with Computing",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Disaster Risk Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Library Information Studies",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Mass Communication",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Social Work with Diaconia Chinese, Computer Science, Divinity, Islamic",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with (evening)",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with Education",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Accounting",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration (Corporate Services)",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Marketing",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Gas Engineering",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Human Resources Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Information Systems Management",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Computer Science (Cybersecurity)",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information Technology",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education 2. Arts with Education",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Technology",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Theology",
+      "institutionName": "DAR ES SALAAM INSTITUTE OF TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Agricultural Statistics and Economics ‘’D",
+      "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business Statistics and Economics ‘ ’ D ’ ’ or a minimum of",
+      "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Data Science ‘ ’ D ’ ’ or a minimum of",
+      "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Official Statistics ‘ ’ D ’ ’ or a minimum of",
+      "institutionName": "Eastern Africa Statistical Training Centre (EASTC)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor DeOgDreLe in Adult and Continuing Education ( )",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Adult Education and Community Development",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Adult and Continuing Education",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Community Development ( )",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Credit Management iology,Agriculture, Geography or Advanced",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Library Science",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Multimedia and Mass Communications Resource Economics 100 4.0 Networks Technologies 100 “ ” 4.0",
+      "institutionName": "INSTITUTE OF ACCOUNTANCY ARUSHA",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science",
+      "institutionName": "INSTITUTE OF FINANCE MANAGEMENT",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Insurance and Risk Management 4 Science in Economics and Finance",
+      "institutionName": "INSTITUTE OF FINANCE MANAGEMENT",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Community Development Physical",
+      "institutionName": "Institute of Rural Development Planning (IRDP)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Economics Accounting, Advanced Mathematics, Kiswahili",
+      "institutionName": "Institute of Rural Development Planning (IRDP)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Economics,Geography, History Human Resource Accounts, Advanced Mathematics, Kiswahili Management",
+      "institutionName": "Institute of Rural Development Planning (IRDP)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Management",
+      "institutionName": "Institute of Rural Development Planning (IRDP)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Customs and Tax Management",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Resolution",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Social Work or Nutrition",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting and Finance",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Economics",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Education with",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Philosophy",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Sociology",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Theology",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in and Information Management",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with Education",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration (Accounting)",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration (Commerce)",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration (Marketing)",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration (Procurement)",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Information Technology",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Computer Science 1 Science",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Psychology and Counselling",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Social Work and Social Administration",
+      "institutionName": "Institute of Social Work (ISW)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting with Cooperative Management",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Engineering in",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laboratory and at",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science Orthotics",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Physiotherapy “ ”",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of in Occupational Therapy",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "Karume Institute of Science and Technology (KIST)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree iLnGATc0c4ounTtwinog anPdriFnicniapnacl e Passes in The Following",
+      "institutionName": "Local Government Training Institute (LGTI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Human Environment, Tourism, Commerce, Economics, History Management",
+      "institutionName": "Local Government Training Institute (LGTI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Applied Informatics in",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Applied Informatics in Marketing points",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Mechanical Engineering points",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information and Communication Technology and English at O- level",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Technical Education “",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Technical Engineering",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Technical Telecommunications Engineering",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Technology in “ Architecture minimum pass of D",
+      "institutionName": "MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Human Resources Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting and Finance in Business Sector",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting and Finance in Public Sector",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Geography and Environmental Studies Work",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Two principal passes in the following",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with ‘",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Customer Service Management and Public Relations",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Entrepreneurship and Innovation Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Marketing Management “ ”",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Environmental ‘",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Health Systems Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Health Systems in Monitoring and Evaluation",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Procurement and Assets Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration in Local Government Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration in Records and Archives Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration in “ ” Youth Development and Leadership",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Economics- Population and Development",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Economics- Project Planning and Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Industrial Engineering Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information Technology and Systems",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information and Communication Technology with Business",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information and Communication Technology with Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Mathematics and Statistics Mwenge Catholic University (MWECAU), Kilimanjaro",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Production and Operations “ ” Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education- Mathematics and Computer Science",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Transport and Logistics Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of and Information Management",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of – Science in Economics Economic Policy and Planning must",
+      "institutionName": "MWENGE CATHOLIC UNIVERSITY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education 2. with Education",
+      "institutionName": "Mkwawa University College of Education (MUCE)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Banking and Microfinance studies, Nutrition, English Language, Kiswahili",
+      "institutionName": "Moshi Cooperative University (MoCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Economics of Development",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Gender and Development",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Management of Social Development",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Mass Communication Arts, Economics, Commerce, Accountancy",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with Education",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Studies have a",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Islamic Studies with Education",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Law with Shariah Arts, Economics, Commerce, Islamic Knowledge",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "Muhimbili University of Health and Allied Sciences (MUHAS)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Supply Management 1 in Management of Social Development",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree of Education in",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree of Education in Languages",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree of and English Languages",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree of and History",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with Education",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration and Management",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science Production",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Agricultural Economy and Agribusiness",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Business Information Technology",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Fisheries and Aquaculture",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education or Computer Science",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "Mwalimu Nyerere Memorial Academy (MNMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting Sector Mathematics",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Customer Service Management and Public Relations",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Marketing Management",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws “ ”",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Procurement and Supply Chain Management",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Public Administration 3 Human Resources Management",
+      "institutionName": "Mzumbe University Dar es Salaam Campus College (MUDCCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accounting and Transport Finance MUST",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Automobile Engineering 3. in Procurement and Logistics Management 4. in Human Resource Management",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business Administration 8. in Marketing and Public Relations",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Shipping and issimdA n ticapaC margorP oitaruD )srY( Port Logistics Management",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor’s degree in Telecommunication and Railway Signalling Engineering 1. Arts with Education 2. Arts in Journalism 3. in Mass Communication",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor’s degree in education with",
+      "institutionName": "NATIONAL INSTITUTE OF TRANSPORT (NIT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting and Entrepreneurship, Management, Finance, Biology Finance Management, Procurement, Insurance, Banking",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration Ruaha Catholic University (RUCU), Iringa",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Agricultural Engineering",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Agriculture",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Software Engineering Ruaha Catholic University (RUCU), Iringa",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "Ruaha Catholic University (RUCU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Marketing",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Mass Communication",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Livestock Production with 1 in Bee Resources Management",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science following",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Biotechnology and Laboratory Sciences following",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Forestry following",
+      "institutionName": "Sokoine University of Agriculture (SUA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Sociology Fine Art, Economics, Commerce, Accountancy",
+      "institutionName": "St. Augustine University of Tanzania (SAUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws Commerce",
+      "institutionName": "St. Augustine University of Tanzania (SAUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in",
+      "institutionName": "St. Augustine University of Tanzania (SAUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Tourism",
+      "institutionName": "St. Augustine University of Tanzania (SAUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Accounting and Finance Fine Art, Economics, Commerce, Accountancy )SRY(",
+      "institutionName": "St. Augustine University of Tanzania (SAUT) -Arusha Centre",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration",
+      "institutionName": "St. Augustine University of Tanzania (SAUT) -Arusha Centre",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "St. Augustine University of Tanzania (SAUT) -Arusha Centre",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "St. Augustine University of Tanzania (SAUT) -Arusha Centre",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce with",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science Electrical and Electronics Engineering",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Civil Engineering",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Engineering and Information Technology",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Information Technology subsidiary pass in Advanced Mathematics/Basic",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "St. John’s University of Tanzania (SJUT)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of IT Application and Management",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental Health",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Mechanical Engineering O-Level",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Doctor of Medicine",
+      "institutionName": "St. Joseph University College of Engineering and Technology (SJCET)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Sociology Commerce",
+      "institutionName": "State University of Zanzibar (SUZA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with",
+      "institutionName": "State University of Zanzibar (SUZA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accounting",
+      "institutionName": "Stella Maris Mtwara University College (STeMMUCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Logistics Management",
+      "institutionName": "Stella Maris Mtwara University College (STeMMUCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education Code",
+      "institutionName": "Stella Maris Mtwara University College (STeMMUCo)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Accounting D",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Business and Project Management",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Community Development Arts, Economics, Commerce, Accountancy",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Education with Accounting and Business Studies",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Local Government Administration and Arts, Economics, Commerce, Accountancy Management",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Marketing and",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement Fine Art, Economics, Commerce,Accountancy, Physics and Logistic Management",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Procurement and Logistic Management",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Project Management for Community Development",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Public Sector Accounting and Code Finance",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Development with Entrepreneurship Construction, Fine Arts, Entrepreneurship, Computer",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Economics and Finance Construction, Fine Arts, Entrepreneurship, Computer",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Gender and Community Development Arts, Economics, Commerce, Accountancy",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor",
+      "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Music Art, Economics, Commerce, Accountancy, Physics",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts with",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "Teofilo Kisanji University (TEKU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Hardware and Networking Technology",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Information Security MUST HAVE",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor Degree in Information Technology",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Theology Science and Information Communication",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration Business Information Technology appDlicants without Advanced Mathematics in",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration in Accounting",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Computer Engineering and Information Technology",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with",
+      "institutionName": "Tumaini University Makumira (TUMA)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science Physics)",
+      "institutionName": "University of Dar es Salaam (UDSM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Economics Language, Economics, Commerce, Accountancy",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Economics and Sociology University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Economics and Statistics University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Environmental",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Fine Arts and Design Arts University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Heritage",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in History University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Public Administration",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Sociology Fine Arts, Physics, Chemistry, Mathematics",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Business Administration University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Chinese",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Accounting University of Dodoma (UDOM), Dodoma or",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Entrepreneurship University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Human Resource Management University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Information Systems Management University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Marketing University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Commerce in Tourism and Hospitality Management University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Education in Early Childhood Education University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Information Technology with Business Analytics. University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Needs University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science University of Dodoma (UDOM), Dodoma in Applied Geology",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science University of Dodoma (UDOM), Dodoma in Information Systems",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Biotechnology and Bioinformatics University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Chemistry University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Dietetics University of Dodoma (UDOM), Dodoma Mathematics and Statistics",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Digital Content and Broadcasting Engineering University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Environmental Engineering University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Mathematics following",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Multimedia Technology and Animation University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Petroleum Engineering University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Renewable Energy Engineering in Aquaculture and Aquatic Sciences",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Statistics following",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in and Information Technology",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education University of Dodoma (UDOM), Dodoma",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of University of Dodoma (UDOM), Dodoma Disaster Risk Management",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Environmental Sciences",
+      "institutionName": "University of Dodoma (UDOM)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Community Development University of Iringa (UoI), Iringa",
+      "institutionName": "University of Iringa (UoI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Human Resource Management University of Iringa (UoI), Iringa",
+      "institutionName": "University of Iringa (UoI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws University of Iringa (UoI), Iringa",
+      "institutionName": "University of Iringa (UoI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Economics and Finance University of Iringa (UoI), Iringa in Marketing Management",
+      "institutionName": "University of Iringa (UoI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Theology University of Iringa (UoI), Iringa",
+      "institutionName": "University of Iringa (UoI)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor in Islamic Banking & Finance knowledge, Biology, Chemistry, English, computer",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Arts in Languages Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Laws Knowledge , Biology, Mathematics, Agriculture",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Mass Communication applicant MUST HAVE subsidiary pass",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Counselling Psychology Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Public Health Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science in Telecommunications Engineering Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science inBusiness Information Technology Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Science with Education Information Technology or Advanced",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    },
+    {
+      "programmeName": "Bachelor of Social work Zanzibar University (ZU), Zanzibar",
+      "institutionName": "Zanzibar University (ZU)",
+      "sourceDatasets": [
+        "post_form_four"
+      ]
+    }
+  ],
+  "titleLeakRecoveries": [
+    {
+      "programmeCode": "CBMZ1",
+      "sourceTitle": "Bachelor Degree in Accountancy CBMZ1"
+    },
+    {
+      "programmeCode": "DM079",
+      "sourceTitle": "Bachelor of Science in Environmental Sciences DM079 Two principal passes in the following subjects:"
+    },
+    {
+      "programmeCode": "SF001",
+      "sourceTitle": "Doctor of Medicine SF001 Three principal passes in Physics, Chemistry, and Biology with minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics."
+    },
+    {
+      "programmeCode": "TAMZ1",
+      "sourceTitle": "Bachelor Degree in Accounting TAMZ1 Two principal passes in the following subjects:"
+    },
+    {
+      "programmeCode": "TPSD1",
+      "sourceTitle": "Bachelor TPSD1 Two principal passes in the following subjects: History, 4.0"
+    },
+    {
+      "programmeCode": "TPSD2",
+      "sourceTitle": "Bachelor TPSD2 Two principal passes in the following subjects: History, 4.0"
+    },
+    {
+      "programmeCode": "CBMZ5",
+      "sourceTitle": "Bachelor CBMZ5 Two principal passes in the following subjects: History, Geography Degree in Business Studies with"
+    },
+    {
+      "programmeCode": "CBMZ1",
+      "sourceTitle": "Bachelor Degree CBMZ1 Two principal passes in the following subjects; Biology in Accountancy"
+    },
+    {
+      "programmeCode": "CBMZ2",
+      "sourceTitle": "Bachelor Degree CBMZ2 Two principal passes in the following subjects; Biology in Business Administration"
+    },
+    {
+      "programmeCode": "CBMZ4",
+      "sourceTitle": "Bachelor Degree CBMZ4 Two principal passes in the following subjects: History, Geography in Procurement and Supplies Management"
+    },
+    {
+      "programmeCode": "CBMZ6",
+      "sourceTitle": "Bachelor Degree CBMZ6 Two principal passes in the following subjects; Biology, Chemistry in Marketing Business Administration in Human Resources Management"
+    },
+    {
+      "programmeCode": "CBMZ8",
+      "sourceTitle": "Bachelor Degree in CBMZ8 Two principal passes in the following subjects: History, Geography Accounting and Finance"
+    },
+    {
+      "programmeCode": "CBMZ9",
+      "sourceTitle": "Bachelor Degree in CBMZ9 Two principal passes in the following subjects: History, Geography Accountancy and Taxation"
+    },
+    {
+      "programmeCode": "TAMZ1",
+      "sourceTitle": "Bachelor Degree TAMZ1 Two principal passes in the following subjects: in Accounting"
+    },
+    {
+      "programmeCode": "TAMZ2",
+      "sourceTitle": "Bachelor Degree TAMZ2 Two principal passes in the following subjects: in Procurement and Logistic Management"
+    },
+    {
+      "programmeCode": "TAMZ3",
+      "sourceTitle": "Bachelor Degree TAMZ3 Two principal passes in the following subjects: in Marketing and Public relations"
+    },
+    {
+      "programmeCode": "TAMZ4",
+      "sourceTitle": "Bachelor Degree TAMZ4 Two principal passes in the following subjects: in Human Resource Management"
+    },
+    {
+      "programmeCode": "TAMZ5",
+      "sourceTitle": "Bachelor Degree TAMZ5 Two principal passes in the following subjects: in Education with Accounting and Business Studies Business Administration"
+    },
+    {
+      "programmeCode": "TPSD1",
+      "sourceTitle": "Bachelor TPSD1 Two principal passes in the following subjects: History Degree in Records Archives and Information Management"
+    }
+  ],
+  "repairedTitles": [
+    {
+      "programmeCode": "AR009",
+      "sourceTitle": "Bachelor of Science in Environment al Engineering",
+      "publishedTitle": "Bachelor of Science in Environmental Engineering"
+    },
+    {
+      "programmeCode": "AR011",
+      "sourceTitle": "Bachelor of Science in Environment al Science and Management",
+      "publishedTitle": "Bachelor of Science in Environmental Science and Management"
+    },
+    {
+      "programmeCode": "AR026",
+      "sourceTitle": "Bachelor of Science in Environmenta l Laboratory Science and Technology",
+      "publishedTitle": "Bachelor of Science in Environmental Laboratory Science and Technology"
+    },
+    {
+      "programmeCode": "CBD04",
+      "sourceTitle": "Bachelor Degree in Procurement and",
+      "publishedTitle": "Bachelor Degree in Procurement and Supplies Chain Management"
+    },
+    {
+      "programmeCode": "CBM04",
+      "sourceTitle": "Bachelor Degree in",
+      "publishedTitle": "Bachelor Degree in Procurement and Supplies Management"
+    },
+    {
+      "programmeCode": "CBM07",
+      "sourceTitle": "Bachelor Degree of Business Administration in",
+      "publishedTitle": "Bachelor Degree of Business Administration in Records and Archives Management"
+    },
+    {
+      "programmeCode": "DT004",
+      "sourceTitle": "Bachelor of Engineering in Electronics and Telecommuni cation Engineering",
+      "publishedTitle": "Bachelor of Engineering in Electronics and Telecommunication Engineering"
+    },
+    {
+      "programmeCode": "DMI05",
+      "sourceTitle": "Bachelor Degree in Purchasing and",
+      "publishedTitle": "Bachelor Degree in Purchasing, and Supply Chain Management"
+    },
+    {
+      "programmeCode": "TD001",
+      "sourceTitle": "Bachelor of Arts in Mass Communic ation",
+      "publishedTitle": "Bachelor of Arts in Mass Communication"
+    },
+    {
+      "programmeCode": "TD004",
+      "sourceTitle": "Bachelor of Business Administrati on (Corporate Services)",
+      "publishedTitle": "Bachelor of Business Administration (Corporate Services)"
+    },
+    {
+      "programmeCode": "TD015",
+      "sourceTitle": "Bachelor of Business Administrati on in Marketing",
+      "publishedTitle": "Bachelor of Business Administration in Marketing"
+    },
+    {
+      "programmeCode": "TD016",
+      "sourceTitle": "Bachelor of Business Administrati on in Accounting",
+      "publishedTitle": "Bachelor of Business Administration in Accounting"
+    },
+    {
+      "programmeCode": "IA026",
+      "sourceTitle": "Bachelor of Multimedia and Mass Communicatio n",
+      "publishedTitle": "Multimedia and Mass Communications"
+    },
+    {
+      "programmeCode": "KUC13",
+      "sourceTitle": "Bachelor Business Administrati on (Procuremen t)",
+      "publishedTitle": "Bachelor of Business Administration (Procurement)"
+    },
+    {
+      "programmeCode": "KC002",
+      "sourceTitle": "Bachelor of Science in Physiother apy",
+      "publishedTitle": "Bachelor of Science in Physiotherapy"
+    },
+    {
+      "programmeCode": "KC005",
+      "sourceTitle": "Doctor of Medicine KC004 Three principal passes in Physics, Chemistry and Biology with a minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics. 6.0 170 5 Points 5. Bachelor of Sciences in Nursing",
+      "publishedTitle": "Bachelor of Sciences in Nursing"
+    },
+    {
+      "programmeCode": "MH011",
+      "sourceTitle": "Doctor of Medicine MH011 Diploma in Clinical Medicine with an average of “B’’ or a minimum GPA of 3.0. In addition, an applicant must",
+      "publishedTitle": "Doctor of Medicine"
+    },
+    {
+      "programmeCode": "MU023",
+      "sourceTitle": "Bachelor of Science in Information and",
+      "publishedTitle": "Bachelor of Science in Information and Communication Technology with Business"
+    },
+    {
+      "programmeCode": "NT020",
+      "sourceTitle": "Bachelor Degree in Electrical and",
+      "publishedTitle": "Bachelor's degree in electrical and Railway Electrification Engineering"
+    },
+    {
+      "programmeCode": "NT022",
+      "sourceTitle": "Bachelor’s degree in Telecommunicati on and Railway Signalling Engineering",
+      "publishedTitle": "Bachelor's degree in Telecommunication and Railway Signalling Engineering"
+    },
+    {
+      "programmeCode": "JD004",
+      "sourceTitle": "Bachelor of Science in Electronics and Telecommunicatio n Engineering",
+      "publishedTitle": "Bachelor of Science in Electronics and Telecommunication Engineering"
+    },
+    {
+      "programmeCode": "SZ003",
+      "sourceTitle": "Bachelor of IT Applicatio n and Manageme nt",
+      "publishedTitle": "Bachelor of IT Application and Management"
+    },
+    {
+      "programmeCode": "SZ004",
+      "sourceTitle": "Bachelor of Science in Environme ntal Health",
+      "publishedTitle": "Bachelor of Science in Environmental Health"
+    },
+    {
+      "programmeCode": "SZ018",
+      "sourceTitle": "Bachelor of Entrepreneurs hip and Innovation",
+      "publishedTitle": "Bachelor of Entrepreneurship and Innovation"
+    },
+    {
+      "programmeCode": "TA007",
+      "sourceTitle": "Bachelor of Business Development with Entrepreneurs hip",
+      "publishedTitle": "Bachelor of Business Development with Entrepreneurship"
+    },
+    {
+      "programmeCode": "TK015",
+      "sourceTitle": "Bachelor of Science in Environme ntal Science.",
+      "publishedTitle": "Bachelor of Science in Environmental Science"
+    },
+    {
+      "programmeCode": "TK020",
+      "sourceTitle": "Bachelor of Arts in Community Developme nt",
+      "publishedTitle": "Bachelor of Arts in Community Development"
+    }
+  ]
+}
