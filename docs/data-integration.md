@@ -56,7 +56,12 @@ data/processed/entry-requirements.jsonl
 data/processed/requirement-rules.json
 data/processed/requirement-rules.jsonl
 data/processed/data-quality-report.json
+data/processed/tcu-coverage-report.json
 ```
+
+TCU Bachelor's degrees are keyed by the TCU programme code from the 2025/26
+secondary-qualifications guidebook; see `data/README.md` (TCU Degree Layer)
+and `tcu-coverage-report.json` for per-institution coverage.
 
 Use the JSONL files for backend imports once the backend is installed.
 

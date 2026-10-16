@@ -171,6 +171,8 @@ export default defineSchema({
     studyMode: v.optional(v.string()),
     campusLocation: v.optional(v.string()),
     admissionCapacity: v.optional(v.string()),
+    minimumAdmissionPoints: v.optional(v.number()),
+    minimumAdmissionPointsSubjectCount: v.optional(v.number()),
     entryRouteTypes: v.optional(v.string()),
     acceptsFormFourDirect: suitability,
     accreditationStatusIfAvailable: v.optional(v.string()),
@@ -268,6 +270,9 @@ export default defineSchema({
     normalizedProgrammeName: v.string(),
     institutionName: v.string(),
     normalizedInstitutionName: v.string(),
+    programmeCode: v.optional(v.string()),
+    minimumAdmissionPoints: v.optional(v.number()),
+    minimumAdmissionPointsSubjectCount: v.optional(v.number()),
     programmeKey: v.string(),
     institutionKey: v.string(),
     variants: v.array(

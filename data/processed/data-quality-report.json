@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T09:49:10.006Z",
+  "generatedAt": "2026-10-16T11:01:08.861Z",
   "canonicalDataset": "tanzania-education-pathways-dataset",
   "fallbackDataset": "tanzania-post-form-four-dataset",
   "enrichmentDatasets": [
@@ -12,149 +12,144 @@
     "rawPathwayCount": 621,
     "rawLegacyCount": 631,
     "nactvetEnrichmentCount": 503,
-    "processedCount": 742,
-    "fromPathwaysCount": 589,
-    "fallbackOnlyCount": 153,
+    "processedCount": 734,
+    "fromPathwaysCount": 587,
+    "fallbackOnlyCount": 147,
     "verifiedLogoCount": 69,
-    "needsReviewCount": 291
+    "needsReviewCount": 283,
+    "manualReviewQueues": {
+      "needsReview": 283,
+      "queues": {
+        "institution_identity": 0,
+        "programme_offering_identity": 1,
+        "applicant_pathway": 0,
+        "source_extraction": 37,
+        "data_completeness": 456,
+        "general": 34
+      }
+    }
   },
   "programmes": {
     "rawPathwayCount": 2916,
     "rawLegacyCount": 2743,
-    "extractedTcuSecondaryGuidebookCount": 855,
+    "extractedTcuSecondaryGuidebookCount": 882,
+    "droppedUncodedTcuDegreeCount": 361,
     "udsmProspectusSupplementCount": 27,
     "nactvetEnrichmentCount": 1771,
-    "processedCount": 4440,
-    "quarantinedTitleLeakCount": 21,
+    "processedCount": 3915,
+    "quarantinedTitleLeakCount": 2,
     "quarantinedTitleLeakExamples": [
       {
-        "programmeName": "Bachelor of Science in Environmental Sciences DM079 Two principal passes in the following",
-        "institutionName": "University of Dodoma (UDOM)",
+        "programmeName": "Diploma in Land Use Planning Holders of Advanced Certificate of Secondary Education Examination (ACSEE) with one (1) principal pass and one (1) subsidiary pass in Biology, Chemistry, Physics, Advanced",
+        "institutionName": "MINISTRY OF AGRICULTURE TRAINING INSTITUTE IGURUSI - MBEYA",
         "sourceDatasets": [
           "education_pathways"
-        ],
-        "reviewReasons": [
-          "programme code not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Doctor of Medicine KC004 Three principal passes in Physics, Chemistry and Biology with a minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics. 6.0 170 5 Points 5. Bachelor of Sciences in Nursing",
-        "institutionName": "KCMC University",
-        "sourceDatasets": [
-          "education_pathways",
-          "tcu_secondary_guidebook_pdf_extraction"
-        ],
-        "reviewReasons": [
-          "missing_duration",
-          "admission points/capacity/duration not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Doctor of Medicine SF001 Three principal passes in Physics, Chemistry, and Biology with minimum of 6 points: A minimum of D grade in Chemistry, Biology and Physics.",
-        "institutionName": "St. Francis University College of Health and Allied Sciences (SFUCHAS)",
-        "sourceDatasets": [
-          "education_pathways"
-        ],
-        "reviewReasons": [
-          "missing_entry_requirements",
-          "programme code not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Bachelor Degree in Accounting TAMZ1 Two principal passes in the following",
-        "institutionName": "Tanzania Institute of Accountancy (TIA)",
-        "sourceDatasets": [
-          "education_pathways"
-        ],
-        "reviewReasons": [
-          "programme code not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Bachelor TPSD1 Two principal passes in the following",
-        "institutionName": "Tanzania Public Service College (TPSC)",
-        "sourceDatasets": [
-          "education_pathways"
-        ],
-        "reviewReasons": [
-          "missing_duration",
-          "programme code not confidently parsed",
-          "admission points/capacity/duration not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Bachelor TPSD2 Two principal passes in the following",
-        "institutionName": "Tanzania Public Service College (TPSC)",
-        "sourceDatasets": [
-          "education_pathways"
-        ],
-        "reviewReasons": [
-          "missing_duration",
-          "programme code not confidently parsed",
-          "admission points/capacity/duration not confidently parsed"
-        ]
-      },
-      {
-        "programmeName": "Bachelor CBMZ5 Two principal passes in the following",
-        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
-        "sourceDatasets": [
-          "post_form_four"
-        ],
-        "reviewReasons": [
-          "programme_name_looks_incomplete"
-        ]
-      },
-      {
-        "programmeName": "Bachelor Degree CBMZ1 Two principal passes in the following subjects; Biology in Accountancy",
-        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
-        "sourceDatasets": [
-          "post_form_four"
         ],
         "reviewReasons": []
       },
       {
-        "programmeName": "Bachelor Degree CBMZ2 Two principal passes in the following subjects; Biology in Business Administration",
-        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
+        "programmeName": "Ordinary Diploma in Marketing and Public Relations Form four Certificate with A Minimum of 4 Passes in non-religious Subjects or Nva II with At Least 2 Passes in Ordinary Level Secondary Education 3 150 Local Fee: TSH. 990,000/= , Foreigner Fee: USD 800/=",
+        "institutionName": "TANZANIA INSTITUTE OF ACCOUNTANCY (TIA) - SINGIDA",
         "sourceDatasets": [
-          "post_form_four"
-        ],
-        "reviewReasons": []
-      },
-      {
-        "programmeName": "Bachelor Degree CBMZ4 Two principal passes in the following",
-        "institutionName": "COLLEGE OF BUSINESS EDUCATION - MWANZA",
-        "sourceDatasets": [
-          "post_form_four"
+          "education_pathways"
         ],
         "reviewReasons": []
       }
     ],
-    "fromPathwaysCount": 2838,
-    "fromTcuSecondaryGuidebookExtractionCount": 797,
-    "fromUdsmProspectusSupplementCount": 27,
-    "fallbackOnlyCount": 1602,
-    "degreeCount": 1410,
-    "formSixRouteCount": 1763,
-    "certificateRouteCount": 1205,
-    "diplomaRouteCount": 773,
-    "needsReviewCount": 1600
+    "fromPathwaysCount": 2876,
+    "fromTcuSecondaryGuidebookExtractionCount": 882,
+    "fromUdsmProspectusSupplementCount": 15,
+    "fallbackOnlyCount": 1039,
+    "degreeCount": 890,
+    "formSixRouteCount": 1846,
+    "certificateRouteCount": 1256,
+    "diplomaRouteCount": 821,
+    "needsReviewCount": 1140,
+    "applicantPathwayCoverage": {
+      "form_four": {
+        "yes": 1584,
+        "no": 988,
+        "unknown": 1343
+      },
+      "form_six": {
+        "yes": 1846,
+        "no": 723,
+        "unknown": 1346
+      },
+      "certificate": {
+        "yes": 1256,
+        "no": 1313,
+        "unknown": 1346
+      },
+      "diploma": {
+        "yes": 821,
+        "no": 1748,
+        "unknown": 1346
+      },
+      "equivalent": {
+        "yes": 1018,
+        "no": 1134,
+        "unknown": 1763
+      }
+    },
+    "manualReviewQueues": {
+      "needsReview": 1140,
+      "queues": {
+        "institution_identity": 0,
+        "programme_offering_identity": 45,
+        "applicant_pathway": 1,
+        "source_extraction": 237,
+        "data_completeness": 1256,
+        "general": 335
+      }
+    }
   },
   "entryRequirements": {
     "rawPathwayCount": 4503,
-    "extractedTcuSecondaryGuidebookCount": 855,
-    "processedCount": 5358,
+    "extractedTcuSecondaryGuidebookCount": 882,
+    "remappedToTcuProgrammeCount": 796,
+    "droppedWithUncodedTcuProgrammeCount": 21,
+    "supersededByTcuGuidebookFormSixCount": 718,
+    "processedCount": 4626,
     "formFourRouteCount": 1515,
-    "formSixRouteCount": 2637,
+    "formSixRouteCount": 1938,
     "certificateRouteCount": 1625,
-    "diplomaRouteCount": 896
+    "diplomaRouteCount": 874,
+    "applicantPathwayCoverage": {
+      "form_four": {
+        "yes": 1515,
+        "no": 2768,
+        "unknown": 343
+      },
+      "form_six": {
+        "yes": 1938,
+        "no": 2345,
+        "unknown": 343
+      },
+      "certificate": {
+        "yes": 1625,
+        "no": 2658,
+        "unknown": 343
+      },
+      "diploma": {
+        "yes": 874,
+        "no": 3409,
+        "unknown": 343
+      },
+      "equivalent": {
+        "yes": 986,
+        "no": 2054,
+        "unknown": 1586
+      }
+    }
   },
   "requirementRules": {
-    "processedCount": 6946,
-    "fromProgrammeFallbackCount": 1588,
-    "programmesWithoutExactRuleCount": 409,
+    "processedCount": 5235,
+    "fromProgrammeFallbackCount": 609,
+    "programmesWithoutExactRuleCount": 394,
     "programmesWithoutExactRuleButHasRequirementsCount": 0,
-    "structuredVariantCount": 6078,
-    "partialVariantCount": 1695,
-    "unparsedVariantCount": 2731
+    "structuredVariantCount": 4797,
+    "partialVariantCount": 805,
+    "unparsedVariantCount": 2444
   }
 }
